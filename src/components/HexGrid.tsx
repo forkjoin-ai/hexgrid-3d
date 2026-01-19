@@ -10,8 +10,11 @@ import { logger } from '@/lib/logger'
 import { setCustomAccentColor, clearCustomAccentColor, getCurrentAccentHex, getAccentColor, getAccentRgba } from '@/lib/theme-colors'
 import { decodeHTMLEntities } from '@/lib/html-utils'
 import { getProxiedImageUrl } from '../utils/image-utils'
-import type { GridItem } from '../types'
+import type { GridItem, Photo } from '../types'
 import { gridItemToPhoto } from '../compat'
+
+// Re-export Photo type for external consumers
+export type { Photo }
 
 // Fallback no-op logger at module scope (unused - component-level dlog is used instead)
 // Kept for backward compatibility but renamed to avoid shadowing confusion
@@ -21,35 +24,6 @@ const noopLog = (..._args: any[]) => {}
 // This is especially important for Reddit images where multiple hexes may use the same image
 const globalImageCache = new Map<string, HTMLImageElement>()
 const imageLoadPromises = new Map<string, Promise<HTMLImageElement>>()
-
-export interface Photo {
-  id: string
-  title: string
-  alt: string
-  imageUrl: string
-  thumbnailUrl: string
-  category: string
-  shopUrl?: string
-  location?: string
-  description?: string
-  videoUrl?: string  // Add video support
-  isVideo?: boolean
-  isTweet?: boolean  // Add tweet support
-  tweetUrl?: string  // Tweet URL for embedding
-  redditUrl?: string // Reddit post URL for linking
-  velocity?: number  // Normalized velocity [0.1, 1.0] for meritocratic competition
-  durationSeconds?: number // Video duration in seconds (for filtering and display)
-  source?: string    // 'youtube' | 'google-photos' | 'demo' | 'x' | 'reddit'
-  sourceUrl?: string // Original source URL
-  views?: number     // Metrics for debugging/analysis
-  likes?: number     // Metrics for debugging/analysis
-  retweets?: number  // Metrics for debugging/analysis (X/Twitter)
-  replies?: number   // Metrics for debugging/analysis (X/Twitter)
-  upvotes?: number   // Metrics for debugging/analysis (Reddit/other)
-  comments?: number  // Metrics for debugging/analysis
-  shares?: number    // Metrics for debugging/analysis
-  age_in_hours?: number // Metrics for debugging/analysis
-}
 
 export interface HexGridProps<T = unknown> {
   // Accept both legacy Photo[] and new GridItem[]

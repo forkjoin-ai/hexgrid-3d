@@ -5,23 +5,64 @@
 import type { RefObject } from 'react'
 import type { HexGridFeatureFlags } from './features'
 
+/**
+ * Photo type for HexGrid visualization
+ * 
+ * This is the unified Photo type used throughout the hexgrid-3d package.
+ * It includes all fields needed for display, media playback, and analytics.
+ */
 export interface Photo {
   id: string
-  url: string
+  title: string
+  
+  // Image URLs - imageUrl is primary, url is for backward compatibility
+  imageUrl: string
+  url?: string  // Alias for imageUrl (backward compatibility)
   thumbnailUrl?: string
-  title?: string
+  
+  // Display metadata
+  alt: string
+  category: string
   description?: string
+  
+  // Source information
   source: string
-  createdAt: string
+  sourceUrl?: string
+  createdAt?: string
+  
+  // Shop integration
+  shopUrl?: string
+  location?: string
+  
+  // Media type flags
+  isVideo?: boolean
+  videoUrl?: string
+  isTweet?: boolean
+  tweetUrl?: string
+  redditUrl?: string
+  durationSeconds?: number
+  
+  // Competition/ranking system
+  velocity?: number  // Normalized velocity [0.1, 1.0] for meritocratic competition
+  
+  // User info
   userId?: string
   username?: string
-  videoUrl?: string
   platform?: string
   author?: string
   authorUrl?: string
-  likes?: number
+  
+  // Metrics for analytics
   views?: number
+  likes?: number
   comments?: number
+  shares?: number
+  upvotes?: number
+  retweets?: number
+  replies?: number
+  age_in_hours?: number
+  
+  // Visual
   dominantColor?: string
 }
 

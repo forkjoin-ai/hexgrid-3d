@@ -5,8 +5,7 @@
  * continues to work while new code can use GridItem.
  */
 
-import type { Photo } from './types'
-import type { GridItem } from './types'
+import type { Photo, GridItem } from './types'
 
 /**
  * Convert Photo to GridItem for backward compatibility
@@ -15,13 +14,15 @@ export function photoToGridItem(photo: Photo): GridItem<Photo> {
   return {
     id: photo.id,
     type: 'photo',
-    imageUrl: photo.url,
+    imageUrl: photo.imageUrl,
     thumbnailUrl: photo.thumbnailUrl,
     title: photo.title,
+    alt: photo.alt,
     description: photo.description,
+    category: photo.category,
     data: photo,
     // Map all Photo fields
-    url: photo.url,
+    url: photo.imageUrl,
     userId: photo.userId,
     username: photo.username,
     videoUrl: photo.videoUrl,
@@ -33,7 +34,9 @@ export function photoToGridItem(photo: Photo): GridItem<Photo> {
     comments: photo.comments,
     dominantColor: photo.dominantColor,
     source: photo.source,
+    sourceUrl: photo.sourceUrl,
     createdAt: photo.createdAt,
+    velocity: photo.velocity,
   }
 }
 
@@ -50,11 +53,14 @@ export function gridItemToPhoto(item: GridItem<Photo>): Photo | null {
   if (item.imageUrl || item.url) {
     return {
       id: item.id,
-      url: item.imageUrl || item.url || '',
-      title: item.title,
+      title: item.title ?? '',
+      alt: item.alt ?? item.title ?? '',
+      imageUrl: item.imageUrl || item.url || '',
+      category: item.category ?? 'uncategorized',
       description: item.description,
       source: item.source || 'unknown',
-      createdAt: item.createdAt || new Date().toISOString(),
+      sourceUrl: item.sourceUrl,
+      createdAt: item.createdAt,
       thumbnailUrl: item.thumbnailUrl,
       userId: item.userId,
       username: item.username,
@@ -66,6 +72,7 @@ export function gridItemToPhoto(item: GridItem<Photo>): Photo | null {
       views: item.views,
       comments: item.comments,
       dominantColor: item.dominantColor,
+      velocity: item.velocity,
     }
   }
   

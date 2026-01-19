@@ -7,13 +7,19 @@ describe('HexGrid Component', () => {
   const mockPhotos: Photo[] = [
     {
       id: '1',
-      url: 'https://example.com/photo1.jpg',
+      title: 'Test Photo 1',
+      alt: 'Test photo 1 alt text',
+      imageUrl: 'https://example.com/photo1.jpg',
+      category: 'test',
       source: 'test',
       createdAt: new Date().toISOString(),
     },
     {
       id: '2',
-      url: 'https://example.com/photo2.jpg',
+      title: 'Test Photo 2',
+      alt: 'Test photo 2 alt text',
+      imageUrl: 'https://example.com/photo2.jpg',
+      category: 'test',
       source: 'test',
       createdAt: new Date().toISOString(),
     },
@@ -69,11 +75,14 @@ describe('HexGrid Component', () => {
   it('updates when photos change', () => {
     const { rerender } = render(<HexGrid photos={mockPhotos} />)
     
-    const newPhotos = [
+    const newPhotos: Photo[] = [
       ...mockPhotos,
       {
         id: '3',
-        url: 'https://example.com/photo3.jpg',
+        title: 'Test Photo 3',
+        alt: 'Test photo 3 alt text',
+        imageUrl: 'https://example.com/photo3.jpg',
+        category: 'test',
         source: 'test',
         createdAt: new Date().toISOString(),
       },
