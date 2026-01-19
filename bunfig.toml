@@ -1,0 +1,6 @@
+[test]
+preload = ["./tests/setup.ts"]
+coverage = true
+
+# Only run unit tests (exclude e2e and integration)
+root = "./tests/unit"
