@@ -1,0 +1,41 @@
+[package]
+name = "hexgrid-wasm"
+version = "0.1.0"
+edition = "2021"
+authors = ["Portfolio Team"]
+description = "High-performance hexgrid computations in WebAssembly"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+wasm-bindgen = "0.2.87"
+js-sys = "0.3.64"
+# For SIMD-optimized math
+packed_simd_2 = { version = "0.3", optional = true }
+# Better panic messages in console
+console_error_panic_hook = { version = "0.1.7", optional = true }
+# Parallel iteration (falls back to sequential in wasm)
+rayon = { version = "1.8", optional = true }
+# Serialization for complex data structures  
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+# Random number generation
+getrandom = { version = "0.2", features = ["js"] }
+rand = "0.8"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.37"
+
+[profile.release]
+# Optimize for small code size
+opt-level = "s"
+lto = true
+
+[profile.dev]
+# Faster compile times during development
+opt-level = 0

@@ -10,6 +10,8 @@ import { logger } from '@/lib/logger'
 import { setCustomAccentColor, clearCustomAccentColor, getCurrentAccentHex, getAccentColor, getAccentRgba } from '@/lib/theme-colors'
 import { decodeHTMLEntities } from '@/lib/html-utils'
 import { getProxiedImageUrl } from '../utils/image-utils'
+import type { GridItem } from '../types'
+import { gridItemToPhoto } from '../compat'
 
 // Fallback no-op logger at module scope (unused - component-level dlog is used instead)
 // Kept for backward compatibility but renamed to avoid shadowing confusion
@@ -49,9 +51,15 @@ export interface Photo {
   age_in_hours?: number // Metrics for debugging/analysis
 }
 
-export interface HexGridProps {
-  photos?: Photo[]
-  onHexClick?: (photo: Photo) => void
+export interface HexGridProps<T = unknown> {
+  // Accept both legacy Photo[] and new GridItem[]
+  items?: GridItem<T>[]
+  photos?: Photo[] // Legacy support
+  
+  // Type-safe item handlers
+  onItemClick?: (item: GridItem<T>) => void
+  onHexClick?: (photo: Photo) => void // Legacy support
+  
   spacing?: number
   canvasRef?: React.RefObject<HTMLCanvasElement>
   onLeaderboardUpdate?: (leaderboard: Array<{ photoId: string; territory: number; position: number }>) => void
@@ -252,7 +260,76 @@ const AccentColorPicker: React.FC = () => {
   )
 }
 
-export const HexGrid: React.FC<HexGridProps> = ({ photos = [], onHexClick, spacing = 1.0, canvasRef: externalCanvasRef, onLeaderboardUpdate, autoplayQueueLimit, onAutoplayQueueLimitChange, modalOpen = false, userId, username }) => {
+export const HexGrid = <T = unknown>({ 
+  items, 
+  photos: photosProp, 
+  onItemClick, 
+  onHexClick, 
+  spacing = 1.0, 
+  canvasRef: externalCanvasRef, 
+  onLeaderboardUpdate, 
+  autoplayQueueLimit, 
+  onAutoplayQueueLimitChange, 
+  modalOpen = false, 
+  userId, 
+  username 
+}: HexGridProps<T>) => {
+  // Normalize inputs: convert items to photos for internal use, or use photos directly
+  const photos = useMemo(() => {
+    if (items && items.length > 0) {
+      // Convert GridItems to Photos for internal processing
+      return items.map(item => {
+        // Try to extract Photo from GridItem
+        const photo = gridItemToPhoto(item as GridItem<Photo>)
+        if (photo) {
+          return photo
+        }
+        // Fallback: construct Photo from GridItem fields
+        return {
+          id: item.id,
+          url: item.imageUrl || item.url || '',
+          thumbnailUrl: item.thumbnailUrl,
+          title: item.title || '',
+          alt: item.alt || item.title || '',
+          imageUrl: item.imageUrl || item.url || '',
+          category: item.category || 'unknown',
+          description: item.description,
+          source: item.source || 'unknown',
+          createdAt: item.createdAt || new Date().toISOString(),
+          velocity: item.velocity,
+          sourceUrl: item.sourceUrl,
+          views: item.views,
+          likes: item.likes,
+          comments: item.comments,
+          videoUrl: item.videoUrl,
+          userId: item.userId,
+          username: item.username,
+          platform: item.platform,
+          author: item.author,
+          authorUrl: item.authorUrl,
+          dominantColor: item.dominantColor,
+        } as Photo
+      })
+    }
+    return photosProp || []
+  }, [items, photosProp])
+
+  // Enhanced click handler that supports both items and photos
+  const handleHexClick = useCallback((photo: Photo) => {
+    // Call legacy handler if provided
+    if (onHexClick) {
+      onHexClick(photo)
+    }
+    
+    // If items are provided, find the corresponding item and call onItemClick
+    if (items && items.length > 0 && onItemClick) {
+      const item = items.find(i => i.id === photo.id)
+      if (item) {
+        onItemClick(item)
+      }
+    }
+  }, [items, onHexClick, onItemClick])
+
   const internalCanvasRef = useRef<HTMLCanvasElement>(null)
   const canvasRef = externalCanvasRef || internalCanvasRef
   const workerRef = useRef<Worker | null>(null)
@@ -3345,14 +3422,14 @@ export const HexGrid: React.FC<HexGridProps> = ({ photos = [], onHexClick, spaci
         if (workerDebugRef.current?.debugLogs) {
           dlog(`Click: Opening photo for hex ${winner.index}: ${infection.photo.id} - ${infection.photo.title}`)
         }
-        onHexClick(infection.photo)
+        handleHexClick(infection.photo)
       } else if (!infection) {
         // Only allow spawning on explicitly empty cells (not ghost cells)
         dlog(`Spawning cluster at hexagon ${winner.index}${winner.isAntipodal ? ' (antipodal)' : ''}`)
         spawnClusterAt(winner.index)
       }
     }
-  }, [hexPositions, effectiveHexRadius, onHexClick, mapAndProject, workerDebug, drawnHexRadius, insideView, spawnClusterAt])
+  }, [hexPositions, effectiveHexRadius, handleHexClick, mapAndProject, workerDebug, drawnHexRadius, insideView, spawnClusterAt])
   
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
