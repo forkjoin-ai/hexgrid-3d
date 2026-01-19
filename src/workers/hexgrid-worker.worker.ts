@@ -7,6 +7,14 @@
 // - evolution throttling (workerDebug.evolutionIntervalMs)
 // - defensive guards and error reporting via postMessage({type:'error', ...})
 
+import {
+  getGridBounds as _getGridBounds,
+  distanceBetween as _distanceBetween,
+  calculateUvBoundsFromGridPosition as _calculateUvBoundsFromGridPosition,
+  calculateContiguity as _calculateContiguity,
+  calculatePhotoContiguity as _calculatePhotoContiguity,
+} from './hexgrid-math'
+
 export interface Photo { id: string; title?: string; alt?: string; imageUrl?: string; velocity?: number }
 export interface Infection { photo: Photo; gridPosition: [number, number]; infectionTime: number; generation: number; uvBounds: [number, number, number, number]; scale: number; growthRate?: number; tilesX?: number; tilesY?: number }
 export interface InfectionSystemState { infections: Map<number, Infection>; availableIndices: number[]; lastEvolutionTime: number; generation: number; tileCenters?: Array<{ photoId: string; clusterIndex: number; centers: Array<{ x: number; y: number; col: number; row: number }> }> }
@@ -70,10 +78,9 @@ function safePostError(err: unknown) { try { self.postMessage({ type: 'error', e
 
 function getGridBounds(positions: [number, number, number][]) {
   if (cache.gridBounds) return cache.gridBounds
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity
-  for (const p of positions) { if (!p) continue; minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]) }
-  cache.gridBounds = { minX, maxX, minY, maxY, width: maxX - minX, height: maxY - minY }
-  return cache.gridBounds
+  const bounds = _getGridBounds(positions)
+  cache.gridBounds = bounds
+  return bounds
 }
 
 function distanceBetween(
@@ -82,19 +89,7 @@ function distanceBetween(
   bounds: { width: number; height: number },
   isSpherical: boolean
 ) {
-  let dx = b[0] - a[0]
-  let dy = b[1] - a[1]
-
-  if (isSpherical && bounds.width > 0 && bounds.height > 0) {
-    if (Math.abs(dx) > bounds.width / 2) {
-      dx = dx > 0 ? dx - bounds.width : dx + bounds.width
-    }
-    if (Math.abs(dy) > bounds.height / 2) {
-      dy = dy > 0 ? dy - bounds.height : dy + bounds.height
-    }
-  }
-
-  return Math.sqrt(dx * dx + dy * dy)
+  return _distanceBetween(a, b, bounds, isSpherical)
 }
 
 function getNeighborsCached(index: number, positions: [number, number, number][], hexRadius: number): number[] {
@@ -166,12 +161,7 @@ function calculateUvBoundsFromGridPosition(
   tilesX: number,
   tilesY: number
 ): [number, number, number, number] {
-  const minU = gridCol / tilesX
-  const maxU = (gridCol + 1) / tilesX
-  // V=1 is top, so row 0 maps to top (maxV=1, minV=1-1/tilesY)
-  const minV = 1 - (gridRow + 1) / tilesY
-  const maxV = 1 - gridRow / tilesY
-  return [minU, minV, maxU, maxV]
+  return _calculateUvBoundsFromGridPosition(gridCol, gridRow, tilesX, tilesY)
 }
 
 function findConnectedComponents(indices: number[], positions: [number, number, number][], hexRadius: number): number[][] {
@@ -339,9 +329,8 @@ function calculatePhotoCentroids(
 }
 
 function calculateContiguity(indices: number[], positions: [number, number, number][], hexRadius: number) {
-  const set = new Set(indices); let total = 0
-  for (const idx of indices) for (const n of getNeighborsCached(idx, positions, hexRadius)) if (set.has(n)) total++
-  return total
+  const getNeighbors = (index: number) => getNeighborsCached(index, positions, hexRadius)
+  return _calculateContiguity(indices, positions, hexRadius, getNeighbors)
 }
 
 // Assign cluster-aware grid positions so each hex in a cluster shows a different part of the image
@@ -1717,17 +1706,8 @@ function calculatePhotoContiguity(
   hexRadius: number,
   debugLogs: boolean = true
 ): number {
-  let totalScore = 0
-  const indicesSet = new Set(indices)
-  for (const index of indices) {
-    const neighbors = getNeighborsCached(index, positions, hexRadius)
-    let connections = 0
-    for (const neighborIndex of neighbors) {
-      if (indicesSet.has(neighborIndex)) connections++
-    }
-    totalScore += connections
-  }
-  return totalScore
+  const getNeighbors = (index: number) => getNeighborsCached(index, positions, hexRadius)
+  return _calculatePhotoContiguity(indices, positions, hexRadius, getNeighbors)
 }
 
 function calculateSwappedContiguityCached(

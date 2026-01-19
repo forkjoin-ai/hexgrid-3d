@@ -9,6 +9,7 @@ import { PoolStatsOverlay } from '@/components/debug/PoolStatsOverlay'
 import { logger } from '@/lib/logger'
 import { setCustomAccentColor, clearCustomAccentColor, getCurrentAccentHex, getAccentColor, getAccentRgba } from '@/lib/theme-colors'
 import { decodeHTMLEntities } from '@/lib/html-utils'
+import { getProxiedImageUrl } from '../utils/image-utils'
 
 // Fallback no-op logger at module scope (unused - component-level dlog is used instead)
 // Kept for backward compatibility but renamed to avoid shadowing confusion
@@ -18,19 +19,6 @@ const noopLog = (..._args: any[]) => {}
 // This is especially important for Reddit images where multiple hexes may use the same image
 const globalImageCache = new Map<string, HTMLImageElement>()
 const imageLoadPromises = new Map<string, Promise<HTMLImageElement>>()
-
-/**
- * Convert Reddit image URLs that have CORS issues to use our proxy endpoint
- * preview.redd.it doesn't allow CORS, but external-preview.redd.it does
- */
-function getProxiedImageUrl(imageUrl: string): string {
-  // Only proxy preview.redd.it URLs (they have CORS issues)
-  // external-preview.redd.it URLs work fine, so don't proxy them
-  if (imageUrl.includes('preview.redd.it') && !imageUrl.includes('external-preview.redd.it')) {
-    return `/api/proxy-image?url=${encodeURIComponent(imageUrl)}`
-  }
-  return imageUrl
-}
 
 export interface Photo {
   id: string
