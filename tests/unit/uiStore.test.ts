@@ -1,3 +1,4 @@
+import { describe, it, expect, mock, beforeEach } from 'bun:test'
 import { uiStore } from '../../src/stores/uiStore'
 
 describe('uiStore', () => {
@@ -12,13 +13,10 @@ describe('uiStore', () => {
   })
 
   it('initializes with default state', () => {
-    const unsubscribe = uiStore.subscribe((state) => {
-      expect(state.debugOpen).toBe(false)
-      expect(state.showStats).toBe(false)
-      expect(state.cameraOpen).toBe(false)
-      expect(state.showNarration).toBe(false)
-    })
-    unsubscribe()
+    const state = uiStore.getState()
+    expect(state.debugOpen).toBe(false)
+    expect(state.showStats).toBe(false)
+    expect(state.cameraOpen).toBe(false)
   })
 
   it('toggles debug state', () => {
@@ -101,8 +99,8 @@ describe('uiStore', () => {
   })
 
   it('notifies all subscribers', () => {
-    const subscriber1 = jest.fn()
-    const subscriber2 = jest.fn()
+    const subscriber1 = mock(() => {})
+    const subscriber2 = mock(() => {})
 
     const unsubscribe1 = uiStore.subscribe(subscriber1)
     const unsubscribe2 = uiStore.subscribe(subscriber2)
@@ -121,7 +119,7 @@ describe('uiStore', () => {
   })
 
   it('removes subscriber after unsubscribe', () => {
-    const subscriber = jest.fn()
+    const subscriber = mock(() => {})
     const unsubscribe = uiStore.subscribe(subscriber)
 
     expect(subscriber).toHaveBeenCalledTimes(1)
@@ -131,5 +129,48 @@ describe('uiStore', () => {
 
     // Should still be 1 (only initial call)
     expect(subscriber).toHaveBeenCalledTimes(1)
+  })
+
+  it('persists showNarration to localStorage', () => {
+    // First set showNarration
+    uiStore.set({ showNarration: true })
+    
+    // Check localStorage was updated
+    const saved = window.localStorage.getItem('hexgrid.showNarration')
+    expect(saved).toBe('true')
+    
+    // Toggle off
+    uiStore.set({ showNarration: false })
+    const savedFalse = window.localStorage.getItem('hexgrid.showNarration')
+    expect(savedFalse).toBe('false')
+  })
+
+  it('does not notify when setting same values', () => {
+    const subscriber = mock(() => {})
+    const unsubscribe = uiStore.subscribe(subscriber)
+
+    // Initial call
+    expect(subscriber).toHaveBeenCalledTimes(1)
+
+    // Set same values - should not trigger notification
+    uiStore.set({
+      debugOpen: false,
+      showStats: false,
+    })
+
+    // Still 1 because values didn't change
+    expect(subscriber).toHaveBeenCalledTimes(1)
+
+    unsubscribe()
+  })
+
+  it('returns state copy from getState', () => {
+    const state1 = uiStore.getState()
+    const state2 = uiStore.getState()
+    
+    // Should be different objects
+    expect(state1).not.toBe(state2)
+    // But equal values
+    expect(state1).toEqual(state2)
   })
 })

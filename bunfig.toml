@@ -4,3 +4,5 @@ coverage = true
 
 # Only run unit tests (exclude e2e and integration)
 root = "./tests/unit"
+# Coverage settings - only include src/ files
+coverageSkipTestFiles = true
