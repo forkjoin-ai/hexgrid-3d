@@ -20,14 +20,14 @@ try {
 
 const state: UIState = {
   debugOpen: false,
-  showStats: false
-  , cameraOpen: false
-  , showNarration: initialShowNarration
+  showStats: false,
+  cameraOpen: false,
+  showNarration: initialShowNarration
 }
 
 const listeners = new Set<(s: UIState) => void>()
 
-export default {
+const uiStore = {
   getState(): UIState {
     return { ...state }
   },
@@ -63,8 +63,7 @@ export default {
   },
   toggleStats() {
     this.set({ showStats: !state.showStats })
-  }
-  ,
+  },
   toggleCamera() {
     this.set({ cameraOpen: !state.cameraOpen })
   },
@@ -72,3 +71,6 @@ export default {
     this.set({ showNarration: !state.showNarration })
   }
 }
+
+export { uiStore }
+export default uiStore

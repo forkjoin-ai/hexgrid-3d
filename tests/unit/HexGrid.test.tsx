@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { HexGrid } from '../../src/components/HexGrid'
 import { Photo } from '../../src/types'

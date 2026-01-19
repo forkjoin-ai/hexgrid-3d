@@ -3,6 +3,7 @@
  */
 
 import type { RefObject } from 'react'
+import type { HexGridFeatureFlags } from './features'
 
 export interface Photo {
   id: string
@@ -35,6 +36,7 @@ export interface HexGridProps {
   modalOpen?: boolean
   userId?: string
   username?: string
+  featureFlags?: HexGridFeatureFlags
 }
 
 export interface UIState {

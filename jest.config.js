@@ -7,12 +7,20 @@ module.exports = {
     '**/?(*.)+(spec|test).+(ts|tsx|js)'
   ],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react',
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true,
+      },
+    }],
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/../../$1',
     '^hexgrid-3d$': '<rootDir>/src/index.ts',
     '^hexgrid-3d/(.*)$': '<rootDir>/src/$1',
+    '^@/components/(.*)$': '<rootDir>/tests/__mocks__/@/components/$1',
+    '^@/lib/(.*)$': '<rootDir>/tests/__mocks__/@/lib/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   collectCoverageFrom: [
@@ -21,7 +29,7 @@ module.exports = {
     '!src/**/index.ts',
     '!src/**/*.stories.tsx',
   ],
-  coverageThresholds: {
+  coverageThreshold: {
     global: {
       branches: 70,
       functions: 70,
@@ -30,4 +38,5 @@ module.exports = {
     },
   },
   coverageReporters: ['text', 'lcov', 'html'],
+  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
 }
