@@ -12,23 +12,23 @@
  */
 export function getGridBounds(positions: [number, number, number][]) {
   if (!positions || positions.length === 0) {
-    return { minX: 0, maxX: 0, minY: 0, maxY: 0, width: 0, height: 0 }
+    return { minX: 0, maxX: 0, minY: 0, maxY: 0, width: 0, height: 0 };
   }
 
   let minX = Infinity,
     maxX = -Infinity,
     minY = Infinity,
-    maxY = -Infinity
+    maxY = -Infinity;
 
   for (const p of positions) {
-    if (!p) continue
-    minX = Math.min(minX, p[0])
-    maxX = Math.max(maxX, p[0])
-    minY = Math.min(minY, p[1])
-    maxY = Math.max(maxY, p[1])
+    if (!p) continue;
+    minX = Math.min(minX, p[0]);
+    maxX = Math.max(maxX, p[0]);
+    minY = Math.min(minY, p[1]);
+    maxY = Math.max(maxY, p[1]);
   }
 
-  return { minX, maxX, minY, maxY, width: maxX - minX, height: maxY - minY }
+  return { minX, maxX, minY, maxY, width: maxX - minX, height: maxY - minY };
 }
 
 /**
@@ -46,20 +46,20 @@ export function distanceBetween(
   bounds: { width: number; height: number },
   isSpherical: boolean
 ): number {
-  let dx = b[0] - a[0]
-  let dy = b[1] - a[1]
+  let dx = b[0] - a[0];
+  let dy = b[1] - a[1];
 
   if (isSpherical && bounds.width > 0 && bounds.height > 0) {
     // Apply toroidal wrapping: shortest distance considering wraparound
     if (Math.abs(dx) > bounds.width / 2) {
-      dx = dx > 0 ? dx - bounds.width : dx + bounds.width
+      dx = dx > 0 ? dx - bounds.width : dx + bounds.width;
     }
     if (Math.abs(dy) > bounds.height / 2) {
-      dy = dy > 0 ? dy - bounds.height : dy + bounds.height
+      dy = dy > 0 ? dy - bounds.height : dy + bounds.height;
     }
   }
 
-  return Math.sqrt(dx * dx + dy * dy)
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 /**
@@ -82,16 +82,16 @@ export function calculateUvBoundsFromGridPosition(
 ): [number, number, number, number] {
   // Guard against invalid grid dimensions
   if (tilesX <= 0 || tilesY <= 0) {
-    return [0, 0, 1, 1]
+    return [0, 0, 1, 1];
   }
 
-  const minU = gridCol / tilesX
-  const maxU = (gridCol + 1) / tilesX
+  const minU = gridCol / tilesX;
+  const maxU = (gridCol + 1) / tilesX;
   // V=1 is top, so row 0 maps to top (maxV=1, minV=1-1/tilesY)
-  const minV = 1 - (gridRow + 1) / tilesY
-  const maxV = 1 - gridRow / tilesY
+  const minV = 1 - (gridRow + 1) / tilesY;
+  const maxV = 1 - gridRow / tilesY;
 
-  return [minU, minV, maxU, maxV]
+  return [minU, minV, maxU, maxV];
 }
 
 /**
@@ -110,21 +110,21 @@ export function calculateContiguity(
   hexRadius: number,
   getNeighbors: (index: number) => number[]
 ): number {
-  if (!indices || indices.length === 0) return 0
-  if (!positions || positions.length === 0) return 0
-  if (hexRadius <= 0) return 0
+  if (!indices || indices.length === 0) return 0;
+  if (!positions || positions.length === 0) return 0;
+  if (hexRadius <= 0) return 0;
 
-  const set = new Set(indices)
-  let total = 0
+  const set = new Set(indices);
+  let total = 0;
 
   for (const idx of indices) {
-    const neighbors = getNeighbors(idx)
+    const neighbors = getNeighbors(idx);
     for (const n of neighbors) {
-      if (set.has(n)) total++
+      if (set.has(n)) total++;
     }
   }
 
-  return total
+  return total;
 }
 
 /**
@@ -142,7 +142,7 @@ export function calculatePhotoContiguity(
   hexRadius: number,
   getNeighbors: (index: number) => number[]
 ): number {
-  return calculateContiguity(indices, positions, hexRadius, getNeighbors)
+  return calculateContiguity(indices, positions, hexRadius, getNeighbors);
 }
 
 /**
@@ -164,14 +164,19 @@ export function calculateSwappedContiguity(
   toIndex: number,
   getNeighbors: (index: number) => number[]
 ): number {
-  if (!indices || indices.length === 0) return 0
+  if (!indices || indices.length === 0) return 0;
 
-  const tempIndices = [...indices]
-  const fromPos = tempIndices.indexOf(fromIndex)
-  const toPos = tempIndices.indexOf(toIndex)
+  const tempIndices = [...indices];
+  const fromPos = tempIndices.indexOf(fromIndex);
+  const toPos = tempIndices.indexOf(toIndex);
 
-  if (fromPos !== -1) tempIndices[fromPos] = toIndex
-  if (toPos !== -1) tempIndices[toPos] = fromIndex
+  if (fromPos !== -1) tempIndices[fromPos] = toIndex;
+  if (toPos !== -1) tempIndices[toPos] = fromIndex;
 
-  return calculatePhotoContiguity(tempIndices, positions, hexRadius, getNeighbors)
+  return calculatePhotoContiguity(
+    tempIndices,
+    positions,
+    hexRadius,
+    getNeighbors
+  );
 }

@@ -30,7 +30,13 @@ export class FlowField2D {
     this.sources = [];
   }
 
-  addSource(x: number, y: number, vx: number, vy: number, strength: number): void {
+  addSource(
+    x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    strength: number
+  ): void {
     this.sources.push({ x, y, vx, vy, strength });
   }
 
@@ -55,7 +61,10 @@ export class FlowField2D {
     return new Vector2(vx, vy);
   }
 
-  sampleFull(x: number, y: number): { velocity: Vector2; divergence: number; curl: number } {
+  sampleFull(
+    x: number,
+    y: number
+  ): { velocity: Vector2; divergence: number; curl: number } {
     const velocity = this.sample(x, y);
     return {
       velocity,
@@ -64,7 +73,11 @@ export class FlowField2D {
     };
   }
 
-  traceStreamline(x: number, y: number, options: { maxLength: number; stepSize: number; maxSteps: number }): Streamline {
+  traceStreamline(
+    x: number,
+    y: number,
+    options: { maxLength: number; stepSize: number; maxSteps: number }
+  ): Streamline {
     const points: Vector2[] = [new Vector2(x, y)];
     let current = new Vector2(x, y);
     for (let i = 0; i < options.maxSteps; i++) {
@@ -106,7 +119,12 @@ export class HeatMap {
   private resolution: number;
   private data: Float32Array;
 
-  constructor(config: { width: number; height: number; resolution: number; kernelRadius: number }) {
+  constructor(config: {
+    width: number;
+    height: number;
+    resolution: number;
+    kernelRadius: number;
+  }) {
     this.width = Math.max(1, Math.round(config.width / config.resolution));
     this.height = Math.max(1, Math.round(config.height / config.resolution));
     this.resolution = config.resolution;
@@ -114,8 +132,14 @@ export class HeatMap {
   }
 
   addPoint(x: number, y: number, value: number): void {
-    const gridX = Math.min(this.width - 1, Math.max(0, Math.floor(x / this.resolution)));
-    const gridY = Math.min(this.height - 1, Math.max(0, Math.floor(y / this.resolution)));
+    const gridX = Math.min(
+      this.width - 1,
+      Math.max(0, Math.floor(x / this.resolution))
+    );
+    const gridY = Math.min(
+      this.height - 1,
+      Math.max(0, Math.floor(y / this.resolution))
+    );
     const index = gridY * this.width + gridX;
     this.data[index] += value;
   }

@@ -49,7 +49,11 @@ export class Vector3 {
     this.z = z;
   }
 
-  static fromLatLng(latitude: number, longitude: number, radius: number = 1): Vector3 {
+  static fromLatLng(
+    latitude: number,
+    longitude: number,
+    radius: number = 1
+  ): Vector3 {
     const latRad = (latitude * Math.PI) / 180;
     const lonRad = (longitude * Math.PI) / 180;
 

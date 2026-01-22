@@ -1,30 +1,17 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, RefObject } from 'react';
 import React from 'react';
+import type {
+  Photo as PhotoType,
+  HexGridProps as HexGridPropsType,
+  HexGridFeatureFlags,
+} from '../types';
 
-export interface Photo {
-  id: string;
-  title: string;
-  alt: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  category: string;
-  description: string;
-  source: string;
-  createdAt: string;
-  velocity: number;
-  sourceUrl: string;
-  likes: number;
-  age_in_hours: number;
-}
+export type Photo = PhotoType;
 
-export interface HexGridProps {
-  photos?: Photo[];
-  className?: string;
-  style?: CSSProperties;
-  onPhotoClick?: (photo: Photo) => void;
-}
+// Re-export the proper HexGridProps from types.ts
+export type { HexGridProps } from '../types';
 
-export function HexGrid(_props: HexGridProps): JSX.Element | null {
+export function HexGrid(_props: HexGridPropsType): React.JSX.Element | null {
   return null;
 }
 

@@ -44,7 +44,15 @@ export class ParticleEffectManager {
     this.systems.set('default', new ParticleSystem());
   }
 
-  triggerEffect(effect: ParticleEffect, position: Vector2, options?: { count?: number; color?: [number, number, number]; velocity?: Vector2 }): void {
+  triggerEffect(
+    effect: ParticleEffect,
+    position: Vector2,
+    options?: {
+      count?: number;
+      color?: [number, number, number];
+      velocity?: Vector2;
+    }
+  ): void {
     const system = this.systems.get('default');
     if (!system) return;
     const count = options?.count ?? 1;
@@ -54,7 +62,9 @@ export class ParticleEffectManager {
         x: position.x,
         y: position.y,
         size: 4,
-        color: `rgb(${Math.round(color[0] * 255)}, ${Math.round(color[1] * 255)}, ${Math.round(color[2] * 255)})`,
+        color: `rgb(${Math.round(color[0] * 255)}, ${Math.round(
+          color[1] * 255
+        )}, ${Math.round(color[2] * 255)})`,
         alpha: 1,
       });
     }

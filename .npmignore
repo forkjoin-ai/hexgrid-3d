@@ -1,0 +1,32 @@
+# Development files
+tests/
+coverage/
+*.test.ts
+*.test.tsx
+*.spec.ts
+jest.config.js
+playwright.config.ts
+bunfig.toml
+bun.lock
+package-lock.json
+
+# Documentation (keep README and LICENSE)
+MIGRATION_SUMMARY.md
+PACKAGE_INFO.md
+CONTRIBUTING.md
+CHANGELOG.md
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.DS_Store
+*.log
+
+# Build artifacts (if any)
+dist/
+build/
+
+# Examples (optional - you may want to keep these)
+# examples/

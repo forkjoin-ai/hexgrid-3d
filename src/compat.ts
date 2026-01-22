@@ -1,11 +1,11 @@
 /**
  * Backward compatibility layer for Photo and GridItem
- * 
+ *
  * Provides conversion utilities to ensure existing Photo-based code
  * continues to work while new code can use GridItem.
  */
 
-import type { Photo, GridItem } from './types'
+import type { Photo, GridItem } from './types';
 
 /**
  * Convert Photo to GridItem for backward compatibility
@@ -37,7 +37,7 @@ export function photoToGridItem(photo: Photo): GridItem<Photo> {
     sourceUrl: photo.sourceUrl,
     createdAt: photo.createdAt,
     velocity: photo.velocity,
-  }
+  };
 }
 
 /**
@@ -46,9 +46,9 @@ export function photoToGridItem(photo: Photo): GridItem<Photo> {
 export function gridItemToPhoto(item: GridItem<Photo>): Photo | null {
   // If item contains original Photo data, return it
   if (item.type === 'photo' && item.data) {
-    return item.data
+    return item.data;
   }
-  
+
   // Fallback: construct Photo from GridItem fields
   if (item.imageUrl || item.url) {
     return {
@@ -73,17 +73,17 @@ export function gridItemToPhoto(item: GridItem<Photo>): Photo | null {
       comments: item.comments,
       dominantColor: item.dominantColor,
       velocity: item.velocity,
-    }
+    };
   }
-  
-  return null
+
+  return null;
 }
 
 /**
  * Convert an array of Photos to GridItems
  */
 export function photosToGridItems(photos: Photo[]): GridItem<Photo>[] {
-  return photos.map(photoToGridItem)
+  return photos.map(photoToGridItem);
 }
 
 /**
@@ -92,5 +92,5 @@ export function photosToGridItems(photos: Photo[]): GridItem<Photo>[] {
 export function gridItemsToPhotos(items: GridItem<Photo>[]): Photo[] {
   return items
     .map(gridItemToPhoto)
-    .filter((photo): photo is Photo => photo !== null)
+    .filter((photo): photo is Photo => photo !== null);
 }

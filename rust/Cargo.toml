@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Portfolio Team"]
 description = "High-performance hexgrid computations in WebAssembly"
-license = "MIT"
+license-file = "../LICENSE"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -21,7 +21,7 @@ packed_simd_2 = { version = "0.3", optional = true }
 console_error_panic_hook = { version = "0.1.7", optional = true }
 # Parallel iteration (falls back to sequential in wasm)
 rayon = { version = "1.8", optional = true }
-# Serialization for complex data structures  
+# Serialization for complex data structures
 serde = { version = "1.0", features = ["derive"] }
 serde-wasm-bindgen = "0.6"
 # Random number generation

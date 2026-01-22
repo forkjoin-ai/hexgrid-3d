@@ -18,7 +18,7 @@ A reusable 3D hexagonal grid visualization component for displaying content in a
 ## Installation
 
 ```bash
-npm install hexgrid-3d
+npm install @buley/hexgrid-3d
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ npm install hexgrid-3d
 ### Basic Example
 
 ```tsx
-import { HexGrid, Photo } from 'hexgrid-3d'
+import { HexGrid, Photo } from '@buley/hexgrid-3d'
 
 function MyComponent() {
   const photos: Photo[] = [
@@ -50,7 +50,7 @@ function MyComponent() {
 ### Advanced Example with Controls
 
 ```tsx
-import { HexGrid, Photo, uiStore } from 'hexgrid-3d'
+import { HexGrid, Photo, uiStore } from '@buley/hexgrid-3d'
 import { useRef, useState } from 'react'
 
 function AdvancedExample() {
@@ -284,4 +284,8 @@ npm run test:e2e
 
 ## License
 
-MIT
+Personal Use Only - See LICENSE file for full terms.
+
+This software is provided for personal, non-commercial use only. Commercial use,
+redistribution, and sublicensing are prohibited. All intellectual property
+rights are reserved by the copyright holder.

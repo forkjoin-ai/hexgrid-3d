@@ -1,48 +1,48 @@
 /**
  * Feature flags for HexGrid 3D
- * 
+ *
  * Allows enabling/disabling features at runtime for different client environments
  */
 
 export interface HexGridFeatureFlags {
   /** Enable/disable play-by-play narration overlay */
-  enableNarration?: boolean
-  
+  enableNarration?: boolean;
+
   /** Enable/disable statistics tracking and display */
-  enableStats?: boolean
-  
+  enableStats?: boolean;
+
   /** Enable/disable debug panel */
-  enableDebugPanel?: boolean
-  
+  enableDebugPanel?: boolean;
+
   /** Enable/disable camera controls UI */
-  enableCameraControls?: boolean
-  
+  enableCameraControls?: boolean;
+
   /** Enable/disable worker-based rendering */
-  enableWorker?: boolean
-  
+  enableWorker?: boolean;
+
   /** Enable/disable texture/image loading */
-  enableTextures?: boolean
-  
+  enableTextures?: boolean;
+
   /** Enable/disable evolution/animation system */
-  enableEvolution?: boolean
-  
+  enableEvolution?: boolean;
+
   /** Enable/disable autoplay functionality */
-  enableAutoplay?: boolean
-  
+  enableAutoplay?: boolean;
+
   /** Enable/disable user interactions (clicks, drags) */
-  enableInteractions?: boolean
-  
+  enableInteractions?: boolean;
+
   /** Enable/disable keyboard shortcuts */
-  enableKeyboardShortcuts?: boolean
-  
+  enableKeyboardShortcuts?: boolean;
+
   /** Enable/disable performance telemetry */
-  enableTelemetry?: boolean
-  
+  enableTelemetry?: boolean;
+
   /** Enable/disable sheen/visual effects */
-  enableVisualEffects?: boolean
-  
+  enableVisualEffects?: boolean;
+
   /** Enable/disable leaderboard system */
-  enableLeaderboard?: boolean
+  enableLeaderboard?: boolean;
 }
 
 /**
@@ -62,7 +62,7 @@ export const DEFAULT_FEATURE_FLAGS: Required<HexGridFeatureFlags> = {
   enableTelemetry: true,
   enableVisualEffects: true,
   enableLeaderboard: true,
-}
+};
 
 /**
  * Minimal feature flags - only core visualization
@@ -81,7 +81,7 @@ export const MINIMAL_FEATURE_FLAGS: Required<HexGridFeatureFlags> = {
   enableTelemetry: false,
   enableVisualEffects: false,
   enableLeaderboard: false,
-}
+};
 
 /**
  * Performance-focused feature flags
@@ -100,7 +100,7 @@ export const PERFORMANCE_FEATURE_FLAGS: Required<HexGridFeatureFlags> = {
   enableTelemetry: false,
   enableVisualEffects: false,
   enableLeaderboard: false,
-}
+};
 
 /**
  * Merge user-provided flags with defaults
@@ -111,7 +111,7 @@ export function mergeFeatureFlags(
   return {
     ...DEFAULT_FEATURE_FLAGS,
     ...userFlags,
-  }
+  };
 }
 
 /**
@@ -121,5 +121,5 @@ export function isFeatureEnabled(
   flags: HexGridFeatureFlags,
   feature: keyof HexGridFeatureFlags
 ): boolean {
-  return flags[feature] !== false
+  return flags[feature] !== false;
 }

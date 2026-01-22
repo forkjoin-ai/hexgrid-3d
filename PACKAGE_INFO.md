@@ -63,8 +63,8 @@ All imports have been updated in the following files:
 ### In the Portfolio App
 
 ```tsx
-import { HexGrid, Photo } from 'hexgrid-3d'
-import { uiStore } from 'hexgrid-3d/stores'
+import { HexGrid, Photo } from '@buley/hexgrid-3d'
+import { uiStore } from '@buley/hexgrid-3d/stores'
 ```
 
 ### External Projects

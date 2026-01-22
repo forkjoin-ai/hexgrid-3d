@@ -1,42 +1,57 @@
-import { GlobalRegistrator } from '@happy-dom/global-registrator'
+import { GlobalRegistrator } from '@happy-dom/global-registrator';
 
 // Register happy-dom globals before any tests run
-GlobalRegistrator.register()
+GlobalRegistrator.register();
 
-import '@testing-library/jest-dom'
-import { mock } from 'bun:test'
-import React from 'react'
+import '@testing-library/jest-dom';
+import { mock } from 'bun:test';
+import React from 'react';
 
 // Mock external components that are imported from parent project
 mock.module('@/components/debug/PoolStatsOverlay', () => ({
-  PoolStatsOverlay: ({ isOpen }: { isOpen: boolean }) => 
-    isOpen ? React.createElement('div', { 'data-testid': 'pool-stats-mock' }, 'Pool Stats Mock') : null
-}))
+  PoolStatsOverlay: ({ isOpen }: { isOpen: boolean }) =>
+    isOpen
+      ? React.createElement(
+          'div',
+          { 'data-testid': 'pool-stats-mock' },
+          'Pool Stats Mock'
+        )
+      : null,
+}));
 
 // Mock fetch to avoid "Failed to construct 'Request'" errors with relative URLs
-const originalFetch = globalThis.fetch
+const originalFetch = globalThis.fetch;
 globalThis.fetch = mock((input: RequestInfo | URL, init?: RequestInit) => {
-  const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
-  
+  const url =
+    typeof input === 'string'
+      ? input
+      : input instanceof URL
+      ? input.toString()
+      : input.url;
+
   // If it's a relative URL, just return a mock response
   if (url.startsWith('/')) {
-    return Promise.resolve(new Response(JSON.stringify({}), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    }))
+    return Promise.resolve(
+      new Response(JSON.stringify({}), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
   }
-  
+
   // For absolute URLs, use original fetch (if available) or mock
-  return Promise.resolve(new Response(JSON.stringify({}), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' }
-  }))
-}) as typeof fetch
+  return Promise.resolve(
+    new Response(JSON.stringify({}), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  );
+}) as typeof fetch;
 
 // Mock gradient object
 const mockGradient = {
   addColorStop: mock(() => {}),
-}
+};
 
 // Mock canvas and WebGL context
 const mockContext = {
@@ -57,9 +72,17 @@ const mockContext = {
   miterLimit: 10,
   fillRect: mock(() => {}),
   clearRect: mock(() => {}),
-  getImageData: mock(() => ({ data: new Uint8ClampedArray(4), width: 1, height: 1 })),
+  getImageData: mock(() => ({
+    data: new Uint8ClampedArray(4),
+    width: 1,
+    height: 1,
+  })),
   putImageData: mock(() => {}),
-  createImageData: mock(() => ({ data: new Uint8ClampedArray(4), width: 1, height: 1 })),
+  createImageData: mock(() => ({
+    data: new Uint8ClampedArray(4),
+    width: 1,
+    height: 1,
+  })),
   setTransform: mock(() => {}),
   drawImage: mock(() => {}),
   save: mock(() => {}),
@@ -95,19 +118,19 @@ const mockContext = {
   getTransform: mock(() => ({ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 })),
   resetTransform: mock(() => {}),
   canvas: { width: 800, height: 600 },
-}
+};
 
 if (typeof HTMLCanvasElement !== 'undefined') {
-  HTMLCanvasElement.prototype.getContext = mock(() => mockContext) as any
+  HTMLCanvasElement.prototype.getContext = mock(() => mockContext) as any;
 }
 
 // Mock Web Worker
 global.Worker = class Worker {
-  url: string
-  onmessage: ((event: MessageEvent) => void) | null = null
-  
+  url: string;
+  onmessage: ((event: MessageEvent) => void) | null = null;
+
   constructor(url: string) {
-    this.url = url
+    this.url = url;
   }
 
   postMessage(_msg: any) {
@@ -117,7 +140,7 @@ global.Worker = class Worker {
   terminate() {
     // Mock termination
   }
-} as any
+} as any;
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
@@ -126,9 +149,9 @@ global.IntersectionObserver = class IntersectionObserver {
   observe() {}
   unobserve() {}
   takeRecords() {
-    return []
+    return [];
   }
-} as any
+} as any;
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
@@ -136,19 +159,19 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-} as any
+} as any;
 
 // Mock requestAnimationFrame
 if (typeof globalThis.requestAnimationFrame === 'undefined') {
   globalThis.requestAnimationFrame = (callback: FrameRequestCallback) => {
-    return setTimeout(() => callback(Date.now()), 16) as unknown as number
-  }
+    return setTimeout(() => callback(Date.now()), 16) as unknown as number;
+  };
 }
 
 if (typeof globalThis.cancelAnimationFrame === 'undefined') {
   globalThis.cancelAnimationFrame = (id: number) => {
-    clearTimeout(id)
-  }
+    clearTimeout(id);
+  };
 }
 
 // Mock matchMedia
@@ -165,5 +188,5 @@ if (typeof window !== 'undefined') {
       removeEventListener: mock(() => {}),
       dispatchEvent: mock(() => {}),
     })),
-  })
+  });
 }

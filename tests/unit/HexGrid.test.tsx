@@ -1,8 +1,8 @@
-import React from 'react'
-import { describe, it, expect, mock, beforeEach } from 'bun:test'
-import { render, screen } from '@testing-library/react'
-import { HexGrid } from '../../src/components/HexGrid'
-import { Photo } from '../../src/types'
+import React from 'react';
+import { describe, it, expect, mock, beforeEach } from 'bun:test';
+import { render, screen } from '@testing-library/react';
+import { HexGrid } from '../../src/components/HexGrid';
+import { Photo } from '../../src/types';
 
 describe('HexGrid Component', () => {
   const mockPhotos: Photo[] = [
@@ -24,52 +24,58 @@ describe('HexGrid Component', () => {
       source: 'test',
       createdAt: new Date().toISOString(),
     },
-  ]
+  ];
 
   it('renders without crashing', () => {
-    const { container } = render(<HexGrid photos={[]} />)
-    const canvas = container.querySelector('canvas')
-    expect(canvas).not.toBeNull()
-  })
+    const { container } = render(<HexGrid photos={[]} />);
+    const canvas = container.querySelector('canvas');
+    expect(canvas).not.toBeNull();
+  });
 
   it('renders with photos', () => {
-    const { container } = render(<HexGrid photos={mockPhotos} />)
-    const canvas = container.querySelector('canvas')
-    expect(canvas).not.toBeNull()
-  })
+    const { container } = render(<HexGrid photos={mockPhotos} />);
+    const canvas = container.querySelector('canvas');
+    expect(canvas).not.toBeNull();
+  });
 
   it('calls onHexClick when a hex is clicked', () => {
-    const onHexClick = mock(() => {})
-    const { container } = render(<HexGrid photos={mockPhotos} onHexClick={onHexClick} />)
-    
-    const canvas = container.querySelector('canvas')
-    expect(canvas).not.toBeNull()
+    const onHexClick = mock(() => {});
+    const { container } = render(
+      <HexGrid photos={mockPhotos} onHexClick={onHexClick} />
+    );
+
+    const canvas = container.querySelector('canvas');
+    expect(canvas).not.toBeNull();
     // Note: Actual click detection requires complex canvas coordinate mapping
-  })
+  });
 
   it('applies custom spacing', () => {
-    const { container, rerender } = render(<HexGrid photos={mockPhotos} spacing={1.5} />)
-    expect(container.querySelector('canvas')).not.toBeNull()
-    
-    rerender(<HexGrid photos={mockPhotos} spacing={2.0} />)
-    expect(container.querySelector('canvas')).not.toBeNull()
-  })
+    const { container, rerender } = render(
+      <HexGrid photos={mockPhotos} spacing={1.5} />
+    );
+    expect(container.querySelector('canvas')).not.toBeNull();
+
+    rerender(<HexGrid photos={mockPhotos} spacing={2.0} />);
+    expect(container.querySelector('canvas')).not.toBeNull();
+  });
 
   it('accepts external canvas ref', () => {
-    const canvasRef = React.createRef<HTMLCanvasElement>()
-    const { container } = render(<HexGrid photos={mockPhotos} canvasRef={canvasRef as any} />)
+    const canvasRef = React.createRef<HTMLCanvasElement>();
+    const { container } = render(
+      <HexGrid photos={mockPhotos} canvasRef={canvasRef as any} />
+    );
     // The ref should be assigned after render
-    expect(container.querySelector('canvas')).not.toBeNull()
-  })
+    expect(container.querySelector('canvas')).not.toBeNull();
+  });
 
   it('handles empty photo array', () => {
-    const { container } = render(<HexGrid photos={[]} />)
-    expect(container.querySelector('canvas')).not.toBeNull()
-  })
+    const { container } = render(<HexGrid photos={[]} />);
+    expect(container.querySelector('canvas')).not.toBeNull();
+  });
 
   it('updates when photos change', () => {
-    const { container, rerender } = render(<HexGrid photos={mockPhotos} />)
-    
+    const { container, rerender } = render(<HexGrid photos={mockPhotos} />);
+
     const newPhotos: Photo[] = [
       ...mockPhotos,
       {
@@ -81,17 +87,19 @@ describe('HexGrid Component', () => {
         source: 'test',
         createdAt: new Date().toISOString(),
       },
-    ]
-    
-    rerender(<HexGrid photos={newPhotos} />)
-    expect(container.querySelector('canvas')).not.toBeNull()
-  })
+    ];
+
+    rerender(<HexGrid photos={newPhotos} />);
+    expect(container.querySelector('canvas')).not.toBeNull();
+  });
 
   it('respects modalOpen prop', () => {
-    const { container, rerender } = render(<HexGrid photos={mockPhotos} modalOpen={false} />)
-    expect(container.querySelector('canvas')).not.toBeNull()
-    
-    rerender(<HexGrid photos={mockPhotos} modalOpen={true} />)
-    expect(container.querySelector('canvas')).not.toBeNull()
-  })
-})
+    const { container, rerender } = render(
+      <HexGrid photos={mockPhotos} modalOpen={false} />
+    );
+    expect(container.querySelector('canvas')).not.toBeNull();
+
+    rerender(<HexGrid photos={mockPhotos} modalOpen={true} />);
+    expect(container.querySelector('canvas')).not.toBeNull();
+  });
+});

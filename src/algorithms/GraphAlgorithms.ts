@@ -41,16 +41,17 @@ export function kMeansClustering(points: number[][], k: number): Cluster[] {
       return sum / cluster.members.length;
     });
     cluster.centroid = centroid;
-    cluster.cohesion = cluster.members.reduce((sum, idx) => {
-      const point = points[idx];
-      const distance = Math.sqrt(
-        centroid.reduce((acc, value, dim) => {
-          const diff = value - (point?.[dim] ?? 0);
-          return acc + diff * diff;
-        }, 0)
-      );
-      return sum + distance;
-    }, 0) / cluster.members.length;
+    cluster.cohesion =
+      cluster.members.reduce((sum, idx) => {
+        const point = points[idx];
+        const distance = Math.sqrt(
+          centroid.reduce((acc, value, dim) => {
+            const diff = value - (point?.[dim] ?? 0);
+            return acc + diff * diff;
+          }, 0)
+        );
+        return sum + distance;
+      }, 0) / cluster.members.length;
   }
 
   return clusters;
@@ -118,12 +119,18 @@ export function analyzeTerritorBoundaries(
   return { frontLength, hotspots };
 }
 
-export function kMeansClustering2D(points: Array<[number, number]>, k: number): Cluster[] {
+export function kMeansClustering2D(
+  points: Array<[number, number]>,
+  k: number
+): Cluster[] {
   const asPoints = points.map((p) => [p[0], p[1]]);
   return kMeansClustering(asPoints, k);
 }
 
-export function findConnectedComponents(graph: { nodes: number[]; edges: Map<number, number[]> }): number[][] {
+export function findConnectedComponents(graph: {
+  nodes: number[];
+  edges: Map<number, number[]>;
+}): number[][] {
   const visited = new Set<number>();
   const components: number[][] = [];
 

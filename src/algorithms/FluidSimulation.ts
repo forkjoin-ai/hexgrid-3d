@@ -26,7 +26,13 @@ export class StableFluids {
     this.density[index] += amount;
   }
 
-  addForce(x: number, y: number, vx: number, vy: number, _radius: number): void {
+  addForce(
+    x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    _radius: number
+  ): void {
     const index = this.indexFor(x, y);
     this.velocityX[index] += vx;
     this.velocityY[index] += vy;
@@ -78,10 +84,20 @@ export class InfectionFluidSimulator {
   private fluid: StableFluids;
 
   constructor(width: number, height: number) {
-    this.fluid = new StableFluids({ width, height, viscosity: 0, diffusion: 0 });
+    this.fluid = new StableFluids({
+      width,
+      height,
+      viscosity: 0,
+      diffusion: 0,
+    });
   }
 
-  registerTerritory(_ownerId: number, x: number, y: number, intensity: number): void {
+  registerTerritory(
+    _ownerId: number,
+    x: number,
+    y: number,
+    intensity: number
+  ): void {
     this.fluid.addDensity(x, y, intensity, 1);
   }
 

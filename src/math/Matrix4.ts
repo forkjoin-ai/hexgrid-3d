@@ -8,21 +8,11 @@ export class Matrix4 {
   }
 
   static identity(): Matrix4 {
-    return new Matrix4([
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1,
-    ]);
+    return new Matrix4([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
   }
 
   static translation(x: number, y: number, z: number): Matrix4 {
-    return new Matrix4([
-      1, 0, 0, x,
-      0, 1, 0, y,
-      0, 0, 1, z,
-      0, 0, 0, 1,
-    ]);
+    return new Matrix4([1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1]);
   }
 
   transformPoint(point: Vector3): Vector3 {

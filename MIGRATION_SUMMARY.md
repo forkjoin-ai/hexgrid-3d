@@ -9,7 +9,7 @@ Successfully extracted and prepared the HexGrid 3D visualization component as a 
 - **Name**: hexgrid-3d
 - **Version**: 1.0.0
 - **Repository**: git@github.com:buley/hexgrid-3d.git
-- **License**: MIT
+- **License**: Personal Use Only (see LICENSE file)
 
 ## What Was Done
 
@@ -31,7 +31,7 @@ Successfully extracted and prepared the HexGrid 3D visualization component as a 
 - CHANGELOG.md for version tracking
 - PACKAGE_INFO.md for internal reference
 - tests/README.md for testing documentation
-- LICENSE (MIT)
+- LICENSE (Personal Use Only)
 
 ### 4. Configuration Files
 - jest.config.js for unit/integration tests
@@ -83,13 +83,13 @@ packages/hexgrid-3d/
 
 ### In Portfolio Project
 ```tsx
-import { HexGrid, Photo } from 'hexgrid-3d'
-import { uiStore } from 'hexgrid-3d/stores'
+import { HexGrid, Photo } from '@buley/hexgrid-3d'
+import { uiStore } from '@buley/hexgrid-3d/stores'
 ```
 
 ### As Standalone Package
 ```bash
-npm install hexgrid-3d
+npm install @buley/hexgrid-3d
 ```
 
 ## Testing
@@ -117,7 +117,7 @@ git push -u origin main
 
 ### To Use in Other Projects:
 ```bash
-npm install hexgrid-3d
+npm install @buley/hexgrid-3d
 ```
 
 ## Key Features

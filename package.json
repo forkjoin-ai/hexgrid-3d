@@ -1,15 +1,18 @@
 {
-  "name": "hexgrid-3d",
+  "name": "@buley/hexgrid-3d",
   "version": "1.0.0",
   "description": "3D hexagonal grid visualization component for React",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "repository": {
     "type": "git",
-    "url": "git@github.com:buley/hexgrid-3d.git"
+    "url": "git+ssh://git@github.com/buley/hexgrid-3d.git"
   },
   "author": "buley",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./components": "./src/components/index.ts",
