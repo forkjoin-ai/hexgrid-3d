@@ -1,0 +1,8 @@
+$ tsc
+src/components/HexGrid.tsx(6,3): error TS2459: Module '"../types"' declares 'HexGridFeatureFlags' locally, but it is not exported.
+src/components/NarrationOverlay.tsx(8,34): error TS2307: Cannot find module '@/lib/narration' or its corresponding type declarations.
+src/components/NarrationOverlay.tsx(9,30): error TS2307: Cannot find module '@/lib/stats-tracker' or its corresponding type declarations.
+src/components/NarrationOverlay.tsx(10,45): error TS2307: Cannot find module '@/lib/theme-colors' or its corresponding type declarations.
+src/components/NarrationOverlay.tsx(200,31): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+src/components/NarrationOverlay.tsx(200,38): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/ontology-adapter.ts(8,37): error TS2307: Cannot find module '@emotions-app/shared-utils/ontology/types' or its corresponding type declarations.

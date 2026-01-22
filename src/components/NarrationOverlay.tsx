@@ -197,7 +197,7 @@ export const NarrationOverlay: React.FC<NarrationOverlayProps> = ({
               borderRadius: 4,
             }}
           >
-            {leaderboard.map((entry, i) => (
+            {leaderboard.map((entry: any, i: number) => (
               <div
                 key={entry.photoId}
                 style={{

@@ -1,0 +1,500 @@
+$ tsc
+src/components/HexGrid.tsx(6,3): error TS2459: Module '"../types"' declares 'HexGridFeatureFlags' locally, but it is not exported.
+src/components/NarrationOverlay.tsx(8,34): error TS2307: Cannot find module '@/lib/narration' or its corresponding type declarations.
+src/components/NarrationOverlay.tsx(9,30): error TS2307: Cannot find module '@/lib/stats-tracker' or its corresponding type declarations.
+src/components/NarrationOverlay.tsx(10,45): error TS2307: Cannot find module '@/lib/theme-colors' or its corresponding type declarations.
+src/components/NarrationOverlay.tsx(200,31): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+src/components/NarrationOverlay.tsx(200,38): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/ontology-adapter.ts(8,37): error TS2307: Cannot find module '@emotions-app/shared-utils/ontology/types' or its corresponding type declarations.
+tests/integration/HexGrid.integration.test.tsx(9,9): error TS2322: Type '{ id: string; url: string; source: string; createdAt: string; title: string; }[]' is not assignable to type 'Photo[]'.
+  Type '{ id: string; url: string; source: string; createdAt: string; title: string; }' is missing the following properties from type 'Photo': imageUrl, alt, category
+tests/integration/HexGrid.integration.test.tsx(49,21): error TS2322: Type '{ id: string; url: string; source: string; createdAt: string; }[]' is not assignable to type 'Photo[]'.
+  Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/integration/HexGrid.integration.test.tsx(67,23): error TS2322: Type '(Photo | { id: string; url: string; source: string; createdAt: string; })[]' is not assignable to type 'Photo[]'.
+  Type 'Photo | { id: string; url: string; source: string; createdAt: string; }' is not assignable to type 'Photo'.
+    Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/setup.ts(7,22): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/adapters.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/AdvancedStatistics.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/AdvancedStatistics.test.ts(69,14): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/AdvancedStatistics.test.ts(74,14): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/AdvancedStatistics.test.ts(78,14): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/AdvancedStatistics.test.ts(82,14): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/AdvancedStatistics.test.ts(108,22): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/AdvancedStatistics.test.ts(114,22): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/AdvancedStatistics.test.ts(120,22): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/BayesianStatistics.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/BayesianStatistics.test.ts(3,3): error TS2305: Module '"../../src/algorithms/BayesianStatistics"' has no exported member 'logGamma'.
+tests/unit/BayesianStatistics.test.ts(4,3): error TS2305: Module '"../../src/algorithms/BayesianStatistics"' has no exported member 'gamma'.
+tests/unit/BayesianStatistics.test.ts(5,3): error TS2305: Module '"../../src/algorithms/BayesianStatistics"' has no exported member 'betaFunction'.
+tests/unit/BayesianStatistics.test.ts(6,3): error TS2305: Module '"../../src/algorithms/BayesianStatistics"' has no exported member 'logBeta'.
+tests/unit/BayesianStatistics.test.ts(7,3): error TS2305: Module '"../../src/algorithms/BayesianStatistics"' has no exported member 'factorial'.
+tests/unit/BayesianStatistics.test.ts(8,3): error TS2305: Module '"../../src/algorithms/BayesianStatistics"' has no exported member 'binomial'.
+tests/unit/compat.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/compat.test.ts(32,5): error TS2322: Type '{ x: number; y: number; z: number; }' is not assignable to type 'number'.
+tests/unit/compat.test.ts(180,9): error TS2322: Type '{ x: number; y: number; z: number; }' is not assignable to type 'number'.
+tests/unit/featureFlags.test.tsx(2,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/FlowField.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/FlowField.test.ts(13,20): error TS2339: Property 'width' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(14,20): error TS2339: Property 'height' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(15,20): error TS2339: Property 'resolution' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(16,20): error TS2339: Property 'cols' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(17,20): error TS2339: Property 'rows' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(34,9): error TS2353: Object literal may only specify known properties, and 'decayRate' does not exist in type 'FlowFieldConfig'.
+tests/unit/FlowField.test.ts(48,13): error TS2339: Property 'addVelocity' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(59,13): error TS2339: Property 'addVelocity' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(70,13): error TS2339: Property 'addVelocity' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(71,13): error TS2339: Property 'addVelocity' does not exist on type 'FlowField2D'.
+tests/unit/FlowField.test.ts(91,13): error TS2339: Property 'addVortex' does not exist on type 'FlowField2D'.
+tests/unit/FluidSimulation.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/FluidSimulation.test.ts(8,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(16,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(29,11): error TS2353: Object literal may only specify known properties, and 'pressureIterations' does not exist in type 'FluidConfig'.
+tests/unit/FluidSimulation.test.ts(40,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(45,15): error TS2554: Expected 1 arguments, but got 0.
+tests/unit/FluidSimulation.test.ts(52,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(56,15): error TS2551: Property 'addSource' does not exist on type 'StableFluids'. Did you mean 'addForce'?
+tests/unit/FluidSimulation.test.ts(68,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(72,15): error TS2551: Property 'addSource' does not exist on type 'StableFluids'. Did you mean 'addForce'?
+tests/unit/FluidSimulation.test.ts(84,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(88,15): error TS2551: Property 'addSource' does not exist on type 'StableFluids'. Did you mean 'addForce'?
+tests/unit/FluidSimulation.test.ts(103,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(112,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(122,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(126,29): error TS2339: Property 'getColor' does not exist on type 'StableFluids'.
+tests/unit/FluidSimulation.test.ts(131,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/FluidSimulation.test.ts(140,40): error TS2345: Argument of type '{ width: number; height: number; }' is not assignable to parameter of type 'FluidConfig'.
+  Type '{ width: number; height: number; }' is missing the following properties from type 'FluidConfig': viscosity, diffusion
+tests/unit/GraphAlgorithms.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/GraphAlgorithms.test.ts(84,52): error TS2554: Expected 2 arguments, but got 3.
+tests/unit/GraphAlgorithms.test.ts(95,52): error TS2554: Expected 2 arguments, but got 4.
+tests/unit/HexCoordinates.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/HexCoordinates.test.ts(4,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'Cube'.
+tests/unit/HexCoordinates.test.ts(5,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'GeodesicHexGrid'.
+tests/unit/HexCoordinates.test.ts(6,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'HEALPixGrid'.
+tests/unit/HexCoordinates.test.ts(7,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'AXIAL_DIRECTIONS'.
+tests/unit/HexCoordinates.test.ts(8,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'CUBE_DIRECTIONS'.
+tests/unit/HexCoordinates.test.ts(9,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'generateFlatHexGrid'.
+tests/unit/HexCoordinates.test.ts(10,3): error TS2305: Module '"../../src/math/HexCoordinates"' has no exported member 'generateSphericalHexGrid'.
+tests/unit/HexCoordinates.test.ts(17,23): error TS2339: Property 'zero' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(24,27): error TS2339: Property 'fromCube' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(31,27): error TS2339: Property 'fromOffset' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(37,27): error TS2339: Property 'fromOffset' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(42,47): error TS2554: Expected 3 arguments, but got 4.
+tests/unit/HexCoordinates.test.ts(48,47): error TS2554: Expected 3 arguments, but got 4.
+tests/unit/HexCoordinates.test.ts(54,27): error TS2339: Property 'round' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(61,19): error TS2339: Property 'clone' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(71,16): error TS2339: Property 'equals' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(72,16): error TS2339: Property 'equals' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(78,24): error TS2339: Property 'add' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(86,24): error TS2339: Property 'subtract' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(93,24): error TS2339: Property 'scale' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(100,16): error TS2339: Property 's' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(105,22): error TS2339: Property 'toCube' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(113,24): error TS2339: Property 'toOffset' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(120,24): error TS2339: Property 'toOffset' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(126,23): error TS2339: Property 'toPixel' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(133,23): error TS2339: Property 'toPixel' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(140,23): error TS2339: Property 'toPixel' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(141,58): error TS2554: Expected 3 arguments, but got 4.
+tests/unit/HexCoordinates.test.ts(148,23): error TS2339: Property 'toPixel' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(149,58): error TS2554: Expected 3 arguments, but got 4.
+tests/unit/HexCoordinates.test.ts(157,16): error TS2339: Property 'distanceTo' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(162,27): error TS2339: Property 'neighbors' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(168,26): error TS2339: Property 'neighbor' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(174,23): error TS2339: Property 'range' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(180,22): error TS2339: Property 'ring' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(186,22): error TS2339: Property 'ring' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(193,24): error TS2339: Property 'spiral' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(200,22): error TS2339: Property 'lineTo' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(208,22): error TS2339: Property 'lineTo' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(214,25): error TS2339: Property 'rotateCW' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(220,25): error TS2339: Property 'rotateCCW' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(227,25): error TS2339: Property 'rotateAroundCW' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(234,25): error TS2339: Property 'rotateAroundCCW' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(240,27): error TS2339: Property 'reflectQ' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(242,34): error TS2339: Property 's' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(247,27): error TS2339: Property 'reflectR' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(253,27): error TS2339: Property 'reflectS' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(265,16): error TS2339: Property 'toKey' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(269,23): error TS2339: Property 'fromKey' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(276,21): error TS2339: Property 'toKey' does not exist on type 'Axial'.
+tests/unit/HexCoordinates.test.ts(277,26): error TS2339: Property 'fromKey' does not exist on type 'typeof Axial'.
+tests/unit/HexCoordinates.test.ts(366,26): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/unit/HexCoordinates.test.ts(469,32): error TS7006: Parameter 'd' implicitly has an 'any' type.
+tests/unit/HexCoordinates.test.ts(668,35): error TS7006: Parameter 'coord' implicitly has an 'any' type.
+tests/unit/HexCoordinates.test.ts(732,33): error TS7006: Parameter 'coord' implicitly has an 'any' type.
+tests/unit/HexCoordinates.test.ts(745,33): error TS7006: Parameter 'coord' implicitly has an 'any' type.
+tests/unit/HexCoordinates.test.ts(759,54): error TS7006: Parameter 'n' implicitly has an 'any' type.
+tests/unit/HexCoordinates.test.ts(787,22): error TS7006: Parameter 'center' implicitly has an 'any' type.
+tests/unit/HexGrid.extended.test.tsx(2,56): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/HexGrid.test.tsx(2,56): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/Matrix4.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/Matrix4.test.ts(2,19): error TS2724: '"../../src/math/Matrix4"' has no exported member named 'Matrix3'. Did you mean 'Matrix4'?
+tests/unit/Matrix4.test.ts(9,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(10,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(11,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(12,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(13,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(17,25): error TS2339: Property 'zero' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(24,25): error TS2339: Property 'perspective' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(30,25): error TS2339: Property 'orthographic' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(38,25): error TS2339: Property 'lookAt' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(44,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(45,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(46,16): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(50,25): error TS2339: Property 'translationFromVector' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(57,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(64,25): error TS2339: Property 'uniformScale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(71,25): error TS2339: Property 'rotationX' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(78,25): error TS2339: Property 'rotationY' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(84,25): error TS2339: Property 'rotationZ' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(91,25): error TS2339: Property 'rotationAxis' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(96,25): error TS2339: Property 'rotationEuler' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(104,25): error TS2339: Property 'compose' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(113,21): error TS2339: Property 'clone' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(116,17): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(122,10): error TS2339: Property 'copy' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(123,17): error TS2341: Property 'elements' is private and only accessible within class 'Matrix4'.
+tests/unit/Matrix4.test.ts(128,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(129,24): error TS2339: Property 'multiply' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(136,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(137,24): error TS2339: Property 'premultiply' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(153,24): error TS2339: Property 'transformDirection' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(159,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(168,24): error TS2551: Property 'transformPoints' does not exist on type 'Matrix4'. Did you mean 'transformPoint'?
+tests/unit/Matrix4.test.ts(175,16): error TS2339: Property 'determinant' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(179,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(185,21): error TS2339: Property 'inverse' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(191,25): error TS2339: Property 'zero' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(199,19): error TS2339: Property 'transpose' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(206,19): error TS2339: Property 'getTranslation' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(213,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(221,25): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(221,57): error TS2339: Property 'rotationX' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(227,46): error TS2339: Property 'multiply' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(227,63): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(236,22): error TS2339: Property 'lerp' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(243,17): error TS2339: Property 'equals' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(248,21): error TS2339: Property 'toArray' does not exist on type 'Matrix4'.
+tests/unit/Matrix4.test.ts(266,25): error TS2339: Property 'lookAt' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(274,25): error TS2339: Property 'lookAt' does not exist on type 'typeof Matrix4'.
+tests/unit/Matrix4.test.ts(289,24): error TS2339: Property 'scale' does not exist on type 'typeof Matrix4'.
+tests/unit/NarrationOverlay.test.tsx(2,44): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/OutlierDetection.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/OutlierDetection.test.ts(15,28): error TS2339: Property 'method' does not exist on type 'OutlierResult'.
+tests/unit/OutlierDetection.test.ts(47,27): error TS2551: Property 'median' does not exist on type 'OutlierStats'. Did you mean 'mean'?
+tests/unit/OutlierDetection.test.ts(58,21): error TS2339: Property 'method' does not exist on type 'OutlierResult'.
+tests/unit/OutlierDetection.test.ts(77,34): error TS2339: Property 'iqr' does not exist on type 'OutlierStats'.
+tests/unit/OutlierDetection.test.ts(105,34): error TS2339: Property 'mad' does not exist on type 'OutlierStats'.
+tests/unit/ParticleSystem.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/ParticleSystem.test.ts(4,3): error TS2305: Module '"../../src/algorithms/ParticleSystem"' has no exported member 'ParticleEmitter'.
+tests/unit/ParticleSystem.test.ts(11,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(18,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(32,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(33,30): error TS2339: Property 'createEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(45,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(46,30): error TS2339: Property 'createEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(54,14): error TS2339: Property 'removeEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(61,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(62,14): error TS2339: Property 'createEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(71,21): error TS2339: Property 'getActiveCount' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(75,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(79,14): error TS2339: Property 'createEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(91,21): error TS2339: Property 'getActiveCount' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(95,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(96,14): error TS2339: Property 'createEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(106,21): error TS2339: Property 'getActiveCount' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(112,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(113,14): error TS2339: Property 'burst' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(120,21): error TS2339: Property 'getActiveCount' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(124,41): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(125,14): error TS2339: Property 'spawn' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(133,21): error TS2339: Property 'getActiveCount' does not exist on type 'ParticleSystem'.
+tests/unit/ParticleSystem.test.ts(140,39): error TS2554: Expected 0 arguments, but got 1.
+tests/unit/ParticleSystem.test.ts(141,28): error TS2339: Property 'createEmitter' does not exist on type 'ParticleSystem'.
+tests/unit/performance.test.tsx(2,50): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/Quaternion.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/Quaternion.test.ts(2,22): error TS2724: '"../../src/math/Quaternion"' has no exported member named 'DualQuaternion'. Did you mean 'Quaternion'?
+tests/unit/Quaternion.test.ts(18,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(23,28): error TS2339: Property 'fromEuler' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(28,28): error TS2339: Property 'fromEulerDegrees' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(35,28): error TS2339: Property 'fromToRotation' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(44,28): error TS2339: Property 'fromToRotation' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(51,28): error TS2339: Property 'fromToRotation' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(56,25): error TS2339: Property 'rotationY' does not exist on type 'typeof Matrix4'.
+tests/unit/Quaternion.test.ts(57,28): error TS2339: Property 'fromMatrix' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(62,28): error TS2339: Property 'random' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(68,28): error TS2339: Property 'lookRotation' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(76,21): error TS2339: Property 'clone' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(84,9): error TS2339: Property 'set' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(92,10): error TS2339: Property 'copy' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(97,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(98,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(104,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(105,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(113,25): error TS2339: Property 'add' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(120,24): error TS2339: Property 'scale' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(128,17): error TS2339: Property 'dot' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(135,16): error TS2339: Property 'magnitude' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(140,16): error TS2339: Property 'magnitudeSquared' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(145,19): error TS2339: Property 'normalize' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(151,19): error TS2339: Property 'normalize' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(157,9): error TS2339: Property 'normalizeInPlace' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(158,16): error TS2339: Property 'magnitude' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(165,19): error TS2339: Property 'conjugate' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(173,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(181,21): error TS2339: Property 'inverse' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(189,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(190,22): error TS2339: Property 'slerp' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(197,22): error TS2339: Property 'slerp' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(203,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(204,22): error TS2339: Property 'slerp' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(211,22): error TS2339: Property 'lerp' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(218,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(219,22): error TS2339: Property 'nlerp' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(225,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(226,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(227,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(231,33): error TS2339: Property 'squad' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(238,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(246,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(251,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(258,22): error TS2339: Property 'getAxis' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(263,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(270,28): error TS2339: Property 'fromEuler' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(278,28): error TS2339: Property 'fromEulerDegrees' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(286,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(292,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(301,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(302,17): error TS2339: Property 'angleTo' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(306,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(307,29): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(312,36): error TS2339: Property 'isIdentity' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(314,20): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(320,28): error TS2339: Property 'exp' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(325,25): error TS2339: Property 'zero' does not exist on type 'typeof Vector3'.
+tests/unit/Quaternion.test.ts(326,28): error TS2339: Property 'exp' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(331,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(338,19): error TS2339: Property 'log' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(343,28): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(350,24): error TS2339: Property 'pow' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(356,21): error TS2339: Property 'toArray' does not exist on type 'Quaternion'.
+tests/unit/Quaternion.test.ts(369,33): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(402,18): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(431,33): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/Quaternion.test.ts(459,18): error TS2339: Property 'fromAxisAngle' does not exist on type 'typeof Quaternion'.
+tests/unit/SpatialIndex.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/SpatialIndex.test.ts(14,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(21,27): error TS2339: Property 'fromVector3' does not exist on type 'typeof KDTree'.
+tests/unit/SpatialIndex.test.ts(28,27): error TS2339: Property 'fromVector2' does not exist on type 'typeof KDTree'.
+tests/unit/SpatialIndex.test.ts(33,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(38,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(44,20): error TS2673: Constructor of class 'KDTree<T>' is private and only accessible within the class declaration.
+tests/unit/SpatialIndex.test.ts(60,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(61,27): error TS2339: Property 'nearestNeighbor' does not exist on type 'KDTree<string>'.
+tests/unit/SpatialIndex.test.ts(66,20): error TS2673: Constructor of class 'KDTree<T>' is private and only accessible within the class declaration.
+tests/unit/SpatialIndex.test.ts(76,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(77,27): error TS2339: Property 'nearestNeighbor' does not exist on type 'KDTree<string>'.
+tests/unit/SpatialIndex.test.ts(92,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(93,36): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(99,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(100,28): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(104,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(111,36): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(124,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(125,38): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(130,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(131,38): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(144,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(145,27): error TS2339: Property 'boxQuery' does not exist on type 'KDTree<string>'.
+tests/unit/SpatialIndex.test.ts(150,27): error TS2554: Expected 3 arguments, but got 2.
+tests/unit/SpatialIndex.test.ts(151,27): error TS2339: Property 'boxQuery' does not exist on type 'KDTree<string>'.
+tests/unit/SpatialIndex.test.ts(160,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(165,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(166,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(167,33): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(173,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(174,12): error TS2551: Property 'insertAll' does not exist on type 'SpatialHashGrid<string>'. Did you mean 'insert'?
+tests/unit/SpatialIndex.test.ts(178,33): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(183,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(184,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(185,28): error TS2339: Property 'remove' does not exist on type 'SpatialHashGrid<string>'.
+tests/unit/SpatialIndex.test.ts(187,33): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(192,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(193,19): error TS2339: Property 'remove' does not exist on type 'SpatialHashGrid<string>'.
+tests/unit/SpatialIndex.test.ts(197,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(198,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(199,12): error TS2339: Property 'clear' does not exist on type 'SpatialHashGrid<string>'.
+tests/unit/SpatialIndex.test.ts(200,33): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(207,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(208,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(209,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(210,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(211,33): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(216,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(217,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(218,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(219,33): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(226,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(227,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(228,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(229,19): error TS2345: Argument of type '[number, number, number]' is not assignable to parameter of type 'Point'.
+  Source has 3 element(s) but target allows only 2.
+tests/unit/SpatialIndex.test.ts(230,27): error TS2339: Property 'nearest' does not exist on type 'SpatialHashGrid<string>'.
+tests/unit/SpatialIndex.test.ts(235,20): error TS2554: Expected 2 arguments, but got 1.
+tests/unit/SpatialIndex.test.ts(236,19): error TS2339: Property 'nearest' does not exist on type 'SpatialHashGrid<string>'.
+tests/unit/types.test.ts(6,13): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(18,13): error TS2739: Type '{ id: string; url: string; thumbnailUrl: string; title: string; description: string; source: string; createdAt: string; userId: string; username: string; videoUrl: string; platform: string; author: string; ... 4 more ...; dominantColor: string; }' is missing the following properties from type 'Photo': imageUrl, alt, category
+tests/unit/types.test.ts(43,71): error TS2322: Type '{ id: string; title?: string | undefined; imageUrl?: string | undefined; url: string; thumbnailUrl?: string | undefined; alt?: string | undefined; category?: string | undefined; description?: string | undefined; ... 25 more ...; dominantColor?: string | undefined; }' is not assignable to type 'Photo'.
+  Types of property 'title' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+tests/unit/types.test.ts(63,13): error TS2322: Type '{ id: string; url: string; source: string; createdAt: string; }[]' is not assignable to type 'Photo[]'.
+  Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(77,9): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(78,9): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(79,9): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(88,9): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(89,9): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(99,13): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; likes: number; views: number; comments: number; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(114,13): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(126,13): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; likes: number; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(143,11): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/types.test.ts(156,11): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; title: string; }' is missing the following properties from type 'Photo': imageUrl, alt, category
+tests/unit/types.test.ts(168,11): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; title: string; description: string; }' is missing the following properties from type 'Photo': imageUrl, alt, category
+tests/unit/types.test.ts(189,13): error TS2739: Type '{ id: string; url: string; source: string; createdAt: string; }' is missing the following properties from type 'Photo': title, imageUrl, alt, category
+tests/unit/uiStore.test.ts(1,56): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/Vector3.test.ts(1,38): error TS2307: Cannot find module 'bun:test' or its corresponding type declarations.
+tests/unit/Vector3.test.ts(7,25): error TS2339: Property 'zero' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(14,25): error TS2339: Property 'one' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(21,22): error TS2339: Property 'up' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(22,22): error TS2339: Property 'down' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(23,22): error TS2339: Property 'right' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(24,22): error TS2339: Property 'left' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(25,22): error TS2339: Property 'forward' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(26,22): error TS2339: Property 'back' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(30,25): error TS2339: Property 'fromArray' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(37,25): error TS2339: Property 'fromSpherical' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(51,25): error TS2339: Property 'random' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(56,25): error TS2339: Property 'randomInSphere' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(64,21): error TS2339: Property 'clone' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(74,25): error TS2339: Property 'add' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(83,25): error TS2339: Property 'subtract' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(91,24): error TS2339: Property 'scale' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(100,25): error TS2339: Property 'multiply' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(109,25): error TS2339: Property 'divide' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(118,25): error TS2339: Property 'divide' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(126,24): error TS2339: Property 'negate' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(136,9): error TS2339: Property 'set' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(145,10): error TS2339: Property 'copy' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(153,9): error TS2339: Property 'addInPlace' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(161,9): error TS2339: Property 'subtractInPlace' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(169,9): error TS2339: Property 'scaleInPlace' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(177,9): error TS2339: Property 'normalizeInPlace' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(179,16): error TS2339: Property 'magnitude' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(184,9): error TS2339: Property 'normalizeInPlace' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(195,17): error TS2339: Property 'dot' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(201,25): error TS2339: Property 'cross' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(211,16): error TS2339: Property 'tripleProduct' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(218,16): error TS2339: Property 'magnitudeSquared' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(223,16): error TS2339: Property 'magnitude' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(228,19): error TS2339: Property 'normalize' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(235,19): error TS2339: Property 'normalize' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(252,25): error TS2339: Property 'lerp' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(261,25): error TS2339: Property 'slerp' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(269,21): error TS2339: Property 'toArray' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(277,17): error TS2339: Property 'equals' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(278,17): error TS2339: Property 'equals' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(283,25): error TS2339: Property 'clampMagnitude' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(289,25): error TS2339: Property 'clampMagnitude' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(294,46): error TS2339: Property 'normalize' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(304,17): error TS2339: Property 'angleTo' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(311,27): error TS2339: Property 'toSpherical' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(317,27): error TS2339: Property 'toSpherical' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(325,24): error TS2339: Property 'toLatLng' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(333,27): error TS2339: Property 'greatCircleDistanceTo' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(340,22): error TS2339: Property 'greatCircleLerp' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(347,25): error TS2339: Property 'rotateAround' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(356,25): error TS2339: Property 'rotateX' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(364,25): error TS2339: Property 'rotateY' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(371,25): error TS2339: Property 'rotateZ' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(381,28): error TS2339: Property 'projectOnto' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(389,28): error TS2339: Property 'projectOnto' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(398,27): error TS2339: Property 'projectOntoPlane' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(405,39): error TS2339: Property 'normalize' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(412,41): error TS2339: Property 'normalize' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(422,23): error TS2339: Property 'setMagnitude' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(428,25): error TS2339: Property 'clampMagnitude' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(437,17): error TS2339: Property 'distanceSquaredTo' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(443,17): error TS2339: Property 'angleTo' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(450,24): error TS2339: Property 'signedAngleTo' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(458,24): error TS2339: Property 'signedAngleTo' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(467,25): error TS2339: Property 'nlerp' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(476,25): error TS2339: Property 'hermite' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(485,30): error TS2339: Property 'catmullRom' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(495,30): error TS2339: Property 'bezier' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(501,30): error TS2339: Property 'bezier' does not exist on type 'typeof Vector3'.
+tests/unit/Vector3.test.ts(511,21): error TS2339: Property 'toFloat32Array' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(521,19): error TS2339: Property 'isZero' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(522,22): error TS2339: Property 'isZero' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(527,21): error TS2339: Property 'abs' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(535,25): error TS2339: Property 'floor' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(543,24): error TS2339: Property 'ceil' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(551,25): error TS2339: Property 'round' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(560,17): error TS2339: Property 'equals' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(561,17): error TS2339: Property 'equals' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(569,25): error TS2339: Property 'zero' does not exist on type 'typeof Vector2'.
+tests/unit/Vector3.test.ts(575,25): error TS2339: Property 'one' does not exist on type 'typeof Vector2'.
+tests/unit/Vector3.test.ts(581,25): error TS2339: Property 'fromAngle' does not exist on type 'typeof Vector2'.
+tests/unit/Vector3.test.ts(587,25): error TS2339: Property 'fromAngle' does not exist on type 'typeof Vector2'.
+tests/unit/Vector3.test.ts(596,21): error TS2339: Property 'clone' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(630,17): error TS2339: Property 'dot' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(636,17): error TS2339: Property 'cross' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(643,16): error TS2339: Property 'magnitude' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(648,16): error TS2339: Property 'magnitudeSquared' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(655,16): error TS2339: Property 'magnitude' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(669,16): error TS2339: Property 'angle' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(675,17): error TS2339: Property 'angleTo' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(680,25): error TS2339: Property 'rotate' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(687,22): error TS2339: Property 'perpendicular' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(697,22): error TS2339: Property 'lerp' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(712,16): error TS2339: Property 'toArray' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(717,20): error TS2339: Property 'toVector3' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(725,20): error TS2339: Property 'toVector3' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(733,17): error TS2339: Property 'equals' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(734,17): error TS2339: Property 'equals' does not exist on type 'Vector2'.
+tests/unit/Vector3.test.ts(749,23): error TS2339: Property 'min' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(758,23): error TS2339: Property 'max' does not exist on type 'Vector3'.
+tests/unit/Vector3.test.ts(768,22): error TS2339: Property 'clamp' does not exist on type 'Vector3'.

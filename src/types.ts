@@ -4,6 +4,7 @@
 
 import type { RefObject } from 'react';
 import type { HexGridFeatureFlags } from './features';
+export type { HexGridFeatureFlags } from './features';
 
 /**
  * Photo type for HexGrid visualization

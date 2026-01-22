@@ -88,6 +88,12 @@ export interface ParticleSystem3DConfig {
   boundsCenter?: Vector3;
   /** Bounce factor when hitting bounds (0 = absorb, 1 = perfect bounce) */
   bounceFactor?: number;
+  /** Zero-copy shared buffers */
+  sharedBuffers?: {
+      positions: Float32Array;
+      colors: Float32Array;
+      scales: Float32Array;
+  };
 }
 
 /**
@@ -134,10 +140,25 @@ export class ParticleSystem3D {
     this.boundsCenter = config.boundsCenter ?? new Vector3(0, 0, 0);
     this.bounceFactor = config.bounceFactor ?? 0.5;
 
-    // Pre-allocate buffers
-    this.positionBuffer = new Float32Array(this.maxParticles * 3);
-    this.colorBuffer = new Float32Array(this.maxParticles * 3);
-    this.scaleBuffer = new Float32Array(this.maxParticles);
+    // Pre-allocate buffers (unless provided via config for zero-copy)
+    if (config.sharedBuffers) {
+        this.positionBuffer = config.sharedBuffers.positions;
+        this.colorBuffer = config.sharedBuffers.colors;
+        this.scaleBuffer = config.sharedBuffers.scales;
+    } else {
+        this.positionBuffer = new Float32Array(this.maxParticles * 3);
+        this.colorBuffer = new Float32Array(this.maxParticles * 3);
+        this.scaleBuffer = new Float32Array(this.maxParticles);
+    }
+  }
+
+  /**
+   * Zero-Copy Binding: Inject shared buffers from WASM/Dash
+   */
+  setSharedBuffers(buffers: { positions: Float32Array, colors: Float32Array, scales: Float32Array }) {
+      this.positionBuffer = buffers.positions;
+      this.colorBuffer = buffers.colors;
+      this.scaleBuffer = buffers.scales;
   }
 
   /**
