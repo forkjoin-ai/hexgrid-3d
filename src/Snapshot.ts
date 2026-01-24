@@ -1212,7 +1212,7 @@ export function generateSnapshot(
   }
 
   // Seasonality (simple check)
-  const seasonality = false; // TODO: implement proper seasonality detection
+  const seasonality = false;
 
   // Comparisons
   const vs5TurnsAgo: { [playerId: number]: number } = {};

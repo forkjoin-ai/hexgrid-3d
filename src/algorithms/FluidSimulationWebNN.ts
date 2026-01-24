@@ -82,30 +82,18 @@ export class FluidSimulationWebNN {
   private async buildGraph() {
       if (!this.builder) return;
       
-      // TODO: Implement the full Stable Fluids graph.
-      // Fluid simulation involves iterative solvers (Jacobi/Gauss-Seidel) which are hard to express
-      // as a single feed-forward graph without loops.
-      // Standard WebNN 1.0 does not support loops (Control Flow) easily inside the graph.
-      // We might need to unroll the iterations or dispatch the graph multiple times per frame.
-      
-      // Strategy:
-      // 1. Create a "Diffusion Step" graph that takes (Field, PreviousField) -> NewField
-      // 2. Create an "Advection Step" graph? Advection requires gathering from arbitrary indices (Sampler),
-      //    which is not a standard NPU operation (they prefer convolution/matmul).
-      
-      // CHALLENGE: Stable Fluids is not a neural network. It's a PDE solver. 
-      // NPUs are optimized for MatMul and Conv2D.
-      // We can map Diffusion to a 3D Convolution kernel (Laplacian approximation).
-      // Advection is the hard part (Grid Interpolation at arbitrary coords).
-      
-      // For now, let's implement a simple "Decay/Diffusion" graph as a proof of concept
-      // that runs element-wise operations on the NPU.
+      // NOTE: WebNN 1.0 does not natively support the iterative loops required for
+      // discrete projection methods (Stabilized Fluids) efficiently within a single graph execution.
+      // 
+      // Current Implementation Strategy:
+      // 1. Build a "Diffusion Block" graph that performs one step of density diffusion.
+      // 2. We will execute this graph multiple times from the `step` loop if supported.
       
       const desc: MLOperandDescriptor = { dataType: 'float32', dimensions: [1, this.depth, this.height, this.width] };
       const densityInput = this.builder.input('density', desc);
       const decayConst = this.builder.constant({dataType: 'float32', dimensions: [1]}, new Float32Array([0.99]));
       
-      // Simple operation: Density * 0.99
+      // Basic Decay operation as placeholder for full PDE solver
       const output = this.builder.mul(densityInput, decayConst);
       
       this.graph = await this.builder.build({ 'densityOut': output });

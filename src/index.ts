@@ -10,21 +10,17 @@ export * from './utils/image-utils';
 // Export additional types that aren't in components/stores
 export type { WorkerDebug, Photo, GridItem } from './types';
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ENHANCED HEXGRID EXPORTS
-// ═══════════════════════════════════════════════════════════════════════════
-
 // Math library
 export * from './math';
 
 // Algorithms (graph, clustering, flow, particles, fluid)
 export * from './algorithms';
 
+// Enhanced HexGrid
+export * from './HexGridEnhanced';
+
 // WASM acceleration layer
 export * from './wasm';
 
 // Unified Snapshot API
 export * from './Snapshot';
-
-// Enhanced HexGrid engine with all features integrated
-export * from './HexGridEnhanced';
