@@ -5,8 +5,7 @@
 import { Vector3 } from '../math/Vector3';
 import { WebGPUContext } from '../webgpu/WebGPUContext';
 import type { FluidConfig3D } from './FluidSimulation3D';
-// @ts-ignore - Importing text file
-import shaderSource from '../webgpu/shaders/fluid_sim.wgsl';
+import { fluidSimShader as shaderSource } from '../webgpu/shaders/fluid_sim.generated';
 
 export class FluidSimulation3DGPU {
   private width: number;

@@ -17,3 +17,8 @@ export * from './OutlierDetection';
 export * from './FluidSimulation3D';
 export * from './ParticleSystem3D';
 export * from './FlowField3D';
+
+// GPU/WebNN accelerated implementations
+export * from './FluidSimulation3DGPU';
+export * from './FluidSimulationWebNN';
+export * from './FluidEngineFactory';

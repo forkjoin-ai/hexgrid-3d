@@ -1,9 +1,10 @@
 {
   "name": "@buley/hexgrid-3d",
-  "version": "3.1.0",
+  "version": "3.2.3",
   "description": "3D hexagonal grid visualization component for React",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/buley/hexgrid-3d.git"
@@ -13,13 +14,36 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist"
+  ],
   "exports": {
-    ".": "./src/index.ts",
-    "./components": "./src/components/index.ts",
-    "./stores": "./src/stores/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
+    },
+    "./stores": {
+      "types": "./dist/stores/index.d.ts",
+      "import": "./dist/stores/index.js",
+      "default": "./dist/stores/index.js"
+    },
+    "./algorithms": {
+      "types": "./dist/algorithms/index.d.ts",
+      "import": "./dist/algorithms/index.js",
+      "default": "./dist/algorithms/index.js"
+    }
   },
   "scripts": {
-    "build": "tsc",
+    "build:shaders": "bun run scripts/build-shaders.ts",
+    "prebuild": "bun run build:shaders",
+    "build": "tsc -p tsconfig.build.json",
+    "lint:wgsl": "bun run scripts/build-shaders.ts",
     "dev": "tsc --watch",
     "test": "bun test",
     "test:watch": "bun test --watch",

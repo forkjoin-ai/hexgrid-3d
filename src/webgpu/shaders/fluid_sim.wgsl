@@ -68,7 +68,7 @@ struct JacobiUniforms {
 
 @compute @workgroup_size(8, 8, 8)
 fn diffuse(@builtin(global_invocation_id) global_id: vec3<u32>) {
-  let dims = vec3<i32>(uniforms.width, uniforms.height, uniforms.depth);
+  let dims = vec3<i32>(i32(uniforms.width), i32(uniforms.height), i32(uniforms.depth));
   let pos = vec3<i32>(global_id);
   
   if (any(pos >= dims)) { return; }
@@ -95,7 +95,7 @@ fn diffuse(@builtin(global_invocation_id) global_id: vec3<u32>) {
 // ----------------------------------------------------------------------------
 @compute @workgroup_size(8, 8, 8)
 fn divergence(@builtin(global_invocation_id) global_id: vec3<u32>) {
-  let dims = vec3<i32>(uniforms.width, uniforms.height, uniforms.depth);
+  let dims = vec3<i32>(i32(uniforms.width), i32(uniforms.height), i32(uniforms.depth));
   let pos = vec3<i32>(global_id);
 
   if (any(pos >= dims)) { return; }
@@ -120,7 +120,7 @@ fn divergence(@builtin(global_invocation_id) global_id: vec3<u32>) {
 
 @compute @workgroup_size(8, 8, 8)
 fn subtract_gradient(@builtin(global_invocation_id) global_id: vec3<u32>) {
-  let dims = vec3<i32>(uniforms.width, uniforms.height, uniforms.depth);
+  let dims = vec3<i32>(i32(uniforms.width), i32(uniforms.height), i32(uniforms.depth));
   let pos = vec3<i32>(global_id);
 
   if (any(pos >= dims)) { return; }

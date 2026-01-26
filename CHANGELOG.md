@@ -5,6 +5,23 @@ All notable changes to the HexGrid Visualization package will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.3] - 2026-01-25
+
+### Fixed
+- Fixed WGSL type mismatch bug: `vec3<i32>` constructor was receiving `f32` values without explicit cast
+- Extracted WGSL shader to separate `.wgsl` file for IDE support and validation
+
+### Added
+- `build:shaders` script to generate TypeScript from WGSL files
+- `lint:wgsl` script for WGSL validation (requires `naga-cli`)
+
+## [3.2.1] - 2026-01-25
+
+### Fixed
+- Added missing `./algorithms` export to package.json exports field
+- Inlined WGSL shader source in FluidSimulation3DGPU.ts to fix missing shader file issue
+- Exported FluidSimulation3DGPU, FluidSimulationWebNN, and FluidEngineFactory from algorithms module
+
 ## [1.1.0] - 2026-01-19
 
 ### Added

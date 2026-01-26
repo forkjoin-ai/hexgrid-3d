@@ -1,0 +1,14 @@
+/Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/deps/serde-f94b9f908ab00ddc.d: /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/build/serde-49a501fe6cb8812a/out/private.rs
+
+/Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/deps/libserde-f94b9f908ab00ddc.rlib: /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/build/serde-49a501fe6cb8812a/out/private.rs
+
+/Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/deps/libserde-f94b9f908ab00ddc.rmeta: /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/build/serde-49a501fe6cb8812a/out/private.rs
+
+/Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/Users/buley/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/build/serde-49a501fe6cb8812a/out/private.rs:
+
+# env-dep:OUT_DIR=/Users/buley/Documents/Code/hexgrid-3d/rust/target/wasm32-unknown-unknown/release/build/serde-49a501fe6cb8812a/out
