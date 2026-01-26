@@ -39,14 +39,13 @@ function validateWgsl(filePath: string): { valid: boolean; error?: string; skipp
   }
 
   try {
-    execSync(`naga ${filePath} --validate`, { stdio: 'pipe' });
+    // naga validates by default when no output file is specified
+    execSync(`naga "${filePath}"`, { stdio: 'pipe' });
     return { valid: true };
   } catch (e: unknown) {
-    const error = e as { stderr?: Buffer };
-    if (error.stderr) {
-      return { valid: false, error: error.stderr.toString() };
-    }
-    return { valid: false, error: 'Unknown validation error' };
+    const error = e as { stderr?: Buffer; stdout?: Buffer };
+    const errorMsg = error.stderr?.toString() || error.stdout?.toString() || 'Unknown validation error';
+    return { valid: false, error: errorMsg };
   }
 }
 
