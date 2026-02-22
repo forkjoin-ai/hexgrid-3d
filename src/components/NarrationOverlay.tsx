@@ -5,9 +5,9 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { NarrationMessage } from '@/lib/narration';
-import { StatsTracker } from '@/lib/stats-tracker';
-import { getAccentRgba, getAccentHex } from '@/lib/theme-colors';
+import { NarrationMessage } from '../lib/narration';
+import { StatsTracker } from '../lib/stats-tracker';
+import { getAccentRgba, getAccentHex } from '../lib/theme-colors';
 
 export interface NarrationOverlayProps {
   messages: NarrationMessage[];
