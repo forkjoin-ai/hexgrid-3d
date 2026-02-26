@@ -1,6 +1,6 @@
 {
   "name": "@buley/hexgrid-3d",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "3D hexagonal grid visualization component for React",
   "type": "module",
   "main": "./dist/index.js",

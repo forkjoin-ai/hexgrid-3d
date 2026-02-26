@@ -310,6 +310,7 @@ export const HexGrid = <T = unknown>({
   // Stream control refs to coordinate long-running UI streaming from worker
   const streamTokenRef = useRef(0)
   const streamActiveRef = useRef(false)
+  const streamTouchesOccupancyRef = useRef(false)
     // Reactive state for telemetry overlay (mirrors streamActiveRef)
     const [streamingActive, setStreamingActive] = useState(false)
     // How many tiles remain to stream in the current streaming run
@@ -1360,6 +1361,8 @@ export const HexGrid = <T = unknown>({
       dlog('HexGrid: Grid dimensions changed, reinitializing infections', { old: prevGridKeyRef.current, new: gridKey })
       const isSpherical = gridMetadataRef.current?.isSpherical ?? false
       const initState = initializeInfectionSystem(hexPositions, photos, effectiveHexRadius, workerDebugRef.current?.spawnClusterMax ?? 8, logger, isSpherical)
+      blankNeighborCountGenerationRef.current = -1
+      blankNeighborCountRef.current = new Map()
       setInfectionState(initState)
       infectionStateRef.current = initState
       
@@ -1999,6 +2002,21 @@ export const HexGrid = <T = unknown>({
 
   // Per-tile arrival pulse timestamps (ms) to show a brief highlight when a tile appears/updates
   const tilePulseRef = useRef<Map<number, { start: number; duration: number }>>(new Map())
+  // Worker-precomputed neighbor blank counts (index -> blank-neighbor count)
+  const blankNeighborCountRef = useRef<Map<number, number>>(new Map())
+  const blankNeighborCountGenerationRef = useRef<number>(-1)
+  // Fallback cache for local blank-neighbor computation when worker data is unavailable/mismatched
+  const localBlankNeighborCacheRef = useRef<{
+    infectionMap: Map<number, Infection> | null
+    positions: [number, number, number][] | null
+    hexRadius: number
+    counts: Map<number, number>
+  }>({
+    infectionMap: null,
+    positions: null,
+    hexRadius: -1,
+    counts: new Map()
+  })
 
   // Runtime telemetry: frame timing buffer for FPS/ms overlay
   const frameTimesRef = useRef<number[]>([])
@@ -2203,8 +2221,9 @@ export const HexGrid = <T = unknown>({
   const lastDrawTimeRef = useRef<number>(0)
   const lastDrawGenRef = useRef<number>(0)
   const cameraDirtyRef = useRef<boolean>(true)
-  // Minimum ms between draws when idle (30fps)
-  const minFrameMs = 1000 / 30
+  // Draw cadence: 30fps when actively animating, lower cadence while static.
+  const activeFrameMs = 1000 / 30
+  const idleFrameMs = 250
 
   // Helper to get effective batchPerFrame (transient override if present)
   const getEffectiveBatch = () => {
@@ -2405,6 +2424,8 @@ export const HexGrid = <T = unknown>({
         generation: infectionStateRef.current.generation
       }
       
+      blankNeighborCountGenerationRef.current = -1
+      blankNeighborCountRef.current = new Map()
       setInfectionState(filteredState)
       infectionStateRef.current = filteredState
 
@@ -2434,6 +2455,8 @@ export const HexGrid = <T = unknown>({
       // Use the live spawnClusterMax from workerDebug when available so photo reloads honor debug tuning
       const isSpherical = gridMetadataRef.current?.isSpherical ?? false
       const initState = initializeInfectionSystem(hexPositions, photos, effectiveHexRadius, workerDebugRef.current?.spawnClusterMax ?? 8, logger, isSpherical)
+      blankNeighborCountGenerationRef.current = -1
+      blankNeighborCountRef.current = new Map()
       setInfectionState(initState)
       infectionStateRef.current = initState
 
@@ -2571,6 +2594,18 @@ export const HexGrid = <T = unknown>({
           dlog('Processing evolved state with', data.infections.length, 'gossip entries')
         // Convert back from array to Map
         const newInfectionsMap = new Map<number, Infection>(data.infections)
+        if (Array.isArray(data.blankNeighborCounts)) {
+          try {
+            blankNeighborCountRef.current = new Map<number, number>(data.blankNeighborCounts as [number, number][])
+            blankNeighborCountGenerationRef.current = typeof data.generation === 'number' ? data.generation : -1
+          } catch (err) {
+            // ignore malformed worker payload
+          }
+        } else {
+          // Fallback to local computation when worker payload doesn't include counts.
+          blankNeighborCountGenerationRef.current = -1
+          blankNeighborCountRef.current = new Map()
+        }
 
         // Capture tile centers for debug visualization if available
         if (data.tileCenters && Array.isArray(data.tileCenters)) {
@@ -2658,6 +2693,7 @@ export const HexGrid = <T = unknown>({
 
         // If no changes, just replace state
         if (changes.length === 0) {
+          streamTouchesOccupancyRef.current = false
           setInfectionState({
             infections: newInfectionsMap,
             availableIndices: data.availableIndices,
@@ -2676,6 +2712,7 @@ export const HexGrid = <T = unknown>({
         // Start streaming changes; cancel any previous streamer.
         streamTokenRef.current += 1
         const token = streamTokenRef.current
+        streamTouchesOccupancyRef.current = changes.some((ch) => ch.type !== 'update')
 
         // Mark streaming active so other code (animation loop) can avoid posting new evolves
         streamActiveRef.current = true
@@ -2702,6 +2739,7 @@ export const HexGrid = <T = unknown>({
               // stop if cancelled
               if (streamTokenRef.current !== token) {
                 streamActiveRef.current = false
+                streamTouchesOccupancyRef.current = false
                 try { setStreamingActive(false) } catch (err) {}
                 try { if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream CANCEL token=', token) } catch (err) {}
                 return
@@ -2735,6 +2773,7 @@ export const HexGrid = <T = unknown>({
                 else requestAnimationFrame(applyFrame)
               } else {
                 streamActiveRef.current = false
+                streamTouchesOccupancyRef.current = false
                 try { setStreamingActive(false) } catch (err) {}
                 try { if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream END token=', token) } catch (err) {}
               }
@@ -2745,6 +2784,7 @@ export const HexGrid = <T = unknown>({
               // Cancel stream and mark inactive so animation loop can continue
               try { streamTokenRef.current += 1 } catch (e) {}
               try { streamActiveRef.current = false } catch (e) {}
+              try { streamTouchesOccupancyRef.current = false } catch (e) {}
               try { setStreamingActive(false) } catch (e) {}
             }
           }
@@ -2783,6 +2823,7 @@ export const HexGrid = <T = unknown>({
               try { streamTokenRef.current += 1 } catch (e) {}
             } finally {
               streamActiveRef.current = false
+              streamTouchesOccupancyRef.current = false
               try { setStreamingActive(false) } catch (err) {}
             }
           })()
@@ -2812,25 +2853,59 @@ export const HexGrid = <T = unknown>({
     ctx.fillStyle = '#001122'
     ctx.fillRect(0, 0, screenWidth, screenHeight)
     
-    // Precompute which infected hexagons are adjacent to a blank (uninfected) hex
-    const infectedIndices = Array.from(infectionState.infections.keys())
-    const infectedSet = new Set<number>(infectedIndices)
-    const blankNeighborCount = new Map<number, number>()
+    const infections = infectionState.infections
+    const dbg = workerDebugRef.current
+    const projectedPositions = projectedPositionsRef.current
+    const pulseMap = tilePulseRef.current
+    const prevAlphaMap = tileAlphaRef.current
+    const smooth = Math.max(0, Math.min(1, dbg?.translucencySmoothing ?? 0.08))
+    const scratchEnabled = !!dbg?.scratchEnabled
+    const sheenIntensity = dbg?.sheenIntensity ?? 0.12
+    const sheenEnabled = !!dbg?.sheenEnabled
+    const seamInset = dbg?.clusterUvInset ?? 0.0
+    const isSpherical = gridMetadataRef.current?.isSpherical ?? false
 
-    for (const idx of infectedIndices) {
-      // Guard: ensure the index is valid before processing
-      if (idx < 0 || idx >= hexPositions.length) continue
-      const isSpherical = gridMetadataRef.current?.isSpherical ?? false
-      const neighbors = getNeighbors(idx, hexPositions, drawnHexRadius, isSpherical)
-      let count = 0
-      for (const n of neighbors) {
-        if (!infectedSet.has(n)) count++
+    const computeLocalBlankNeighborCounts = (): Map<number, number> => {
+      const cache = localBlankNeighborCacheRef.current
+      if (
+        cache.infectionMap === infections &&
+        cache.positions === hexPositions &&
+        cache.hexRadius === drawnHexRadius
+      ) {
+        return cache.counts
       }
-      blankNeighborCount.set(idx, count)
+      const infectedIndices = Array.from(infections.keys())
+      const infectedSet = new Set<number>(infectedIndices)
+      const computed = new Map<number, number>()
+      for (const idx of infectedIndices) {
+        if (idx < 0 || idx >= hexPositions.length) continue
+        const neighbors = getNeighbors(idx, hexPositions, drawnHexRadius, isSpherical)
+        let count = 0
+        for (const n of neighbors) {
+          if (!infectedSet.has(n)) count++
+        }
+        computed.set(idx, count)
+      }
+      localBlankNeighborCacheRef.current = {
+        infectionMap: infections,
+        positions: hexPositions,
+        hexRadius: drawnHexRadius,
+        counts: computed
+      }
+      return computed
     }
 
-  // compute sheen progress using configured speed
-  const sheenSpeed = Math.max(0.1, workerDebugRef.current?.sheenSpeed || 10)
+    const canUseWorkerBlankCounts =
+      blankNeighborCountRef.current.size > 0 &&
+      blankNeighborCountGenerationRef.current === infectionState.generation &&
+      !(streamActiveRef.current && streamTouchesOccupancyRef.current)
+
+    const blankNeighborCount = canUseWorkerBlankCounts
+      ? blankNeighborCountRef.current
+      : computeLocalBlankNeighborCounts()
+
+    // compute sheen progress using configured speed
+    const sheenSpeed = Math.max(0.1, dbg?.sheenSpeed || 10)
     const now = performance.now()
     const sheenProgress = ((now / 1000) % sheenSpeed) / sheenSpeed
 
@@ -2865,43 +2940,33 @@ export const HexGrid = <T = unknown>({
 
   for (let index = 0; index < hexPositions.length; index++) {
   const position = hexPositions[index]
-  // Validate index bounds first
-  if (index < 0 || index >= hexPositions.length) continue
-      
-  const infection = infectionState.infections.get(index)
-      
-  // CRITICAL GUARD: Skip drawing if this is an uninfected cell with no valid position data
-  // This prevents "ghost" hexagons from appearing in the background
-  if (!infection && !position) continue
-      
+  if (!position) continue
+
+  const infection = infections.get(index)
+
       const blankCount = infection ? (blankNeighborCount.get(index) || 0) : 0
 
       // target alpha based on blank count
       const targetAlpha = infection ? (1.0 - Math.min(blankCount, 6) * 0.066) : 1.0
-      const prevAlphaMap = tileAlphaRef.current
       const prev = prevAlphaMap.get(index) ?? targetAlpha
-      const smooth = Math.max(0, Math.min(1, workerDebugRef.current?.translucencySmoothing ?? 0.08))
       const smoothed = prev + (targetAlpha - prev) * smooth
       prevAlphaMap.set(index, smoothed)
 
-      const scratchEnabled = !!workerDebugRef.current?.scratchEnabled
-      const sheenIntensity = workerDebugRef.current?.sheenIntensity ?? 0.12
-
       // Compute pulse progress for this tile
-      const pulseInfo = tilePulseRef.current.get(index)
+      const pulseInfo = pulseMap.get(index)
       let pulseProgress = 0
       if (pulseInfo) {
-        const elapsed = performance.now() - pulseInfo.start
+        const elapsed = now - pulseInfo.start
         pulseProgress = Math.max(0, Math.min(1, elapsed / pulseInfo.duration))
-        if (pulseProgress >= 1) tilePulseRef.current.delete(index)
+        if (pulseProgress >= 1) pulseMap.delete(index)
       }
 
       // Use projected position and scale for drawing
-  const proj = projectedPositionsRef.current[index] || [position[0], position[1], 1, 0, 0]
-  const projX = proj[0]
-  const projY = proj[1]
-  const projScale = proj[2]
-  const projAngle = proj[3] || 0
+  const proj = projectedPositions[index]
+  const projX = proj ? proj[0] : position[0]
+  const projY = proj ? proj[1] : position[1]
+  const projScale = proj ? proj[2] : 1
+  const projAngle = proj ? (proj[3] || 0) : 0
   // proj[4] is z-depth (not needed for drawing, only for click detection)
 
       // Selective culling: when low-res mode is active, always draw infected tiles but
@@ -2916,18 +2981,16 @@ export const HexGrid = <T = unknown>({
       }
 
       // Draw primary - use drawnHexRadius to account for spacing
-  const sheenEnabled = !!workerDebugRef.current?.sheenEnabled
-  drawHexagon(ctx, [projX, projY, 0], drawnHexRadius * projScale, infection, textures, index, blankCount, smoothed, sheenProgress, sheenIntensity, sheenEnabled, scratchEnabled, scratchCanvasRef.current, workerDebugRef.current?.clusterUvInset ?? 0.0, pulseProgress, false, false, projAngle)
+  drawHexagon(ctx, [projX, projY, 0], drawnHexRadius * projScale, infection, textures, index, blankCount, smoothed, sheenProgress, sheenIntensity, sheenEnabled, scratchEnabled, scratchCanvasRef.current, seamInset, pulseProgress, false, false, projAngle)
 
       // Optionally draw antipodal copy (opposite side of sphere).
       // Use the same projection helper as hit-tests so angles/positions match exactly.
-      if (workerDebug.renderBothSides) {
+      if (dbg?.renderBothSides) {
         try {
           const anti = mapAndProject(hexPositions[index], true)
           const antiScale = (anti as any).scale || 1
           const antiAngle = (anti as any).angle || 0
-          const sheenEnabledAnti = !!workerDebugRef.current?.sheenEnabled
-          drawHexagon(ctx, [anti.x, anti.y, 0], drawnHexRadius * antiScale, infection, textures, index, blankCount, smoothed, sheenProgress, sheenIntensity, sheenEnabledAnti, scratchEnabled, scratchCanvasRef.current, workerDebugRef.current?.clusterUvInset ?? 0.0, pulseProgress, false, true, antiAngle)
+          drawHexagon(ctx, [anti.x, anti.y, 0], drawnHexRadius * antiScale, infection, textures, index, blankCount, smoothed, sheenProgress, sheenIntensity, sheenEnabled, scratchEnabled, scratchCanvasRef.current, seamInset, pulseProgress, false, true, antiAngle)
         } catch (err) {
           // Skip drawing antipodal hex if projection fails
           // (better to not draw than to draw in wrong location)
@@ -2942,10 +3005,11 @@ export const HexGrid = <T = unknown>({
     try {
       if (workerDebugRef.current?.debugLogs) {
         // Sample a few random infected hexes to check
+        const infectedIndices = Array.from(infections.keys())
         const sampleSize = Math.min(5, infectedIndices.length)
         for (let s = 0; s < sampleSize; s++) {
           const idx = infectedIndices[Math.floor(Math.random() * infectedIndices.length)]
-          const infection = infectionState.infections.get(idx)
+          const infection = infections.get(idx)
           if (!infection) continue
           
           const texture = textures.get(infection.photo.id)
@@ -2956,7 +3020,7 @@ export const HexGrid = <T = unknown>({
           const neighbors = getNeighbors(idx, hexPositions, drawnHexRadius, isSpherical)
           
           for (const nIdx of neighbors) {
-            const nInf = infectionState.infections.get(nIdx)
+            const nInf = infections.get(nIdx)
             // Only check neighbors with the same photo (adjacent tiles of same image)
             if (!nInf || nInf.photo.id !== infection.photo.id) continue
             
@@ -3127,7 +3191,9 @@ export const HexGrid = <T = unknown>({
       // If camera changed recently or infections changed (generation advanced), draw immediately
       const gen = infectionState.generation
       const genChanged = gen !== lastDrawGenRef.current
-      if (cameraDirtyRef.current || genChanged || timeSinceLast >= minFrameMs) {
+      const hasVisualAnimation = !!workerDebugRef.current?.sheenEnabled || tilePulseRef.current.size > 0 || streamActiveRef.current
+      const targetFrameMs = hasVisualAnimation ? activeFrameMs : idleFrameMs
+      if (cameraDirtyRef.current || genChanged || timeSinceLast >= targetFrameMs) {
         draw()
         lastDrawTimeRef.current = now
         lastDrawGenRef.current = gen
@@ -3215,6 +3281,8 @@ export const HexGrid = <T = unknown>({
       return
     }
     
+    blankNeighborCountGenerationRef.current = -1
+    blankNeighborCountRef.current = new Map()
     setInfectionState(prevState => {
       const newInfections = new Map(prevState.infections)
       const newAvailableIndices = [...prevState.availableIndices]

@@ -222,6 +222,26 @@ function calculateUvBoundsFromGridPosition(
   return _calculateUvBoundsFromGridPosition(gridCol, gridRow, tilesX, tilesY);
 }
 
+function buildBlankNeighborCounts(
+  infections: Map<number, Infection>,
+  positions: [number, number, number][],
+  hexRadius: number
+): Array<[number, number]> {
+  if (!infections || infections.size === 0) return [];
+  const infectedSet = new Set<number>(infections.keys());
+  const out: Array<[number, number]> = [];
+  for (const idx of infectedSet) {
+    if (idx < 0 || idx >= positions.length) continue;
+    const neighbors = getNeighborsCached(idx, positions, hexRadius);
+    let blankCount = 0;
+    for (const n of neighbors) {
+      if (!infectedSet.has(n)) blankCount++;
+    }
+    out.push([idx, blankCount]);
+  }
+  return out;
+}
+
 function findConnectedComponents(
   indices: number[],
   positions: [number, number, number][],
@@ -2563,6 +2583,11 @@ self.onmessage = function (ev: MessageEvent) {
           availableIndices: res.availableIndices,
           lastEvolutionTime: res.lastEvolutionTime,
           generation: res.generation,
+          blankNeighborCounts: buildBlankNeighborCounts(
+            res.infections,
+            positions,
+            hexRadius
+          ),
         };
         if (res.tileCenters && res.tileCenters.length > 0) {
           payload.tileCenters = res.tileCenters;
