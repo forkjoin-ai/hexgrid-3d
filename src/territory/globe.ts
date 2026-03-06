@@ -63,6 +63,9 @@ export interface HexTerritoryBoard {
 }
 
 const boardCache = new Map<string, HexTerritoryBoard>();
+const HEX_HORIZONTAL_RADIUS_RATIO = Math.sqrt(3);
+const HEX_VERTICAL_RADIUS_RATIO = 1.5;
+const TERRITORY_TILE_RADIUS_SAFETY_MARGIN = 0.96;
 
 function toRadians(value: number): number {
   return (value * Math.PI) / 180;
@@ -111,6 +114,16 @@ function toSurfacePoint(
 function shortestWrappedDistance(a: number, b: number): number {
   const delta = Math.abs(a - b);
   return Math.min(delta, 360 - delta);
+}
+
+function pointDistance(
+  left: HexTerritoryCellPoint,
+  right: HexTerritoryCellPoint
+): number {
+  const dx = left.x - right.x;
+  const dy = left.y - right.y;
+  const dz = left.z - right.z;
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
 }
 
 function columnCountForLatitude(
@@ -226,3 +239,71 @@ export function generateCanonicalHexGlobe(
   return board;
 }
 
+export function calculateAutoTileRadiusByRow(
+  cells: readonly HexTerritoryCell[]
+): Map<number, number> {
+  const rowMap = new Map<number, HexTerritoryCell[]>();
+  const cellById = new Map<string, HexTerritoryCell>();
+
+  for (const cell of cells) {
+    const row = rowMap.get(cell.rowIndex);
+    if (row) {
+      row.push(cell);
+    } else {
+      rowMap.set(cell.rowIndex, [cell]);
+    }
+    cellById.set(cell.cellId, cell);
+  }
+
+  const radiusByRow = new Map<number, number>();
+
+  for (const [rowIndex, unsortedRow] of rowMap.entries()) {
+    const row = [...unsortedRow].sort(
+      (left, right) => left.columnIndex - right.columnIndex
+    );
+    let minimumSameRowDistance = Number.POSITIVE_INFINITY;
+    let minimumAdjacentRowDistance = Number.POSITIVE_INFINITY;
+
+    if (row.length > 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex += 1) {
+        const current = row[columnIndex];
+        const next = row[(columnIndex + 1) % row.length];
+        if (current && next) {
+          minimumSameRowDistance = Math.min(
+            minimumSameRowDistance,
+            pointDistance(current.surfacePoint, next.surfacePoint)
+          );
+        }
+      }
+    }
+
+    for (const cell of row) {
+      for (const neighborId of cell.neighborCellIds) {
+        const neighbor = cellById.get(neighborId);
+        if (!neighbor || Math.abs(neighbor.rowIndex - rowIndex) !== 1) {
+          continue;
+        }
+        minimumAdjacentRowDistance = Math.min(
+          minimumAdjacentRowDistance,
+          pointDistance(cell.surfacePoint, neighbor.surfacePoint)
+        );
+      }
+    }
+
+    const horizontalRadius = Number.isFinite(minimumSameRowDistance)
+      ? minimumSameRowDistance / HEX_HORIZONTAL_RADIUS_RATIO
+      : Number.POSITIVE_INFINITY;
+    const verticalRadius = Number.isFinite(minimumAdjacentRowDistance)
+      ? minimumAdjacentRowDistance / HEX_VERTICAL_RADIUS_RATIO
+      : Number.POSITIVE_INFINITY;
+    const unconstrainedRadius = Math.min(horizontalRadius, verticalRadius);
+    const safeRadius =
+      Number.isFinite(unconstrainedRadius) && unconstrainedRadius > 0
+        ? unconstrainedRadius * TERRITORY_TILE_RADIUS_SAFETY_MARGIN
+        : 0;
+
+    radiusByRow.set(rowIndex, safeRadius);
+  }
+
+  return radiusByRow;
+}

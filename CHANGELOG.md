@@ -5,6 +5,12 @@ All notable changes to the HexGrid Visualization package will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.1] - 2026-03-06
+
+### Fixed
+- Auto-fit default `HexTerritoryGlobe` tile radii by latitude row to prevent overlap on dense spherical boards such as Hexwar.
+- Preserved explicit `tileRadius` overrides while removing the hardcoded default radius that could overdraw at the equator.
+
 ## [3.5.1] - 2026-02-26
 
 ### Changed

@@ -108,6 +108,10 @@ function TerritoryExample() {
 }
 ```
 
+When `tileRadius` is omitted, `HexTerritoryGlobe` auto-fits each latitude row to
+the available spacing to avoid overlap on dense boards. Pass `tileRadius` only
+when you intentionally want a manual radius override.
+
 ## Components
 
 ### HexGrid
@@ -156,6 +160,7 @@ Wrapped React Three Fiber surface for territory-aware hex cells on a sphere.
 | `colorsByCellId` | `Record<string, string>` | Per-root color overrides |
 | `selectedCellId` | `string` | Active root highlight |
 | `hoverCellId` | `string` | Hover highlight |
+| `tileRadius` | `number` | Optional manual radius override; omit to auto-fit row-safe tile radii |
 | `onSelectCell` | `(cell) => void` | Selection callback |
 | `onHoverCell` | `(cell) => void` | Hover callback |
 

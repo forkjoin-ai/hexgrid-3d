@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
 import { Color, CircleGeometry, InstancedMesh, Matrix4, Object3D } from 'three';
-import type { HexTerritoryCell } from './globe';
+import { calculateAutoTileRadiusByRow, type HexTerritoryCell } from './globe';
 
 export interface HexTerritoryGlobeProps {
   cells: HexTerritoryCell[];
@@ -26,15 +26,20 @@ export function HexTerritoryGlobe({
   claimedCellIds,
   lockedCellIds,
   colorsByCellId,
-  tileRadius = 0.022,
+  tileRadius,
   onSelectCell,
   onHoverCell,
 }: HexTerritoryGlobeProps): React.JSX.Element {
   const meshRef = useRef<InstancedMesh>(null);
-  const geometry = useMemo(() => new CircleGeometry(tileRadius, 6), [tileRadius]);
+  const geometry = useMemo(() => new CircleGeometry(1, 6), []);
   const workingObject = useMemo(() => new Object3D(), []);
   const claimed = useMemo(() => asSet(claimedCellIds), [claimedCellIds]);
   const locked = useMemo(() => asSet(lockedCellIds), [lockedCellIds]);
+  const autoTileRadiusByRow = useMemo(
+    () =>
+      tileRadius === undefined ? calculateAutoTileRadiusByRow(cells) : undefined,
+    [cells, tileRadius]
+  );
 
   useEffect(() => {
     const mesh = meshRef.current;
@@ -46,8 +51,11 @@ export function HexTerritoryGlobe({
 
     cells.forEach((cell, index) => {
       const point = cell.surfacePoint;
+      const effectiveTileRadius =
+        tileRadius ?? autoTileRadiusByRow?.get(cell.rowIndex) ?? 0;
       workingObject.position.set(point.x, point.y, point.z);
       workingObject.lookAt(point.x * 2, point.y * 2, point.z * 2);
+      workingObject.scale.setScalar(effectiveTileRadius);
       workingObject.updateMatrix();
       matrix.copy(workingObject.matrix);
       mesh.setMatrixAt(index, matrix);
@@ -76,6 +84,8 @@ export function HexTerritoryGlobe({
     hoverCellId,
     locked,
     selectedCellId,
+    tileRadius,
+    autoTileRadiusByRow,
     workingObject,
   ]);
 

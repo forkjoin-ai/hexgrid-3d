@@ -3,6 +3,7 @@ import {
   createHexwarNarrationAdapter,
   generateCanonicalHexGlobe,
 } from '../../src/territory';
+import { calculateAutoTileRadiusByRow } from '../../src/territory/globe';
 
 const TEST_CONFIG = {
   boardId: 'main',
@@ -12,6 +13,17 @@ const TEST_CONFIG = {
   equatorColumns: 36,
   minimumColumnsPerRow: 8,
   poleMinScale: 0.25,
+};
+
+const DENSE_TEST_CONFIG = {
+  boardId: 'dense',
+  curveUDeg: 360,
+  curveVDeg: 180,
+  rowCount: 180,
+  equatorColumns: 288,
+  minimumColumnsPerRow: 24,
+  poleMinScale: 0.25,
+  sphereRadius: 1.85,
 };
 
 describe('territory globe', () => {
@@ -34,6 +46,18 @@ describe('territory globe', () => {
     expect(sample?.neighborCellIds.every((id) => id.startsWith('main:r'))).toBe(
       true
     );
+  });
+
+  it('calculates safe auto-fit tile radii for dense equator rows', () => {
+    const board = generateCanonicalHexGlobe(DENSE_TEST_CONFIG);
+    const rowRadii = calculateAutoTileRadiusByRow(board.cells);
+
+    expect(rowRadii.get(0)).toBeLessThan(1e-12);
+    expect(rowRadii.get(89)).toBeDefined();
+    expect(rowRadii.get(90)).toBeDefined();
+    expect(rowRadii.get(89)).toBeLessThan(0.028);
+    expect(rowRadii.get(89)).toBeGreaterThan(0.02);
+    expect(rowRadii.get(89)).toBeCloseTo(rowRadii.get(90) ?? 0, 6);
   });
 });
 
