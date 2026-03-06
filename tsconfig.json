@@ -19,7 +19,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["@webgpu/types"]
+    "types": ["@webgpu/types", "@react-three/fiber"]
   },
   "include": ["src", "src/**/*.wgsl"],
   "exclude": ["node_modules", "dist", "tests"]

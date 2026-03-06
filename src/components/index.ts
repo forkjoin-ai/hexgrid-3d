@@ -33,3 +33,5 @@ export type {
   GameSphereConfig,
   GameSphereEvents,
 } from '../types';
+
+export { HexTerritoryGlobe } from '../territory/HexTerritoryGlobe';

@@ -9,6 +9,7 @@ A reusable 3D hexagonal grid visualization component for displaying content in a
 - **Image Texture Mapping** - Automatic texture loading and caching
 - **Real-time Statistics** - Live telemetry and performance metrics
 - **Narration System** - Play-by-play commentary overlay
+- **Territory Globe** - Deterministic wrapped globe topology for paid root claims, recursive subdivision, and delegated territory overlays
 - **Web Worker Rendering** - High-performance offloaded calculations
 - **Multi-Input Support** - Touch gestures, mouse, and keyboard controls
 - **Responsive Design** - Adapts to mobile and desktop viewports
@@ -78,6 +79,35 @@ function AdvancedExample() {
 }
 ```
 
+### Territory Globe Example
+
+```tsx
+import {
+  HexTerritoryGlobe,
+  generateCanonicalHexGlobe,
+} from "@buley/hexgrid-3d";
+
+const board = generateCanonicalHexGlobe({
+  boardId: "main",
+  curveUDeg: 360,
+  curveVDeg: 180,
+  rowCount: 180,
+  equatorColumns: 288,
+  minimumColumnsPerRow: 24,
+  poleMinScale: 0.25,
+});
+
+function TerritoryExample() {
+  return (
+    <HexTerritoryGlobe
+      cells={board.cells}
+      claimedCellIds={new Set(["main:r90:c144"])}
+      colorsByCellId={{ "main:r90:c144": "#59d0ff" }}
+    />
+  );
+}
+```
+
 ## Components
 
 ### HexGrid
@@ -112,7 +142,37 @@ Displays narration messages and real-time statistics in a dashboard-style overla
 | `isVisible`    | `boolean`            | Whether overlay is visible             |
 | `onClose`      | `() => void`         | Callback when overlay is closed        |
 
+### HexTerritoryGlobe
+
+Wrapped React Three Fiber surface for territory-aware hex cells on a sphere.
+
+**Props:**
+
+| Prop | Type | Description |
+| ---- | ---- | ----------- |
+| `cells` | `HexTerritoryCell[]` | Deterministic canonical globe cells |
+| `claimedCellIds` | `Iterable<string>` | Claimed sovereign roots |
+| `lockedCellIds` | `Iterable<string>` | Visible but unclaimable roots |
+| `colorsByCellId` | `Record<string, string>` | Per-root color overrides |
+| `selectedCellId` | `string` | Active root highlight |
+| `hoverCellId` | `string` | Hover highlight |
+| `onSelectCell` | `(cell) => void` | Selection callback |
+| `onHoverCell` | `(cell) => void` | Hover callback |
+
 ## Types
+
+### Territory Types
+
+The package now exports territory-specific helpers:
+
+- `CanonicalHexGlobeConfig`
+- `HexTerritoryBoard`
+- `HexTerritoryCell`
+- `HexNodePath`
+- `HexwarEmbedRef`
+- `HexTerritoryTickState`
+- `HexwarNarrationEvent`
+- `createHexwarNarrationAdapter()`
 
 ### Photo
 
@@ -207,6 +267,7 @@ setCustomAccentColor("#ff00ff");
 
 ### Peer Dependencies
 
+- `@react-three/fiber` ^9.4.2
 - `react` ^18.0.0
 - `react-dom` ^18.0.0
 - `next` ^14.0.0

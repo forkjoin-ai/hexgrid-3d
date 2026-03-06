@@ -24,3 +24,7 @@ export * from './wasm';
 
 // Unified Snapshot API
 export * from './Snapshot';
+
+// Territory globe exports
+export * from './territory';
+export type { NarrationMessage } from './lib/narration';
