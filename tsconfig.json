@@ -17,7 +17,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@a0n/aeon-3d": ["../aeon-3d/src/index.ts"],
+      "@a0n/aeon-3d/*": ["../aeon-3d/src/*"]
     },
     "types": ["@webgpu/types", "@react-three/fiber"]
   },

@@ -1,9 +1,9 @@
-import { GlobalRegistrator } from '@happy-dom/global-registrator';
+import { GlobalRegistrator } from '@a0n/happy/global';
 
 // Register happy-dom globals before any tests run
 GlobalRegistrator.register();
 
-import '@testing-library/jest-dom';
+import '@a0n/test-dom/setup';
 import { mock } from 'bun:test';
 import React from 'react';
 

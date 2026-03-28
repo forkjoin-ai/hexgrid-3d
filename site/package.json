@@ -11,9 +11,7 @@
   "dependencies": {
     "next": "^16.1.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "three": "^0.169.0",
-    "@types/three": "^0.169.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

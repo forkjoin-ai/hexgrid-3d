@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import type { ThreeEvent } from '@react-three/fiber';
-import { Color, CircleGeometry, InstancedMesh, Matrix4, Object3D } from 'three';
+import type { ThreeEvent } from '@a0n/aeon-3d/fiber';
+import {
+  Color,
+  CircleGeometry,
+  InstancedMesh,
+  Matrix4,
+  Object3D,
+} from '@a0n/aeon-3d/three';
 import {
   calculateAutoTileRadiusByRow,
   type HexTerritoryAffiliation,

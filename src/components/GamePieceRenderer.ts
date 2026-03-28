@@ -5,7 +5,7 @@
  * handles instanced rendering for performance, surface-normal alignment, stacking,
  * and piece animations (spin, bob, pulse, wobble, orbit, glow).
  */
-import * as THREE from 'three';
+import * as THREE from '@a0n/aeon-3d/three';
 import type {
   GamePiece,
   PieceShape,

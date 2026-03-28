@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react'
-import { TextureLoader } from 'three'
-import * as THREE from 'three'
+import { TextureLoader } from '@a0n/aeon-3d/three'
+import * as THREE from '@a0n/aeon-3d/three'
 import uiStore from '../stores/uiStore'
 import { StatsTracker } from '../lib/stats-tracker'
 import { NarrationEngine, NarrationMessage } from '../lib/narration'
