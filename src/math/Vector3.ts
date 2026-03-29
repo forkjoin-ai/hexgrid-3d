@@ -201,8 +201,8 @@ export class Vector3 {
     if (points.length === 0) return Vector3.zero();
     if (points.length === 1) return points[0].clone();
     
-    let temp = points.map(p => p.clone());
-    let n = temp.length - 1;
+    const temp = points.map(p => p.clone());
+    const n = temp.length - 1;
     
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < n - i; j++) {
@@ -436,10 +436,9 @@ export class Vector3 {
 
   reflect(normal: Vector3): Vector3 {
       // r = d - 2(d.n)n
-      const d = this;
       const n = normal.normalize(); // Ensure normal is normalized
-      const term = n.scale(2 * d.dot(n));
-      return d.subtract(term);
+      const term = n.scale(2 * this.dot(n));
+      return this.subtract(term);
   }
 
   // Angles - Spherical

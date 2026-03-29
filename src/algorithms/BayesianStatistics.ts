@@ -74,18 +74,15 @@ export class KalmanFilter {
   }
 
   predict(steps: number = 1): number {
-    // Predict future state
-    let state = this.state;
-    for (let i = 0; i < steps; i++) {
-      state = state; // Simple prediction (no process model)
-    }
-    return state;
+    // Predict future state — grow uncertainty by steps without changing state
+    this.uncertainty += this.processNoise * steps;
+    return this.state;
   }
 
   forecast(steps: number): { predictions: number[]; uncertainties: number[] } {
     const predictions: number[] = [];
     const uncertainties: number[] = [];
-    let state = this.state;
+    const state = this.state;
     let uncertainty = this.uncertainty;
 
     for (let i = 0; i < steps; i++) {
@@ -315,7 +312,6 @@ export function monteCarloIntegrate(
 export function mutualInformation(x: number[], y: number[]): number {
   // Simplified implementation
   if (x.length !== y.length || x.length === 0) return 0;
-  const n = x.length;
   const hx = shannonEntropy(x);
   const hy = shannonEntropy(y);
   // Simplified: assume independence for now
@@ -350,8 +346,8 @@ export function normalizedMutualInformation(x: number[], y: number[]): number {
 // Math Utilities
 
 const LANCZOS_COEFFICIENTS = [
-  76.18009172947146, -86.50532032941677, 24.01409824083091,
-  -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5,
+  76.18009172947146, -86.50532032941678, 24.01409824083091,
+  -1.231739572450155, 1.20865097386618e-3, -5.395239384953e-6,
 ];
 
 export function logGamma(x: number): number {

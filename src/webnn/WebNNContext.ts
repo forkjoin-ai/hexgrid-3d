@@ -91,10 +91,12 @@ declare global {
     compute(graph: MLGraph, inputs: Record<string, ArrayBufferView>, outputs: Record<string, ArrayBufferView>): Promise<MLComputeResult>;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface MLGraph {
       // Opaque
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface MLComputeResult {
       // Opaque
   }

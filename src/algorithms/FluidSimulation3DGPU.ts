@@ -132,8 +132,8 @@ export class FluidSimulation3DGPU {
       // 1. Advect Velocity
       this.dispatchAdvect(encoder, this.velocityTextures[0], this.velocityTextures[0], this.velocityTextures[1]); // Self-advection
       // Swap Velocity
-      let velIn = this.velocityTextures[1];
-      let velOut = this.velocityTextures[0];
+      const velIn = this.velocityTextures[1];
+      const velOut = this.velocityTextures[0];
 
       // 2. Diffuse Velocity (Viscosity)
       this.dispatchDiffuse(encoder, velIn, velOut, this.viscosity, dt);
@@ -193,8 +193,8 @@ export class FluidSimulation3DGPU {
       
       this.device!.queue.writeBuffer(this.jacobiBuffer!, 0, new Float32Array([alpha, rBeta]));
 
-      let curr = x;
-      let prev = x0; // b term
+      const curr = x;
+      const prev = x0; // b term
 
       // We need ping-pong for Jacobi within the diffusion step
       // Using x0 and x as buffer, but usually need temp buffer. 

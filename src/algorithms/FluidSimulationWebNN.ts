@@ -26,6 +26,7 @@ declare global {
     dimensions: number[];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface MLOperand {
     // Opaque handle
   }

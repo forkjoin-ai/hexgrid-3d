@@ -604,7 +604,7 @@ function assignClusterGridPositions(
 
     // Cluster size analytics
     let totalClusters = 0;
-    let clusterSizes: number[] = [];
+    const clusterSizes: number[] = [];
 
     // Process each photo's clusters
     for (const [photoId, indices] of byPhoto) {
@@ -2512,11 +2512,10 @@ self.onmessage = function (ev: MessageEvent) {
       debugLog('[hexgrid-worker]   - hexRadius:', hexRadius);
 
       let res;
-      let timeoutId;
       let timedOut = false;
 
       // Set a watchdog timer to detect hangs (10 seconds)
-      timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         timedOut = true;
         console.error(
           '[hexgrid-worker] ⏱️ TIMEOUT: evolveInfectionSystem is taking too long (>10s)! Possible infinite loop.'

@@ -1464,14 +1464,14 @@ export const HexGrid = <T = unknown>({
   // yaw rotation about Y axis
   const yawCos = Math.cos(appliedYawRad)
   const yawSin = Math.sin(appliedYawRad)
-  let rx = yawCos * px + yawSin * pz
-  let rz = -yawSin * px + yawCos * pz
+  const rx = yawCos * px + yawSin * pz
+  const rz = -yawSin * px + yawCos * pz
 
   // pitch rotation about X axis
   const pitchCos = Math.cos(pitchRad)
   const pitchSin = Math.sin(pitchRad)
-  let ry = pitchCos * py - pitchSin * rz
-  let rz2 = pitchSin * py + pitchCos * rz
+  const ry = pitchCos * py - pitchSin * rz
+  const rz2 = pitchSin * py + pitchCos * rz
 
   // use rotated coordinates for projection
   const projX3 = rx
@@ -1572,10 +1572,10 @@ export const HexGrid = <T = unknown>({
           let npz = R * cosLatN * Math.sin(nlon)
           if (antipodal) { npx = -npx; npy = -npy; npz = -npz }
           // apply camera rotations
-          let nrx = yawCos * npx + yawSin * npz
-          let nrz = -yawSin * npx + yawCos * npz
-          let nry = pitchCos * npy - pitchSin * nrz
-          let nrz2 = pitchSin * npy + pitchCos * nrz
+          const nrx = yawCos * npx + yawSin * npz
+          const nrz = -yawSin * npx + yawCos * npz
+          const nry = pitchCos * npy - pitchSin * nrz
+          const nrz2 = pitchSin * npy + pitchCos * nrz
           const npProj = projectScreen(nrx, nry, nrz2)
           projNeighbors.push({ sx: npProj.sx, sy: npProj.sy })
         }
@@ -1644,10 +1644,10 @@ export const HexGrid = <T = unknown>({
       let pzH = R * cosLatH * Math.sin(lonH)
       if (antipodal) { pxH = -pxH; pyH = -pyH; pzH = -pzH }
 
-      let rxH = yawCos * pxH + yawSin * pzH
-      let rzH = -yawSin * pxH + yawCos * pzH
-      let ryH = pitchCos * pyH - pitchSin * rzH
-      let rzH2 = pitchSin * pyH + pitchCos * rzH
+      const rxH = yawCos * pxH + yawSin * pzH
+      const rzH = -yawSin * pxH + yawCos * pzH
+      const ryH = pitchCos * pyH - pitchSin * rzH
+      const rzH2 = pitchSin * pyH + pitchCos * rzH
       const projH = projectScreen(rxH, ryH, rzH2)
 
       // Project a small latitude offset to estimate vertical screen spacing
@@ -1658,10 +1658,10 @@ export const HexGrid = <T = unknown>({
       let pzV = R * cosLatV * Math.sin(lon)
       if (antipodal) { pxV = -pxV; pyV = -pyV; pzV = -pzV }
 
-      let rxV = yawCos * pxV + yawSin * pzV
-      let rzV = -yawSin * pxV + yawCos * pzV
-      let ryV = pitchCos * pyV - pitchSin * rzV
-      let rzV2 = pitchSin * pyV + pitchCos * rzV
+      const rxV = yawCos * pxV + yawSin * pzV
+      const rzV = -yawSin * pxV + yawCos * pzV
+      const ryV = pitchCos * pyV - pitchSin * rzV
+      const rzV2 = pitchSin * pyV + pitchCos * rzV
       const projV = projectScreen(rxV, ryV, rzV2)
 
       // screen-space center-to-center distances
@@ -1728,10 +1728,10 @@ export const HexGrid = <T = unknown>({
         let pz2 = R * cosLat2 * Math.sin(lon2)
         if (antipodal) { px2 = -px2; py2 = -py2; pz2 = -pz2 }
 
-        let rx2 = yawCos * px2 + yawSin * pz2
-        let rz2b = -yawSin * px2 + yawCos * pz2
-        let ry2 = pitchCos * py2 - pitchSin * rz2b
-        let rz22 = pitchSin * py2 + pitchCos * rz2b
+        const rx2 = yawCos * px2 + yawSin * pz2
+        const rz2b = -yawSin * px2 + yawCos * pz2
+        const ry2 = pitchCos * py2 - pitchSin * rz2b
+        const rz22 = pitchSin * py2 + pitchCos * rz2b
         const tang = projectScreen(rx2, ry2, rz22)
         
         // For spherical grids, no rotation needed; for flat grids, compute tangent angle
@@ -4067,7 +4067,7 @@ export const HexGrid = <T = unknown>({
                 style={{ width: 16, height: 16, cursor: 'pointer' }}
               />
               <span style={{ color: workerDebug.evolutionEnabled !== false ? '#4ade80' : '#f87171' }}>
-                {workerDebug.evolutionEnabled !== false ? '▶ Evolution Running' : '⏸ Evolution Paused'}
+                {workerDebug.evolutionEnabled !== false ? 'Evolution Running' : 'Evolution Paused'}
               </span>
             </label>
             <div style={{ fontSize: 11, color: '#ccc', marginTop: 4, marginLeft: 24 }}>
@@ -4509,7 +4509,7 @@ export const HexGrid = <T = unknown>({
                       try {
                         const verify = window.localStorage.getItem('hexgrid.workerDebug')
                         // Log the persisted value to help diagnose any persistence races
-                        if (dbg.debugLogs || true) dlog('hexgrid.workerDebug persisted:', verify)
+                        if (dbg.debugLogs) dlog('hexgrid.workerDebug persisted:', verify)
                       } catch (readErr) {
                         logger.warn('Failed to verify persisted debug settings:', readErr)
                       }
@@ -5544,11 +5544,8 @@ function evolveInfectionSystem(
     }
     
     if (bestJumpTarget !== -1 && bestJumpScore > 0) {
-      let jumpTargetIndex: number
-      let jumpSourceInfection: Infection | undefined
-
       // Use the best bridge jump
-      jumpTargetIndex = bestJumpTarget
+      const jumpTargetIndex = bestJumpTarget
       // Find the most common photo among nearby components
       const targetPos = positions[jumpTargetIndex]
       const nearbyPhotos = new Map<string, number>()
@@ -5586,7 +5583,7 @@ function evolveInfectionSystem(
       const tilesX = 4
       const tilesY = 4
       const uvBounds = calculateUvBoundsFromGridPosition(0, 0, tilesX, tilesY)
-      jumpSourceInfection = {
+      const jumpSourceInfection: Infection = {
         photo: bestPhoto,
         gridPosition: [0, 0], // Will be optimized later
         infectionTime: currentTime,

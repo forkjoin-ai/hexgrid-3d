@@ -48,7 +48,7 @@ const uiStore = {
     let changed = false;
     for (const k of Object.keys(partial) as (keyof UIState)[]) {
       if (partial[k] !== undefined && state[k] !== partial[k]) {
-        // @ts-ignore
+        // @ts-expect-error - dynamic key assignment
         state[k] = partial[k];
         changed = true;
       }
