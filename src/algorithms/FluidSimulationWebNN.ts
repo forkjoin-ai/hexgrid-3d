@@ -100,7 +100,7 @@ export class FluidSimulationWebNN {
       this.graph = await this.builder.build({ 'densityOut': output });
   }
 
-  async step(dt: number) {
+  async step(_dt: number) {
       if (!this.graph || !this.context.getContext()) {
           // Fallback or no-op
           return;
@@ -119,20 +119,20 @@ export class FluidSimulationWebNN {
   }
   
   // Public API compatibility with StableFluids3D
-  addDensity(x: number, y: number, z: number, amount: number, radius: number) {
+  addDensity(_x: number, _y: number, _z: number, _amount: number, _radius: number) {
       // CPU implementation for interaction
       // ... same as CPU ...
   }
   
-  addForce(pos: Vector3, force: Vector3, radius: number) {
+  addForce(_pos: Vector3, _force: Vector3, _radius: number) {
       // ... same as CPU ...
   }
   
-  getDensityAt(pos: Vector3): number {
+  getDensityAt(_pos: Vector3): number {
       return 0; // Readback from GPU/NPU required
   }
   
-  getVelocityAt(pos: Vector3): Vector3 {
+  getVelocityAt(_pos: Vector3): Vector3 {
       return new Vector3(0,0,0);
   }
   

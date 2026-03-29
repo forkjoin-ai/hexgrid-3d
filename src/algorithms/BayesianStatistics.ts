@@ -73,9 +73,9 @@ export class KalmanFilter {
     return this.state;
   }
 
-  predict(steps: number = 1): number {
+  predict(_steps: number = 1): number {
     // Predict future state — grow uncertainty by steps without changing state
-    this.uncertainty += this.processNoise * steps;
+    this.uncertainty += this.processNoise * _steps;
     return this.state;
   }
 
@@ -255,9 +255,9 @@ export function mapEstimate(
   prior: { alpha: number; beta: number }
 ): number {
   const sum = data.reduce((s, x) => s + x, 0);
-  const n = data.length;
+  const _n = data.length;
   const alpha = prior.alpha + sum;
-  const beta = prior.beta + n - sum;
+  const beta = prior.beta + _n - sum;
   return alpha / (alpha + beta);
 }
 

@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react'
-import { TextureLoader } from '@a0n/aeon-3d/three'
-import * as THREE from '@a0n/aeon-3d/three'
+import '@a0n/aeon-3d/three'
 import uiStore from '../stores/uiStore'
 import { StatsTracker } from '../lib/stats-tracker'
 import { NarrationEngine, NarrationMessage } from '../lib/narration'
@@ -18,7 +17,7 @@ export type { Photo }
 
 // Fallback no-op logger at module scope (unused - component-level dlog is used instead)
 // Kept for backward compatibility but renamed to avoid shadowing confusion
-const noopLog = (..._args: any[]) => {}
+const _noopLog = (..._args: any[]) => {}
 
 // Global browser memory image cache keyed by imageUrl to prevent duplicate loads
 // This is especially important for Reddit images where multiple hexes may use the same image
@@ -138,7 +137,7 @@ const AccentColorPicker: React.FC = () => {
             return parsed.hex
           }
         }
-      } catch (e) {
+      } catch (_e) {
         // ignore
       }
     }
@@ -239,7 +238,7 @@ export const HexGrid = <T = unknown>({
   photos: photosProp, 
   onItemClick, 
   onHexClick, 
-  spacing = 1.0, 
+  spacing: _spacing = 1.0,
   canvasRef: externalCanvasRef, 
   onLeaderboardUpdate, 
   autoplayQueueLimit, 
@@ -525,7 +524,7 @@ export const HexGrid = <T = unknown>({
           // Desktop: keep 3D defaults (curveUDeg: 180, curveVDeg: 45)
         }
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore
     }
     // Fallback: if window is undefined (SSR), return desktop defaults
@@ -549,7 +548,7 @@ export const HexGrid = <T = unknown>({
         if (parsed && typeof parsed === 'object') {
           setWorkerDebug((prev) => {
             const merged: WorkerDebug = { ...prev, ...parsed as Partial<WorkerDebug> }
-            try { workerDebugRef.current = merged } catch (err) {}
+            try { workerDebugRef.current = merged } catch (_err) {}
             return merged
           })
         }
@@ -570,14 +569,14 @@ export const HexGrid = <T = unknown>({
                 tileSize: 12
               }
               const merged: WorkerDebug = { ...prev, ...mobileDefaults }
-              try { workerDebugRef.current = merged } catch (err) {}
+              try { workerDebugRef.current = merged } catch (_err) {}
               return merged
             }
             return prev
           })
         }
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore localStorage/read errors
     }
   // run only once on mount
@@ -596,7 +595,7 @@ export const HexGrid = <T = unknown>({
         const raw = window.localStorage.getItem('hexgrid.invertYaw')
         return raw === 'true'
       }
-    } catch (err) {}
+    } catch (_err) {}
     return false
   })
   // Tick to notify projection logic when camOffsetRef changes (mouse-driven offsets)
@@ -624,7 +623,7 @@ export const HexGrid = <T = unknown>({
         const raw = window.localStorage.getItem('hexgrid.insideView')
         return raw === null ? true : raw === 'true'
       }
-    } catch (err) {}
+    } catch (_err) {}
     return true
   })
 
@@ -635,7 +634,7 @@ export const HexGrid = <T = unknown>({
         const raw = window.localStorage.getItem('hexgrid.insideFocal')
         return raw === null ? 1.2 : Number(raw)
       }
-    } catch (err) {}
+    } catch (_err) {}
     return 1.2
   })
   // UI state for persisted camera preview
@@ -651,9 +650,9 @@ export const HexGrid = <T = unknown>({
       if (!raw) return
       const parsed = JSON.parse(raw)
       if (parsed && typeof parsed.pitch === 'number') setLastSavedPitch(parsed.pitch)
-      try { logger.debug('HexGrid: loaded hexgrid.camera on mount', parsed) } catch (err) {}
-      try { setRawCameraJson(JSON.stringify(parsed, null, 2)) } catch (err) {}
-    } catch (err) {}
+      try { logger.debug('HexGrid: loaded hexgrid.camera on mount', parsed) } catch (_err) {}
+      try { setRawCameraJson(JSON.stringify(parsed, null, 2)) } catch (_err) {}
+    } catch (_err) {}
   }, [])
   const [insideYawSens, setInsideYawSens] = useState<number>(() => {
     try {
@@ -661,7 +660,7 @@ export const HexGrid = <T = unknown>({
         const raw = window.localStorage.getItem('hexgrid.insideYawSens')
         return raw === null ? 0.25 : Number(raw)
       }
-    } catch (err) {}
+    } catch (_err) {}
     return 0.25
   })
   const [insidePitchSens, setInsidePitchSens] = useState<number>(() => {
@@ -670,15 +669,15 @@ export const HexGrid = <T = unknown>({
         const raw = window.localStorage.getItem('hexgrid.insidePitchSens')
         return raw === null ? 1.0 : Number(raw)
       }
-    } catch (err) {}
+    } catch (_err) {}
     return 1.0
   })
 
   // Persist insideView preference and tuners when they change
-  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insideView', insideView ? 'true' : 'false') } catch (err) {} }, [insideView])
-  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insideFocal', String(insideFocal)) } catch (err) {} }, [insideFocal])
-  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insideYawSens', String(insideYawSens)) } catch (err) {} }, [insideYawSens])
-  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insidePitchSens', String(insidePitchSens)) } catch (err) {} }, [insidePitchSens])
+  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insideView', insideView ? 'true' : 'false') } catch (_err) {} }, [insideView])
+  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insideFocal', String(insideFocal)) } catch (_err) {} }, [insideFocal])
+  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insideYawSens', String(insideYawSens)) } catch (_err) {} }, [insideYawSens])
+  useEffect(() => { try { if (typeof window !== 'undefined') window.localStorage.setItem('hexgrid.insidePitchSens', String(insidePitchSens)) } catch (_err) {} }, [insidePitchSens])
 
   // Animated yaw multiplier: 1 = full yaw, 0 = no yaw (centered). Tween when insideView toggles.
   // Default to yawMult=1 so camera yaw slider always corresponds to actual view
@@ -700,7 +699,7 @@ export const HexGrid = <T = unknown>({
       const t = Math.min(1, (now - start) / duration)
       const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
       setYawMult(from + (to - from) * ease)
-      try { setCamOffsetTick((c) => c + 1) } catch (err) {}
+      try { setCamOffsetTick((c) => c + 1) } catch (_err) {}
       if (t < 1) yawRestoreRafRef.current = requestAnimationFrame(step)
       else yawRestoreRafRef.current = null
     }
@@ -710,10 +709,10 @@ export const HexGrid = <T = unknown>({
   // Track last user interaction time so we can start idle auto-rotation when appropriate
   const lastInteractionRef = useRef<number>(typeof performance !== 'undefined' ? performance.now() : Date.now())
   // Idle rotation configuration
-  const IDLE_ROTATION_DELAY_MS = 3500 // start rotating after 3.5s of inactivity
-  const IDLE_ROTATION_DEG_PER_SEC = 6 // degrees per second yaw rotation when idle
+  const _IDLE_ROTATION_DELAY_MS = 3500 // start rotating after 3.5s of inactivity
+  const _IDLE_ROTATION_DEG_PER_SEC = 6 // degrees per second yaw rotation when idle
 
-  const scheduleRestoreYawMult = useCallback(() => {
+  const _scheduleRestoreYawMult = useCallback(() => {
     if (yawRestoreTimeoutRef.current) window.clearTimeout(yawRestoreTimeoutRef.current)
     yawRestoreTimeoutRef.current = window.setTimeout(() => {
       const target = insideView ? 0 : 1
@@ -728,11 +727,11 @@ export const HexGrid = <T = unknown>({
     // Update React state
     setCamDistanceMultiplier(value)
     // Keep latest-camera ref in sync for persistence flushes
-    try { cameraLatestRef.current = { yaw: cameraLatestRef.current.yaw ?? camYawDeg, pitch: cameraLatestRef.current.pitch ?? camPitchDeg, distance: value } } catch (err) {}
+    try { cameraLatestRef.current = { yaw: cameraLatestRef.current.yaw ?? camYawDeg, pitch: cameraLatestRef.current.pitch ?? camPitchDeg, distance: value } } catch (_err) {}
     // Notify projection helpers to recompute immediately
-    try { setCamOffsetTick((c) => c + 1); cameraDirtyRef.current = true } catch (err) {}
+    try { setCamOffsetTick((c) => c + 1); cameraDirtyRef.current = true } catch (_err) {}
     // mark interaction so idle rotation won't start immediately
-    try { lastInteractionRef.current = typeof performance !== 'undefined' ? performance.now() : Date.now() } catch (err) {}
+    try { lastInteractionRef.current = typeof performance !== 'undefined' ? performance.now() : Date.now() } catch (_err) {}
   }, [camYawDeg, camPitchDeg])
 
   const handleYawInputChange = useCallback((value: number) => {
@@ -753,9 +752,9 @@ export const HexGrid = <T = unknown>({
       cancelAnimationFrame(yawRestoreRafRef.current)
       yawRestoreRafRef.current = null
     }
-    try { setCamOffsetTick((c) => c + 1); cameraDirtyRef.current = true } catch (err) {}
+    try { setCamOffsetTick((c) => c + 1); cameraDirtyRef.current = true } catch (_err) {}
     // mark interaction for idle detection
-    try { lastInteractionRef.current = typeof performance !== 'undefined' ? performance.now() : Date.now() } catch (err) {}
+    try { lastInteractionRef.current = typeof performance !== 'undefined' ? performance.now() : Date.now() } catch (_err) {}
   }, [invertYaw])
 
   // Idle auto-rotation effect: gently rotate yaw when user is idle and we're in 3D mode
@@ -797,9 +796,9 @@ export const HexGrid = <T = unknown>({
           // apply a tiny smoothing so abrupt changes are avoided
           setCamYawDeg((prev) => prev + deltaDeg)
           // bump tick to update projections
-          try { setCamOffsetTick((c) => c + 1); cameraDirtyRef.current = true } catch (err) {}
+          try { setCamOffsetTick((c) => c + 1); cameraDirtyRef.current = true } catch (_err) {}
         }
-      } catch (err) {
+      } catch (_err) {
         // swallow
       }
       rafId = requestAnimationFrame(step)
@@ -818,7 +817,7 @@ export const HexGrid = <T = unknown>({
       const raw = window.localStorage.getItem('hexgrid.camera')
       if (raw) {
         let parsed: any = null
-        try { parsed = JSON.parse(raw) } catch (err) { parsed = null }
+        try { parsed = JSON.parse(raw) } catch (_err) { parsed = null }
         if (parsed) {
           // Normalize/migrate legacy yaw values into explicit degrees and persist back
           // so future loads are unambiguous.
@@ -842,7 +841,7 @@ export const HexGrid = <T = unknown>({
           // flush will write the correct values (avoids stale debounce race).
           try {
             cameraLatestRef.current = { yaw: appliedYaw ?? camYawDeg, pitch: parsed.pitch ?? camPitchDeg, distance: parsed.distance ?? camDistanceMultiplier }
-          } catch (err) {}
+          } catch (_err) {}
 
           // Write back a normalized camera object (degrees) with an explicit unit tag
           // so the format is deterministic for subsequent loads. Wrap in try to avoid
@@ -852,7 +851,7 @@ export const HexGrid = <T = unknown>({
               const normalized = { yaw: appliedYaw ?? camYawDeg, pitch: parsed.pitch ?? camPitchDeg, distance: parsed.distance ?? camDistanceMultiplier, unit: 'deg' }
               window.localStorage.setItem('hexgrid.camera', JSON.stringify(normalized))
             }
-          } catch (err) {}
+          } catch (_err) {}
 
           // Mark initialization complete so the persistence effect won't clobber this value
           cameraInitializedRef.current = true
@@ -860,7 +859,7 @@ export const HexGrid = <T = unknown>({
           // Dev-only logging to aid debugging of persisted camera values.
           try {
             dlog('HexGrid: loaded persisted camera', { raw, parsed, appliedYaw })
-          } catch (err) {}
+          } catch (_err) {}
 
           return
         }
@@ -868,7 +867,7 @@ export const HexGrid = <T = unknown>({
 
       // No saved camera - choose a friendly default depending on insideView preference
       const rawInside = window.localStorage.getItem('hexgrid.insideView')
-      const preferInside = rawInside === null ? true : rawInside === 'true'
+      const _preferInside = rawInside === null ? true : rawInside === 'true'
       // Set the same friendly defaults as before (keeps reset behavior stable)
       setCamYawDeg(-90)
       setCamPitchDeg(-12)
@@ -878,7 +877,7 @@ export const HexGrid = <T = unknown>({
 
       // We set defaults explicitly — mark initialization done so persistence can run normally
       cameraInitializedRef.current = true
-    } catch (err) {
+    } catch (_err) {
       // ignore localStorage errors
     }
   }, [])
@@ -898,14 +897,14 @@ export const HexGrid = <T = unknown>({
       
       try {
         window.localStorage.setItem('hexgrid.camera', finalStr)
-      } catch (err) {
+      } catch (_err) {
         // ignore write errors
       }
 
-      try { setLastSavedPitch(camPitchDeg) } catch (err) {}
-      try { logger.debug('HexGrid: camera save wrote hexgrid.camera', obj) } catch (err) {}
-      try { setRawCameraJson(JSON.stringify(obj, null, 2)) } catch (err) {}
-    } catch (err) {
+      try { setLastSavedPitch(camPitchDeg) } catch (_err) {}
+      try { logger.debug('HexGrid: camera save wrote hexgrid.camera', obj) } catch (_err) {}
+      try { setRawCameraJson(JSON.stringify(obj, null, 2)) } catch (_err) {}
+    } catch (_err) {
       // ignore localStorage errors
     }
   }, [camPitchDeg, camYawDeg, camDistanceMultiplier])
@@ -933,20 +932,20 @@ export const HexGrid = <T = unknown>({
           try { 
             //dlog
             dlog('[localStorage] setItem', { key, value, stack: stack ? stack.split('\n').slice(2,6).join('\n') : '' })
-          } catch (err) {}
+          } catch (_err) {}
           if (key === 'hexgrid.camera') {
-            try { dlog('[hexgrid.camera] writing', value) } catch (err) {}
+            try { dlog('[hexgrid.camera] writing', value) } catch (_err) {}
           }
-        } catch (err) {}
+        } catch (_err) {}
         return origSetItem.apply(this, [key, value])
       }
 
       ;(window as any).localStorage.setItem = patched
 
       return () => {
-        try { (window as any).localStorage.setItem = origSetItem } catch (err) {}
+        try { (window as any).localStorage.setItem = origSetItem } catch (_err) {}
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore
     }
   }, [])
@@ -962,9 +961,9 @@ export const HexGrid = <T = unknown>({
         }
         if (typeof window !== 'undefined' && cameraInitializedRef.current) {
           const last = cameraLatestRef.current
-          try { window.localStorage.setItem('hexgrid.camera', JSON.stringify({ yaw: last.yaw, pitch: last.pitch, distance: last.distance, unit: 'deg' })) } catch (err) {}
+          try { window.localStorage.setItem('hexgrid.camera', JSON.stringify({ yaw: last.yaw, pitch: last.pitch, distance: last.distance, unit: 'deg' })) } catch (_err) {}
         }
-      } catch (err) {}
+      } catch (_err) {}
     }
   }, [])
 
@@ -985,7 +984,7 @@ export const HexGrid = <T = unknown>({
       if (last === value) return
       window.localStorage.setItem(key, value)
       localStorageCacheRef.current.set(key, value)
-    } catch (err) {
+    } catch (_err) {
       // ignore
     }
   }, [])
@@ -996,9 +995,9 @@ export const HexGrid = <T = unknown>({
     try {
       if (workerDebugRef.current && workerDebugRef.current.debugLogs) {
         // Use console.debug directly to avoid accidental recursion
-        try { logger.debug('[HexGrid]', ...args) } catch (err) { /* ignore */ }
+        try { logger.debug('[HexGrid]', ...args) } catch (_err) { /* ignore */ }
       }
-    } catch (err) {
+    } catch (_err) {
       // swallow logging errors
     }
   }, [])
@@ -1015,7 +1014,7 @@ export const HexGrid = <T = unknown>({
         return
       }
       ;(sendEvolve as any).__lastPostAt = nowTs
-    } catch (e) {}
+    } catch (_e) {}
     try {
       if (!workerRef.current) {
         dlog('sendEvolve: worker not ready, skipping', { reason, generation: stateToSend?.generation ?? -1 })
@@ -1031,7 +1030,7 @@ export const HexGrid = <T = unknown>({
           // use the live ref generation if available
           gen = (typeof infectionStateRef !== 'undefined' && infectionStateRef.current && typeof infectionStateRef.current.generation === 'number') ? infectionStateRef.current.generation : incomingGen
         }
-      } catch (err) {
+      } catch (_err) {
         // fall back to incomingGen
         gen = incomingGen
       }
@@ -1051,11 +1050,11 @@ export const HexGrid = <T = unknown>({
               ;(sendEvolve as any)[lastKey] = nowTs
               // Create an Error to capture a stack trace and log it with context
               const err = new Error('sendEvolve: posting generation===0 (non-init)')
-              try { logger.warn('sendEvolve: unexpected generation 0', { reason, infections: infCount, stack: err.stack }) } catch (e) {}
+              try { logger.warn('sendEvolve: unexpected generation 0', { reason, infections: infCount, stack: err.stack }) } catch (_e) {}
             }
-          } catch (e) { /* swallow */ }
+          } catch (_e) { /* swallow */ }
         }
-      } catch (e) { /* swallow */ }
+      } catch (_e) { /* swallow */ }
       // Ensure infections are serialized as an array of entries (worker expects Array<[index, Infection]>).
       let prevStateForPost = stateToSend
       try {
@@ -1065,7 +1064,7 @@ export const HexGrid = <T = unknown>({
             prevStateForPost = { ...prevStateForPost, infections: Array.from(prevStateForPost.infections.entries()) }
           }
         }
-      } catch (err) {
+      } catch (_err) {
         // fallback: leave as-is
       }
       // If we adjusted the generation above, ensure the posted prevState carries it
@@ -1073,7 +1072,7 @@ export const HexGrid = <T = unknown>({
         if (prevStateForPost && typeof gen === 'number' && prevStateForPost.generation !== gen) {
           prevStateForPost = { ...prevStateForPost, generation: gen }
         }
-      } catch (err) {}
+      } catch (_err) {}
 
       const isSpherical = Boolean(gridMetadataRef.current?.isSpherical)
   workerRef.current.postMessage({ type: 'evolve', data: { prevState: prevStateForPost, positions: positionsParam, photos: photosParam, hexRadius: hexRadiusParam, currentTime: Date.now() / 1000, debug: workerDebugRef.current, isSpherical, reason } })
@@ -1088,7 +1087,7 @@ export const HexGrid = <T = unknown>({
     try {
       const str = JSON.stringify(workerDebug)
       setLocalStorageIfChanged('hexgrid.workerDebug', str)
-    } catch (err) {
+    } catch (_err) {
       // ignore localStorage errors
     }
   }, [workerDebug, setLocalStorageIfChanged])
@@ -1106,7 +1105,7 @@ export const HexGrid = <T = unknown>({
     saveTimeoutRef.current = setTimeout(async () => {
       try {
         // Convert workerDebug to WorkerDebugSettings format (excluding updatedAt)
-        const { updatedAt, ...settingsToSave } = workerDebug as any
+        const { updatedAt: _updatedAt, ...settingsToSave } = workerDebug as any
         await fetch('/api/settings/worker-debug', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1139,7 +1138,7 @@ export const HexGrid = <T = unknown>({
           const savedSettings = await response.json()
           if (savedSettings) {
             // Convert saved settings back to WorkerDebug format (excluding updatedAt)
-            const { updatedAt, ...settingsToApply } = savedSettings
+            const { updatedAt: _updatedAt, ...settingsToApply } = savedSettings
             setWorkerDebug((prev) => ({ ...prev, ...settingsToApply }))
           }
         }
@@ -1290,7 +1289,7 @@ export const HexGrid = <T = unknown>({
           // skip repeated identical config
           dlog('Skipped setDataAndConfig (no meaningful change)')
         }
-      } catch (err) {
+      } catch (_err) {
         // best-effort: fallback to sending without dedupe
         workerRef.current.postMessage({
           type: 'setDataAndConfig',
@@ -1546,7 +1545,7 @@ export const HexGrid = <T = unknown>({
           poleScale = Math.max(poleMin, Math.pow(safeCos, polePower))
         }
       }
-    } catch (err) {
+    } catch (_err) {
       poleScale = 1
     }
 
@@ -1717,7 +1716,7 @@ export const HexGrid = <T = unknown>({
       }
 
       return { x: main.sx, y: main.sy, scale: projScale, angle: angle, z: main.z, mappingDebug: { ...mappingDebug, poleScale, projDx: dx, projDy: dy, desiredRadius } }
-    } catch (err) {
+    } catch (_err) {
       // On any failure, fallback to earlier behavior
       try {
         const dLon = 1e-4 // small delta in radians
@@ -1742,12 +1741,12 @@ export const HexGrid = <T = unknown>({
           angle = tangentAngle - Math.PI / 2
         }
         return { x: main.sx, y: main.sy, scale: main.f * poleScale, angle: angle, z: main.z, mappingDebug: { ...mappingDebug, poleScale } }
-      } catch (err2) {
+      } catch (_err2) {
         const fallback = projectScreen(projX3, projY3, projZ3)
         return { x: fallback.sx, y: fallback.sy, scale: fallback.f, angle: 0, z: fallback.z || 0 }
       }
     }
-  } catch (err) {
+  } catch (_err) {
     const fallback = projectScreen(projX3, projY3, projZ3)
     return { x: fallback.sx, y: fallback.sy, scale: fallback.f, angle: 0, z: fallback.z || 0 }
   }
@@ -1795,7 +1794,7 @@ export const HexGrid = <T = unknown>({
         const v = window.localStorage.getItem('hexgrid.showMappingDebug')
         return v === 'true'
       }
-    } catch (err) {}
+    } catch (_err) {}
     return false
   })
   const showMappingDebugRef = useRef(showMappingDebug)
@@ -1823,7 +1822,7 @@ export const HexGrid = <T = unknown>({
         const v = window.localStorage.getItem('hexgrid.debugOpen')
         if (v !== null) setDebugOpen(v === 'true')
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore localStorage errors
     }
   }, [])
@@ -1835,7 +1834,7 @@ export const HexGrid = <T = unknown>({
         const v = window.localStorage.getItem('hexgrid.cameraOpen')
         if (v !== null) setCameraOpen(v === 'true')
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore localStorage errors
     }
   }, [])
@@ -1847,7 +1846,7 @@ export const HexGrid = <T = unknown>({
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('hexgrid.debugOpen', debugOpen ? 'true' : 'false')
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore localStorage errors
     }
   }, [debugOpen])
@@ -1858,7 +1857,7 @@ export const HexGrid = <T = unknown>({
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('hexgrid.showMappingDebug', showMappingDebug ? 'true' : 'false')
       }
-    } catch (err) {}
+    } catch (_err) {}
   }, [showMappingDebug])
 
   // Persist invertYaw preference
@@ -1868,7 +1867,7 @@ export const HexGrid = <T = unknown>({
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('hexgrid.invertYaw', invertYaw ? 'true' : 'false')
       }
-    } catch (err) {}
+    } catch (_err) {}
   }, [invertYaw])
 
   // Clear any pending apply status timeout on unmount
@@ -1936,7 +1935,7 @@ export const HexGrid = <T = unknown>({
           }
           sendEvolve(stateToSend, hexPositions, photos, drawnHexRadius, 'curve-animation')
         }
-      } catch (err) { /* ignore */ }
+      } catch (_err) { /* ignore */ }
 
       if (t < 1) requestAnimationFrame(step)
       else animateRef.current.running = false
@@ -1980,7 +1979,7 @@ export const HexGrid = <T = unknown>({
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('hexgrid.cameraOpen', cameraOpen ? 'true' : 'false')
       }
-    } catch (err) { /* ignore */ }
+    } catch (_err) { /* ignore */ }
   }, [cameraOpen])
 
   // Mirror local debug/showStats/cameraOpen changes into the uiStore so nav reflects state
@@ -1995,7 +1994,7 @@ export const HexGrid = <T = unknown>({
   }, [infectionState])
 
   // Acknowledge counter for worker 'ack-evolve' debug messages
-  const [ackEvolveCount, setAckEvolveCount] = useState<number>(0)
+  const [_ackEvolveCount, setAckEvolveCount] = useState<number>(0)
 
   // Per-tile alpha smoothing state (ref to avoid re-renders)
   const tileAlphaRef = useRef<Map<number, number>>(new Map())
@@ -2106,7 +2105,7 @@ export const HexGrid = <T = unknown>({
                   interp.sheenEnabled = target.sheenEnabled
                 }
                 workerDebugRef.current = interp
-                try { setWorkerDebug(interp) } catch (err) {}
+                try { setWorkerDebug(interp) } catch (_err) {}
                 if (t < 1) requestAnimationFrame(stepRestore)
                 else {
                   // cleared
@@ -2178,7 +2177,7 @@ export const HexGrid = <T = unknown>({
               }
 
               workerDebugRef.current = interp
-              try { setWorkerDebug(interp) } catch (err) {}
+              try { setWorkerDebug(interp) } catch (_err) {}
 
               if (t < 1) requestAnimationFrame(stepInterp)
               else {
@@ -2287,7 +2286,7 @@ export const HexGrid = <T = unknown>({
     
     let loadedCount = 0
     const totalUniqueImages = uniqueImageUrls.size
-    const totalPhotos = photos.length
+    const _totalPhotos = photos.length
     
     // Load each unique image URL only once
     uniqueImageUrls.forEach((imageUrl) => {
@@ -2554,8 +2553,8 @@ export const HexGrid = <T = unknown>({
       if (type === 'ack-evolve') {
         try {
           if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] worker ack-evolve', data)
-        } catch (e) {}
-        try { setAckEvolveCount((c) => c + 1) } catch (e) {}
+        } catch (_e) {}
+        try { setAckEvolveCount((c) => c + 1) } catch (_e) {}
         return
       }
       if (type === 'evolved') {
@@ -2598,7 +2597,7 @@ export const HexGrid = <T = unknown>({
           try {
             blankNeighborCountRef.current = new Map<number, number>(data.blankNeighborCounts as [number, number][])
             blankNeighborCountGenerationRef.current = typeof data.generation === 'number' ? data.generation : -1
-          } catch (err) {
+          } catch (_err) {
             // ignore malformed worker payload
           }
         } else {
@@ -2716,10 +2715,10 @@ export const HexGrid = <T = unknown>({
 
         // Mark streaming active so other code (animation loop) can avoid posting new evolves
         streamActiveRef.current = true
-        try { setStreamingActive(true) } catch (err) { /* ignore during unmount */ }
+        try { setStreamingActive(true) } catch (_err) { /* ignore during unmount */ }
         try {
           if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream START token=', token, 'changes=', changes.length)
-        } catch (err) {}
+        } catch (_err) {}
         // Mark camera dirty so cancelled streams trigger a redraw
         cameraDirtyRef.current = true
 
@@ -2740,8 +2739,8 @@ export const HexGrid = <T = unknown>({
               if (streamTokenRef.current !== token) {
                 streamActiveRef.current = false
                 streamTouchesOccupancyRef.current = false
-                try { setStreamingActive(false) } catch (err) {}
-                try { if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream CANCEL token=', token) } catch (err) {}
+                try { setStreamingActive(false) } catch (_err) {}
+                try { if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream CANCEL token=', token) } catch (_err) {}
                 return
               }
 
@@ -2751,7 +2750,7 @@ export const HexGrid = <T = unknown>({
                 if (!ch) continue
                 if (ch.type === 'add' || ch.type === 'update') {
                   workingMap.set(ch.index, ch.infection!)
-                  try { tilePulseRef.current.set(ch.index, { start: performance.now(), duration: 400 }) } catch (err) {}
+                  try { tilePulseRef.current.set(ch.index, { start: performance.now(), duration: 400 }) } catch (_err) {}
                 } else if (ch.type === 'remove') {
                   workingMap.delete(ch.index)
                 }
@@ -2766,7 +2765,7 @@ export const HexGrid = <T = unknown>({
 
               infectionStateRef.current = newState
               setInfectionState(newState)
-              try { setTilesRemaining((v) => Math.max(0, v - count)) } catch (err) {}
+              try { setTilesRemaining((v) => Math.max(0, v - count)) } catch (_err) {}
 
               if (idx < changes.length) {
                 if (streamMs > 0) setTimeout(() => requestAnimationFrame(applyFrame), streamMs)
@@ -2774,18 +2773,18 @@ export const HexGrid = <T = unknown>({
               } else {
                 streamActiveRef.current = false
                 streamTouchesOccupancyRef.current = false
-                try { setStreamingActive(false) } catch (err) {}
-                try { if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream END token=', token) } catch (err) {}
+                try { setStreamingActive(false) } catch (_err) {}
+                try { if (workerDebugRef.current?.debugLogs) logger.info('[HexGrid] stream END token=', token) } catch (_err) {}
               }
             } catch (err) {
               // Ensure we never leave streaming active on exception. Cancel the stream and bump token to stop any pending frames.
-              try { logger.error('[HexGrid] stream applyFrame error:', err) } catch (e) {}
-              try { if (workerDebugRef.current?.debugLogs) logger.error('[HexGrid] stream error token=', token, err) } catch (e) {}
+              try { logger.error('[HexGrid] stream applyFrame error:', err) } catch (_e) {}
+              try { if (workerDebugRef.current?.debugLogs) logger.error('[HexGrid] stream error token=', token, err) } catch (_e) {}
               // Cancel stream and mark inactive so animation loop can continue
-              try { streamTokenRef.current += 1 } catch (e) {}
-              try { streamActiveRef.current = false } catch (e) {}
-              try { streamTouchesOccupancyRef.current = false } catch (e) {}
-              try { setStreamingActive(false) } catch (e) {}
+              try { streamTokenRef.current += 1 } catch (_e) {}
+              try { streamActiveRef.current = false } catch (_e) {}
+              try { streamTouchesOccupancyRef.current = false } catch (_e) {}
+              try { setStreamingActive(false) } catch (_e) {}
             }
           }
 
@@ -2799,7 +2798,7 @@ export const HexGrid = <T = unknown>({
                 if (streamTokenRef.current !== token) return
                 if (ch.type === 'add' || ch.type === 'update') {
                   workingMap.set(ch.index, ch.infection!)
-                  try { tilePulseRef.current.set(ch.index, { start: performance.now(), duration: 400 }) } catch (err) {}
+                  try { tilePulseRef.current.set(ch.index, { start: performance.now(), duration: 400 }) } catch (_err) {}
                 } else if (ch.type === 'remove') {
                   workingMap.delete(ch.index)
                 }
@@ -2813,18 +2812,18 @@ export const HexGrid = <T = unknown>({
 
                 infectionStateRef.current = newState
                 setInfectionState(newState)
-                try { setTilesRemaining((v) => Math.max(0, v - 1)) } catch (err) {}
+                try { setTilesRemaining((v) => Math.max(0, v - 1)) } catch (_err) {}
                 await new Promise((resolve) => setTimeout(resolve, streamMs))
               }
             } catch (err) {
-              try { logger.error('[HexGrid] stream (per-tile) error:', err) } catch (e) {}
-              try { if (workerDebugRef.current?.debugLogs) logger.error('[HexGrid] stream (per-tile) error token=', token, err) } catch (e) {}
+              try { logger.error('[HexGrid] stream (per-tile) error:', err) } catch (_e) {}
+              try { if (workerDebugRef.current?.debugLogs) logger.error('[HexGrid] stream (per-tile) error token=', token, err) } catch (_e) {}
               // bump token to cancel any concurrent streams
-              try { streamTokenRef.current += 1 } catch (e) {}
+              try { streamTokenRef.current += 1 } catch (_e) {}
             } finally {
               streamActiveRef.current = false
               streamTouchesOccupancyRef.current = false
-              try { setStreamingActive(false) } catch (err) {}
+              try { setStreamingActive(false) } catch (_err) {}
             }
           })()
         }
@@ -3054,7 +3053,7 @@ export const HexGrid = <T = unknown>({
           }
         }
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore adjacency check errors
     }
 
@@ -3070,20 +3069,20 @@ export const HexGrid = <T = unknown>({
           if (!md || !md.desiredRadius) continue
           const cx = p[0]
           const cy = p[1]
-          const r = Math.max(1, Math.min(12, md.desiredRadius))
+          const _r = Math.max(1, Math.min(12, md.desiredRadius))
           ctx.beginPath()
           ctx.arc(cx, cy, 2, 0, Math.PI * 2)
           ctx.fill()
         }
         ctx.restore()
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore debug overlay errors
     }
     // Tile labels overlay: show gridPosition (tile coords) on each infected hex when enabled
     try {
       const showTileLabels = (() => {
-        try { return workerDebugRef.current?.showTileLabels === true } catch (e) { return false }
+        try { return workerDebugRef.current?.showTileLabels === true } catch (_e) { return false }
       })()
       if (showTileLabels) {
         ctx.save()
@@ -3102,13 +3101,13 @@ export const HexGrid = <T = unknown>({
         }
         ctx.restore()
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore
     }
     // Tile centers overlay: show computed tile centers as + markers when enabled
     try {
       const showTileCenters = (() => {
-        try { return workerDebugRef.current?.showTileCenters === true } catch (e) { return false }
+        try { return workerDebugRef.current?.showTileCenters === true } catch (_e) { return false }
       })()
       if (showTileCenters && tileCenters.length > 0) {
         ctx.save()
@@ -3133,7 +3132,7 @@ export const HexGrid = <T = unknown>({
         }
         ctx.restore()
       }
-    } catch (err) {
+    } catch (_err) {
       // ignore
     }
     // record draw timing
@@ -3142,7 +3141,7 @@ export const HexGrid = <T = unknown>({
       const buf = drawTimesRef.current
       buf.push(drawMs)
       if (buf.length > 300) buf.shift()
-    } catch (err) {}
+    } catch (_err) {}
   }, [hexPositions, infectionState.infections, textures, drawnHexRadius, screenWidth, screenHeight, mapAndProject, telemetry.fps, tileCenters])
   
   // Continuous evolution using web worker
@@ -3208,13 +3207,13 @@ export const HexGrid = <T = unknown>({
         // avoid posting another evolve to the worker to prevent overlapping runs.
         if (streamActiveRef.current) {
           // Skip posting this tick — don't advance lastTime so we'll try again soon
-          try { if (workerDebugRef.current?.debugLogs) logger.debug('[HexGrid] Skipping evolve post because streaming is active') } catch (err) {}
+          try { if (workerDebugRef.current?.debugLogs) logger.debug('[HexGrid] Skipping evolve post because streaming is active') } catch (_err) {}
         } else if (!photos || photos.length === 0) {
           // Skip sending evolve messages when no photos are loaded yet
-          try { if (workerDebugRef.current?.debugLogs) logger.debug('[HexGrid] Skipping evolve post because no photos loaded') } catch (err) {}
+          try { if (workerDebugRef.current?.debugLogs) logger.debug('[HexGrid] Skipping evolve post because no photos loaded') } catch (_err) {}
           // Don't advance lastTime so we'll try again once photos are loaded
         } else {
-          try { if (workerDebugRef.current?.debugLogs) logger.debug('[HexGrid] Posting evolve (animation-loop)', { currentTime, evolveInterval, generation: infectionStateRef.current.generation, infections: infectionStateRef.current.infections.size }) } catch (err) {}
+          try { if (workerDebugRef.current?.debugLogs) logger.debug('[HexGrid] Posting evolve (animation-loop)', { currentTime, evolveInterval, generation: infectionStateRef.current.generation, infections: infectionStateRef.current.infections.size }) } catch (_err) {}
           dlog('Sending evolve message to worker at time:', currentTime, 'Current gossip count:', infectionStateRef.current.infections.size)
           dlog('Photos being sent to worker:', photos?.length || 0, 'photos')
           // Convert Map to array for serialization
@@ -3429,7 +3428,7 @@ export const HexGrid = <T = unknown>({
           if (isPointInHexagon(x, y, [anti.x, anti.y, 0], antiRadius, antiAngle)) {
             candidates.push({ index: i, depth: antiDepth, isAntipodal: true, infection })
           }
-        } catch (err) {
+        } catch (_err) {
           // ignore projection errors
         }
       }
@@ -3512,13 +3511,13 @@ export const HexGrid = <T = unknown>({
             dragRef.current.lastX = e.clientX
             dragRef.current.lastY = e.clientY
             dragRef.current.lastT = now
-            try { dlog('HexGrid: drag move', { dx, dy, deltaX, deltaY, newDisplayYaw, newYaw, newPitch, invertYaw }) } catch (err) {}
+            try { dlog('HexGrid: drag move', { dx, dy, deltaX, deltaY, newDisplayYaw, newYaw, newPitch, invertYaw }) } catch (_err) {}
 
             // apply new yaw and pitch (clamp pitch to [-90,90])
             setCamYawDeg(newYaw)
             setCamPitchDeg(Math.max(-90, Math.min(90, newPitch)))
             // bump tick so projections recalc
-            try { setCamOffsetTick((t) => t + 1) } catch (err) {}
+            try { setCamOffsetTick((t) => t + 1) } catch (_err) {}
             // prevent hover checks while dragging
             return
           }
@@ -3530,7 +3529,7 @@ export const HexGrid = <T = unknown>({
             camOffsetRef.current.yaw = nx * 6 * (insideYawSens || 0.25) // small yaw offset in degrees
             camOffsetRef.current.pitch = -ny * 6 * (insidePitchSens || 1.0) // small pitch offset
             // bump tick so mapAndProject and other deps will update
-            try { setCamOffsetTick((t) => t + 1) } catch (err) {}
+            try { setCamOffsetTick((t) => t + 1) } catch (_err) {}
           }
           // Find hovered hex using spatial candidate search to avoid O(N) scans
           let foundHover = false
@@ -3556,7 +3555,7 @@ export const HexGrid = <T = unknown>({
                   foundHover = true
                   break
                 }
-              } catch (err) {
+              } catch (_err) {
                 // ignore
               }
             }
@@ -3583,7 +3582,7 @@ export const HexGrid = <T = unknown>({
                 dlog('Hover mismatch: nearestByDist=', nearestIdx, 'hoverCandidate=', hoverInfo.index, { x, y, nearestDist })
               }
             }
-          } catch (err) {
+          } catch (_err) {
             // ignore debug failures
           }
           // Transient heat: boost batchPerFrame based on mouse movement speed
@@ -3606,11 +3605,11 @@ export const HexGrid = <T = unknown>({
                 transientTimeoutRef.current = null
               }, 350)
             }
-          } catch (err) {
+          } catch (_err) {
             // ignore
           }
           // mark interaction to suppress idle rotation
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
         }}
         onMouseDown={(e) => {
           // start drag on left button
@@ -3624,19 +3623,19 @@ export const HexGrid = <T = unknown>({
           dragRef.current.startY = e.clientY
           dragRef.current.lastY = e.clientY
           dragRef.current.startPitch = camPitchDeg
-          try { dlog('HexGrid: drag start', { startYaw: dragRef.current.startYaw, camYawDeg, startPitch: dragRef.current.startPitch, invertYaw }) } catch (err) {}
+          try { dlog('HexGrid: drag start', { startYaw: dragRef.current.startYaw, camYawDeg, startPitch: dragRef.current.startPitch, invertYaw }) } catch (_err) {}
           dragRef.current.lastT = performance.now()
           dragRef.current.vx = 0
           dragRef.current.vy = 0
           // mark interaction to suppress idle rotation
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
         }}
         onMouseUp={(e) => {
           if (e.button !== 0) return
           // apply inertia based on last vx/vy
           const vx = dragRef.current.vx || 0
           const vy = dragRef.current.vy || 0
-          try { dlog('HexGrid: drag up', { vx, vy, invertYaw }) } catch (err) {}
+          try { dlog('HexGrid: drag up', { vx, vy, invertYaw }) } catch (_err) {}
           dragRef.current.active = false
           dragRef.current.lastT = 0
 
@@ -3660,16 +3659,16 @@ export const HexGrid = <T = unknown>({
             requestAnimationFrame(stepInertia)
           }
           requestAnimationFrame(stepInertia)
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
         }}
         onMouseLeave={() => {
           // stop drag if pointer leaves canvas
           dragRef.current.active = false
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
         }}
-        onWheel={() => { try { lastInteractionRef.current = performance.now() } catch (err) {} }}
+        onWheel={() => { try { lastInteractionRef.current = performance.now() } catch (_err) {} }}
         onTouchStart={(e) => {
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
           
           const canvas = canvasRef.current
           if (!canvas) return
@@ -3750,7 +3749,7 @@ export const HexGrid = <T = unknown>({
           }
         }}
         onTouchMove={(e) => {
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
           
           const canvas = canvasRef.current
           if (!canvas) return
@@ -3807,13 +3806,13 @@ export const HexGrid = <T = unknown>({
             setCamYawDeg(newYaw)
             setCamPitchDeg(Math.max(-90, Math.min(90, newPitch)))
             // Bump tick so projections recalc
-            try { setCamOffsetTick((t) => t + 1) } catch (err) {}
+            try { setCamOffsetTick((t) => t + 1) } catch (_err) {}
             
             e.preventDefault()
           }
         }}
         onTouchEnd={(e) => {
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
           
           const touches = e.touches
           
@@ -3849,8 +3848,8 @@ export const HexGrid = <T = unknown>({
             requestAnimationFrame(stepInertia)
           }
         }}
-        onTouchCancel={(e) => {
-          try { lastInteractionRef.current = performance.now() } catch (err) {}
+        onTouchCancel={(_e) => {
+          try { lastInteractionRef.current = performance.now() } catch (_err) {}
           // Cancel all active gestures
           touchDragRef.current.active = false
           pinchRef.current.active = false
@@ -3938,7 +3937,7 @@ export const HexGrid = <T = unknown>({
                       const infectionsArray = Array.from(infectionStateRef.current.infections.entries())
                       const stateToSend = { infections: infectionsArray, availableIndices: infectionStateRef.current.availableIndices, lastEvolutionTime: infectionStateRef.current.lastEvolutionTime, generation: infectionStateRef.current.generation }
                       sendEvolve(stateToSend, hexPositions, photos, drawnHexRadius, 'restore-debug')
-                    } } catch (err) {}
+                    } } catch (_err) {}
                     prevDebugRef.current = null
                   }
                   setLowResActive(false)
@@ -3952,7 +3951,7 @@ export const HexGrid = <T = unknown>({
                     const infectionsArray = Array.from(infectionStateRef.current.infections.entries())
                     const stateToSend = { infections: infectionsArray, availableIndices: infectionStateRef.current.availableIndices, lastEvolutionTime: infectionStateRef.current.lastEvolutionTime, generation: infectionStateRef.current.generation }
                     sendEvolve(stateToSend, hexPositions, photos, drawnHexRadius, 'apply-gentle-preset')
-                  } } catch (err) {}
+                  } } catch (_err) {}
                   setLowResActive(true)
                 }
               } catch (err) {
@@ -3972,9 +3971,9 @@ export const HexGrid = <T = unknown>({
               const obj = { yaw: camYawDeg, pitch: camPitchDeg, distance: camDistanceMultiplier, unit: 'deg' }
               window.localStorage.setItem('hexgrid.camera', JSON.stringify(obj))
               setLastSavedPitch(camPitchDeg)
-              try { logger.debug('HexGrid: Save now wrote hexgrid.camera', obj) } catch (err) {}
-              try { setRawCameraJson(JSON.stringify(obj, null, 2)) } catch (err) {}
-            } catch (err) { logger.warn('Failed to save camera', err) }
+              try { logger.debug('HexGrid: Save now wrote hexgrid.camera', obj) } catch (_err) {}
+              try { setRawCameraJson(JSON.stringify(obj, null, 2)) } catch (_err) {}
+            } catch (_err) { logger.warn('Failed to save camera', err) }
           }} style={{ padding: '6px 8px', borderRadius: 6, background: 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.06)' }}>Save now</button>
           <div style={{ fontSize: 12, color: '#9fb0d6', alignSelf: 'center' }}>Click to force-save camera to storage</div>
         </div>
@@ -4010,14 +4009,14 @@ export const HexGrid = <T = unknown>({
         <div style={{ marginTop: 8, marginBottom: 6, borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: 8 }}>
           <div style={{ fontWeight: '600', marginBottom: 6 }}>Idle rotation</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}><input type="checkbox" checked={(workerDebug as any).idleRotationEnabled ?? true} onChange={(e) => { const v = e.target.checked; setWorkerDebug((prev) => { const next = { ...prev, idleRotationEnabled: v }; try { workerDebugRef.current = next } catch (err) {} ; return next }) }} /> Enable</label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}><input type="checkbox" checked={(workerDebug as any).idleRotationEnabled ?? true} onChange={(e) => { const v = e.target.checked; setWorkerDebug((prev) => { const next = { ...prev, idleRotationEnabled: v }; try { workerDebugRef.current = next } catch (_err) {} ; return next }) }} /> Enable</label>
             <div style={{ fontSize: 12, color: '#ccc' }}>Auto-rotate when idle (3D only)</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
             <div style={{ width: 80 }}>Delay</div>
             <input type="range" min={500} max={15000} step={100} value={(workerDebug as any).idleRotationDelayMs ?? 3500} onChange={(e) => {
               const v = Number(e.target.value)
-              setWorkerDebug((prev) => { const next = { ...prev, idleRotationDelayMs: v }; try { workerDebugRef.current = next } catch (err) {} ; return next })
+              setWorkerDebug((prev) => { const next = { ...prev, idleRotationDelayMs: v }; try { workerDebugRef.current = next } catch (_err) {} ; return next })
             }} style={{ flex: 1 }} />
             <div style={{ width: 70, textAlign: 'right' }}>{(workerDebug as any).idleRotationDelayMs ?? 3500}ms</div>
           </div>
@@ -4025,7 +4024,7 @@ export const HexGrid = <T = unknown>({
             <div style={{ width: 80 }}>Speed</div>
             <input type="range" min={0} max={60} step={0.5} value={(workerDebug as any).idleRotationDegPerSec ?? 6} onChange={(e) => {
               const v = Number(e.target.value)
-              setWorkerDebug((prev) => { const next = { ...prev, idleRotationDegPerSec: v }; try { workerDebugRef.current = next } catch (err) {} ; return next })
+              setWorkerDebug((prev) => { const next = { ...prev, idleRotationDegPerSec: v }; try { workerDebugRef.current = next } catch (_err) {} ; return next })
             }} style={{ flex: 1 }} />
             <div style={{ width: 70, textAlign: 'right' }}>{(workerDebug as any).idleRotationDegPerSec ?? 6}°/s</div>
           </div>
@@ -4315,7 +4314,7 @@ export const HexGrid = <T = unknown>({
             <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <input type="checkbox" checked={!!workerDebug.clusterParityUvShift} onChange={(e) => setWorkerDebug({...workerDebug, clusterParityUvShift: e.target.checked})} /> Parity UV shift
             </label>
-            <div style={{ fontSize: 11, color: '#ccc' }}>Horizontally nudge odd rows' UVs by half a tile width to reduce alternating seams.</div>
+            <div style={{ fontSize: 11, color: '#ccc' }}>Horizontally nudge odd rows&apos; UVs by half a tile width to reduce alternating seams.</div>
           </div>
           <div style={{ marginBottom: 6, display: 'flex', gap: 8, alignItems: 'center' }}>
             <div style={{ width: 120 }}>Fill mode</div>
@@ -4497,11 +4496,11 @@ export const HexGrid = <T = unknown>({
                   // are definitely reflected in-memory before we persist them.
                   try {
                     workerDebugRef.current = dbg
-                  } catch (err) {}
+                  } catch (_err) {}
                   try {
                     // Update React state (harmless if same) so the persisted value is canonical
                     setWorkerDebug(dbg)
-                  } catch (err) {}
+                  } catch (_err) {}
                   // Explicitly persist current debug settings to localStorage
                   try {
                     if (typeof window !== 'undefined') {
@@ -4755,7 +4754,7 @@ function drawHexagon(
         tmpCtx.globalAlpha = Math.max(0.08, Math.min(0.35, expand * 3))
         try {
           tmpCtx.drawImage(texture, outer.srcX, outer.srcY, outer.srcW, outer.srcH, 0, 0, tmp.width, tmp.height)
-        } catch (err) {
+        } catch (_err) {
           // fallback to inner-only if drawing fails
           tmpCtx.globalAlpha = 1
         }
@@ -4765,7 +4764,7 @@ function drawHexagon(
       tmpCtx.globalAlpha = 1
       try {
         tmpCtx.drawImage(texture, inner.srcX, inner.srcY, inner.srcW, inner.srcH, 0, 0, tmp.width, tmp.height)
-      } catch (err) {
+      } catch (_err) {
         // If this fails, fall back to nothing; we'll draw fallback fill below
       }
 
@@ -4995,7 +4994,7 @@ function isPointInHexagon(px: number, py: number, position: [number, number, num
   const ax = Math.abs(dx)
   const ay = Math.abs(dy)
 
-  const w = radius * 2
+  const _w = radius * 2
   const h = Math.sqrt(3) * radius
 
   // If point is in central rectangle region, it's inside
@@ -5264,7 +5263,7 @@ function initializeInfectionSystem(
 }
 
 // Evolve the infection system continuously
-function evolveInfectionSystem(
+function _evolveInfectionSystem(
   prevState: InfectionSystemState, 
   positions: [number, number, number][], 
   photos: Photo[], 
@@ -5291,17 +5290,17 @@ function evolveInfectionSystem(
   
   // Analyze current connected components to prioritize bridge-building
   const photoClusters = new Map<Photo, number[][]>() // photo -> array of components
-  for (const [index, infection] of newInfections) {
+  for (const [_index, infection] of newInfections) {
     if (!photoClusters.has(infection.photo)) {
       photoClusters.set(infection.photo, [])
     }
   }
   
   // Find connected components for each photo
-  for (const [photo, components] of photoClusters) {
+  for (const [photo, _components] of photoClusters) {
     const photoIndices = Array.from(newInfections.entries())
-      .filter(([_, infection]) => infection.photo.id === photo.id)
-      .map(([index, _]) => index)
+      .filter(([_idx, infection]) => infection.photo.id === photo.id)
+      .map(([index, _inf]) => index)
     
     if (photoIndices.length === 0) continue
     
@@ -5362,7 +5361,7 @@ function evolveInfectionSystem(
         // Count infected neighbors
         let infectedNeighbors = 0
         let samePhotoNeighbors = 0
-        let differentPhotoNeighbors = 0
+        let _differentPhotoNeighbors = 0
         
         for (const [otherIndex, otherInfection] of newInfections) {
           if (otherIndex === infectedIndex) continue
@@ -5376,7 +5375,7 @@ function evolveInfectionSystem(
             if (otherInfection.photo.id === infection.photo.id) {
               samePhotoNeighbors++
             } else {
-              differentPhotoNeighbors++
+              _differentPhotoNeighbors++
             }
           }
         }
@@ -5469,7 +5468,7 @@ function evolveInfectionSystem(
         // Rationale: isolated spots (few same-photo neighbors) should be easier to capture so
         // small fragments can grow and connect. We apply a smooth multiplier that is larger
         // when samePhotoNeighbors is lower. The factor is clamped to avoid runaway probabilities.
-        const MAX_NEIGHBORS = 6
+        const _MAX_NEIGHBORS = 6
         // When samePhotoNeighbors == 0 -> boostFactor ~ 1.7 ; ==1 -> ~1.35 ; >=2 -> ~1.0
   const sameNeighborDeficit = Math.max(0, 2 - samePhotoNeighbors)
   // Use the live debug override passed into this evolution step, or a sane default.
@@ -5514,7 +5513,7 @@ function evolveInfectionSystem(
       let score = 0
       
       // Check if this jump would connect multiple components of the same photo
-      for (const [photo, components] of photoClusters) {
+      for (const [_photo, components] of photoClusters) {
         if (components.length <= 1) continue // No need to connect if already connected
         
         let connectedComponents = 0
@@ -5730,7 +5729,7 @@ function evolveInfectionSystem(
     }
     
     if (nearbyInfections.length > 0) {
-      const [competitorIndex, competitorInfection] = nearbyInfections[Math.floor(Math.random() * nearbyInfections.length)]
+      const [_competitorIndex, competitorInfection] = nearbyInfections[Math.floor(Math.random() * nearbyInfections.length)]
       
       // Competition favors connecting same-photo components
       const currentComponents = (photoClusters.get(currentInfection.photo) || []).length
@@ -6011,7 +6010,7 @@ function calculateUvBoundsFromGridPosition(
 }
 
 // Continuous optimization to improve image arrangements and create contiguous clusters
-function optimizeImageArrangements(
+function _optimizeImageArrangements(
   infections: Map<number, Infection>,
   positions: [number, number, number][],
   hexRadius: number,
@@ -6027,7 +6026,7 @@ function optimizeImageArrangements(
   }
 
   // For each photo, assign grid positions to connected components
-  for (const [photo, indices] of photoClusters) {
+  for (const [_photo, indices] of photoClusters) {
     if (indices.length === 0) continue
 
     // Find connected components for this photo
@@ -6306,7 +6305,7 @@ function calculateSwappedContiguity(
   hexRadius: number,
   fromIndex: number,
   toIndex: number,
-  infections: Map<number, Infection>
+  _infections: Map<number, Infection>
 ): number {
   // Create a temporary copy of indices with the swap
   const tempIndices = [...indices]
@@ -6320,7 +6319,7 @@ function calculateSwappedContiguity(
 }
 
 // Calculate overall arrangement quality for a cluster
-function calculateClusterQuality(
+function _calculateClusterQuality(
   indices: number[],
   positions: [number, number, number][],
   hexRadius: number
@@ -6382,7 +6381,7 @@ function calculateContiguityScore(
 }
 
 // Update grid positions for connected components
-function updateConnectedComponentGridPositions(
+function _updateConnectedComponentGridPositions(
   infections: Map<number, Infection>,
   positions: [number, number, number][],
   hexRadius: number
@@ -6395,7 +6394,7 @@ function updateConnectedComponentGridPositions(
     photoClusters.get(infection.photo)!.push(index)
   }
 
-  for (const [photo, indices] of photoClusters) {
+  for (const [_photo, indices] of photoClusters) {
     if (indices.length === 0) continue
 
     if (indices.length === 1) {

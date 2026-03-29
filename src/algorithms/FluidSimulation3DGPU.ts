@@ -345,7 +345,7 @@ export class FluidSimulation3DGPU {
   }
 
   // Public API implementation
-  addDensity(x: number, y: number, z: number, amount: number, radius: number) {
+  addDensity(x: number, y: number, z: number, amount: number, _radius: number) {
      if (!this.densityTextures || !this.device) return;
      
      // Write to texture (simplistic point write)
@@ -370,7 +370,7 @@ export class FluidSimulation3DGPU {
      }
   }
   
-  addForce(pos: Vector3, force: Vector3, radius: number) {
+  addForce(pos: Vector3, force: Vector3, _radius: number) {
       if (!this.velocityTextures || !this.device) return;
       
       const data = new Float32Array([force.x, force.y, force.z, 0.0]);
@@ -392,12 +392,12 @@ export class FluidSimulation3DGPU {
      }
   }
   
-  getDensityAt(pos: Vector3): number {
+  getDensityAt(_pos: Vector3): number {
       // Requires async readback, returning 0 for sync API
       return 0; 
   }
   
-  getVelocityAt(pos: Vector3): Vector3 {
+  getVelocityAt(_pos: Vector3): Vector3 {
       return new Vector3(0,0,0);
   }
   

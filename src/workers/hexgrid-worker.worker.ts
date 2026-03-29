@@ -45,7 +45,7 @@ export interface InfectionSystemState {
   }>;
 }
 
-const WORKER_ID = Math.random().toString(36).substring(7);
+const _WORKER_ID = Math.random().toString(36).substring(7);
 
 /** Guarded log – only emits when workerDebug.debugLogs is true. */
 function debugLog(...args: unknown[]) {
@@ -120,7 +120,7 @@ function safePostError(err: unknown) {
       type: 'error',
       error: err instanceof Error ? err.message : String(err),
     });
-  } catch (e) {}
+  } catch (_e) {}
 }
 
 function getGridBounds(positions: [number, number, number][]) {
@@ -736,8 +736,8 @@ function assignClusterGridPositions(
             if (compactGaps) {
               for (let row = minRow; row <= maxRow; row++) {
                 const colsInRow = Array.from(latticeCoords.entries())
-                  .filter(([_, lc]) => lc.row === row)
-                  .map(([_, lc]) => lc.col)
+                  .filter(([_key, lc]) => lc.row === row)
+                  .map(([_key, lc]) => lc.col)
                   .sort((a, b) => a - b);
 
                 const colMap = new Map<number, number>();
@@ -1008,7 +1008,7 @@ function assignClusterGridPositions(
               'tiles'
             );
           }
-        } catch (e) {
+        } catch (_e) {
           // if anything goes wrong, keep original tilesX/tilesY
         }
 
@@ -1121,7 +1121,7 @@ function assignClusterGridPositions(
           const clusterSet = new Set(cluster);
 
           // Helper: tile bounds check
-          const inTileBounds = (c: number, r: number) =>
+          const _inTileBounds = (c: number, r: number) =>
             c >= 0 && c < tilesX && r >= 0 && r < tilesY;
 
           // Tile occupancy map key
@@ -1141,20 +1141,20 @@ function assignClusterGridPositions(
           }
           cx /= cluster.length;
           cy /= cluster.length;
-          let originIndex = cluster[0];
+          let _originIndex = cluster[0];
           let bestD = Infinity;
           for (const id of cluster) {
             const p = positions[id];
             const d = Math.hypot(p[0] - cx, p[1] - cy);
             if (d < bestD) {
               bestD = d;
-              originIndex = id;
+              _originIndex = id;
             }
           }
 
           // Tile-first scanline assignment: build tiles in row-major order, then pick nearest unassigned node
-          const startCol = Math.floor(tilesX / 2);
-          const startRow = Math.floor(tilesY / 2);
+          const _startCol = Math.floor(tilesX / 2);
+          const _startRow = Math.floor(tilesY / 2);
 
           // Ensure normalized dims aren't tiny
           const MIN_NORM = 1e-6;
@@ -1174,7 +1174,7 @@ function assignClusterGridPositions(
           }
 
           // Helper: compute tile center in cluster-space
-          const parityAware = !!workerDebug.clusterParityAware;
+          const _parityAware = !!workerDebug.clusterParityAware;
 
           // compute physical horizontal offset for hex parity from cluster geometry
           const hexSpacingFactor = Number(workerDebug.hexSpacing) || 1;
@@ -1212,7 +1212,7 @@ function assignClusterGridPositions(
               if (!isFinite(realHorizSpacing) || realHorizSpacing <= 0)
                 realHorizSpacing = Math.sqrt(3) * hexRadius * hexSpacingFactor;
             }
-          } catch (e) {
+          } catch (_e) {
             // fallback to default computed spacing
             realHorizSpacing = Math.sqrt(3) * hexRadius * hexSpacingFactor;
           }
@@ -1548,8 +1548,8 @@ function postOptimizationMerge(
       arr.push(idx);
       byPhoto.set(inf.photo.id, arr);
     }
-    let merges = 0;
-    for (const [photoId, inds] of byPhoto) {
+    let _merges = 0;
+    for (const [_photoId, inds] of byPhoto) {
       const comps = findConnectedComponents(inds, positions, hexRadius);
       const small = comps.filter((c) => c.length > 0 && c.length <= threshold);
       const big = comps.filter((c) => c.length > threshold);
@@ -1613,14 +1613,14 @@ function postOptimizationMerge(
               photo: infections.get(best[0])!.photo,
             });
           }
-          merges++;
+          _merges++;
           if (debug && workerDebug.mergeLogs)
             debugLog(`[merge] moved ${s.length} -> ${recipientId}`);
         }
       }
     }
-  } catch (e) {
-    if (debug) console.warn('[merge] failed', e);
+  } catch (_e) {
+    if (debug) console.warn('[merge] failed', _e);
   }
 }
 
@@ -1638,7 +1638,7 @@ function normalizePrevState(prevState: any): {
     } else if (Array.isArray(prevState.infections)) {
       try {
         infectionsMap = new Map<number, Infection>(prevState.infections);
-      } catch (e) {
+      } catch (_e) {
         infectionsMap = new Map<number, Infection>();
       }
     } else if (
@@ -1650,7 +1650,7 @@ function normalizePrevState(prevState: any): {
         infectionsMap = new Map<number, Infection>(
           Array.from(prevState.infections.entries())
         );
-      } catch (e) {
+      } catch (_e) {
         infectionsMap = new Map<number, Infection>();
       }
     } else {
@@ -1749,7 +1749,7 @@ function evolveInfectionSystem(
 
         // Calculate cluster sizes for mutation scaling
         const clusterSizes = new Map<string, number>();
-        for (const [_, inf] of infectionsMap) {
+        for (const [_idx, inf] of infectionsMap) {
           clusterSizes.set(
             inf.photo.id,
             (clusterSizes.get(inf.photo.id) || 0) + 1
@@ -2027,7 +2027,7 @@ function evolveInfectionSystem(
       const territoryCounts = new Map<string, number>();
       const photoVelocities = new Map<string, number>();
 
-      for (const [_, inf] of newInfections) {
+      for (const [_idx, inf] of newInfections) {
         territoryCounts.set(
           inf.photo.id,
           (territoryCounts.get(inf.photo.id) || 0) + 1
@@ -2260,7 +2260,7 @@ function mergeDebugFromPayload(d: any) {
   // Merge into workerDebug
   try {
     Object.assign(workerDebug, d);
-  } catch (e) {}
+  } catch (_e) {}
 }
 
 self.onmessage = function (ev: MessageEvent) {
@@ -2354,7 +2354,7 @@ self.onmessage = function (ev: MessageEvent) {
               type: 'cache-ready',
               data: { elapsed, positions: positions.length },
             });
-          } catch (e) {}
+          } catch (_e) {}
         } catch (e) {
           console.error('[hexgrid-worker] Error during cache pre-build:', e);
           // Mark cache as ready anyway to allow evolution to proceed
@@ -2378,7 +2378,7 @@ self.onmessage = function (ev: MessageEvent) {
               type: 'deferred-evolve',
               data: { reason: 'cache-not-ready' },
             });
-          } catch (e) {}
+          } catch (_e) {}
           // Re-process the message
           self.onmessage!(ev);
         }, 100);
@@ -2399,7 +2399,7 @@ self.onmessage = function (ev: MessageEvent) {
             workerDebug.evolveIntervalMs
           );
         }
-      } catch (e) {}
+      } catch (_e) {}
       const now = Date.now();
       const interval =
         typeof workerDebug.evolutionIntervalMs === 'number'
@@ -2448,7 +2448,7 @@ self.onmessage = function (ev: MessageEvent) {
                 reason,
               },
             });
-          } catch (e) {}
+          } catch (_e) {}
         }
         return;
       }
@@ -2468,9 +2468,9 @@ self.onmessage = function (ev: MessageEvent) {
                 payloadKeys: Object.keys(payload || {}),
               },
             });
-          } catch (e) {}
+          } catch (_e) {}
         }
-      } catch (e) {}
+      } catch (_e) {}
 
       // Emit a lightweight processing marker so the client can see evolve processing started
       try {
@@ -2480,9 +2480,9 @@ self.onmessage = function (ev: MessageEvent) {
               type: 'processing-evolve',
               data: { startedAt: now, payloadKeys: Object.keys(payload || {}) },
             });
-          } catch (e) {}
+          } catch (_e) {}
         }
-      } catch (e) {}
+      } catch (_e) {}
 
       const state = payload.prevState ?? payload.state ?? raw.state ?? null;
       const positions = payload.positions ?? raw.positions ?? [];
@@ -2525,7 +2525,7 @@ self.onmessage = function (ev: MessageEvent) {
             type: 'error',
             error: 'Evolution timeout - possible infinite loop',
           });
-        } catch (e) {}
+        } catch (_e) {}
       }, 10000);
 
       try {
@@ -2601,7 +2601,7 @@ self.onmessage = function (ev: MessageEvent) {
         try {
           cache.lastGeneration = res.generation;
           cache.lastInfectionCount = res.infections ? res.infections.size : 0;
-        } catch (e) {}
+        } catch (_e) {}
       } catch (e) {
         console.error('[hexgrid-worker] ❌ Failed to post evolved message:', e);
       }
@@ -2621,9 +2621,9 @@ self.onmessage = function (ev: MessageEvent) {
                 lastEvolutionTime: res.lastEvolutionTime,
               },
             });
-          } catch (e) {}
+          } catch (_e) {}
         }
-      } catch (e) {}
+      } catch (_e) {}
       return;
     }
 
@@ -2649,7 +2649,7 @@ self.onmessage = function (ev: MessageEvent) {
             type: 'optimized',
             data: { infections: Array.from(infections.entries()) },
           });
-        } catch (e) {}
+        } catch (_e) {}
       } catch (e) {
         safePostError(e);
       }
@@ -2662,12 +2662,12 @@ self.onmessage = function (ev: MessageEvent) {
 
 // Additional helpers that the optimizer uses (kept separate and consistent)
 
-function calculatePhotoContiguityCached(
+function _calculatePhotoContiguityCached(
   photoIdOrPhoto: string | Photo,
   indices: number[],
   positions: [number, number, number][],
   hexRadius: number,
-  debugLogs: boolean = true
+  _debugLogs: boolean = true
 ): number {
   const photoId =
     typeof photoIdOrPhoto === 'string'
@@ -2678,31 +2678,31 @@ function calculatePhotoContiguityCached(
     indices,
     positions,
     hexRadius,
-    debugLogs
+    _debugLogs
   );
 }
 
 function calculatePhotoContiguity(
-  photoId: string,
+  _photoId: string,
   indices: number[],
   positions: [number, number, number][],
   hexRadius: number,
-  debugLogs: boolean = true
+  _debugLogs: boolean = true
 ): number {
   const getNeighbors = (index: number) =>
     getNeighborsCached(index, positions, hexRadius);
   return _calculatePhotoContiguity(indices, positions, hexRadius, getNeighbors);
 }
 
-function calculateSwappedContiguityCached(
+function _calculateSwappedContiguityCached(
   photoId: string,
   indices: number[],
   positions: [number, number, number][],
   hexRadius: number,
   fromIndex: number,
   toIndex: number,
-  infections: Map<number, Infection>,
-  debugLogs: boolean = true
+  _infections: Map<number, Infection>,
+  _debugLogs: boolean = true
 ): number {
   const tempIndices = [...indices];
   const fromPos = tempIndices.indexOf(fromIndex);
@@ -2714,19 +2714,19 @@ function calculateSwappedContiguityCached(
     tempIndices,
     positions,
     hexRadius,
-    debugLogs
+    _debugLogs
   );
 }
 
-function analyzeLocalEnvironment(
+function _analyzeLocalEnvironment(
   centerIndex: number,
   infections: Map<number, Infection>,
   positions: [number, number, number][],
   hexRadius: number,
   radius: number = 2,
-  debugLogs: boolean = true
+  _debugLogs: boolean = true
 ) {
-  const centerPos = positions[centerIndex];
+  const _centerPos = positions[centerIndex];
   const localIndices: number[] = [];
   const visited = new Set<number>();
   const queue: Array<[number, number]> = [[centerIndex, 0]];
