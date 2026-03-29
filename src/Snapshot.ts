@@ -120,16 +120,16 @@ import {
   tsallisEntropy,
   klDivergence,
   jsDivergence,
-  _bhattacharyyaCoefficient,
-  _hellingerDistance,
-  _movingAverage,
-  _exponentialMovingAverage,
+  bhattacharyyaCoefficient as _bhattacharyyaCoefficient,
+  hellingerDistance as _hellingerDistance,
+  movingAverage as _movingAverage,
+  exponentialMovingAverage as _exponentialMovingAverage,
   doubleExponentialSmoothing,
   detectTrend,
   detectChangePoints,
-  _predictWinner,
-  _eulerCharacteristic,
-  _estimateBettiNumbers,
+  predictWinner as _predictWinner,
+  eulerCharacteristic as _eulerCharacteristic,
+  estimateBettiNumbers as _estimateBettiNumbers,
   compactness,
   sparkline,
   sparklineSvg,
@@ -138,43 +138,43 @@ import {
 } from './algorithms/AdvancedStatistics';
 
 import {
-  _BetaDistribution,
-  _DirichletDistribution,
-  _NormalDistribution,
-  _PoissonDistribution,
-  _ExponentialDistribution,
-  _MarkovChain,
+  BetaDistribution as _BetaDistribution,
+  DirichletDistribution as _DirichletDistribution,
+  NormalDistribution as _NormalDistribution,
+  PoissonDistribution as _PoissonDistribution,
+  ExponentialDistribution as _ExponentialDistribution,
+  MarkovChain as _MarkovChain,
   KalmanFilter,
-  _HiddenMarkovModel,
-  _bayesianABTest,
-  _bayesFactor,
-  _mapEstimate,
-  _learnMarkovChain,
-  _bootstrapConfidenceInterval,
-  _monteCarloIntegrate,
-  _mutualInformation,
-  _conditionalEntropy,
-  _normalizedMutualInformation,
-  _bayesianWinProbability,
+  HiddenMarkovModel as _HiddenMarkovModel,
+  bayesianABTest as _bayesianABTest,
+  bayesFactor as _bayesFactor,
+  mapEstimate as _mapEstimate,
+  learnMarkovChain as _learnMarkovChain,
+  bootstrapConfidenceInterval as _bootstrapConfidenceInterval,
+  monteCarloIntegrate as _monteCarloIntegrate,
+  mutualInformation as _mutualInformation,
+  conditionalEntropy as _conditionalEntropy,
+  normalizedMutualInformation as _normalizedMutualInformation,
+  bayesianWinProbability as _bayesianWinProbability,
   bayesianConquestRate,
-  _bayesianChangepoint,
+  bayesianChangepoint as _bayesianChangepoint,
   generateProbabilitySnapshot,
   type ProbabilitySnapshot,
 } from './algorithms/BayesianStatistics';
 
 import {
-  _detectOutliersZScore,
-  _detectOutliersModifiedZScore,
-  _detectOutliersIQR,
-  _detectGrowthSpikes,
-  _detectVarianceChanges,
+  detectOutliersZScore as _detectOutliersZScore,
+  detectOutliersModifiedZScore as _detectOutliersModifiedZScore,
+  detectOutliersIQR as _detectOutliersIQR,
+  detectGrowthSpikes as _detectGrowthSpikes,
+  detectVarianceChanges as _detectVarianceChanges,
   detectGameAnomalies,
-  _comprehensiveOutlierAnalysis,
-  _mahalanobisOutliers,
-  _localOutlierFactor,
-  _isolationForest,
-  _cusumChart,
-  _ewmaChart,
+  comprehensiveOutlierAnalysis as _comprehensiveOutlierAnalysis,
+  mahalanobisOutliers as _mahalanobisOutliers,
+  localOutlierFactor as _localOutlierFactor,
+  isolationForest as _isolationForest,
+  cusumChart as _cusumChart,
+  ewmaChart as _ewmaChart,
   type OutlierResult,
   type TimeSeriesAnomaly,
   type GameAnomaly,
@@ -182,8 +182,8 @@ import {
 } from './algorithms/OutlierDetection';
 
 import {
-  _findConnectedComponents,
-  _analyzeTerritorBoundaries,
+  findConnectedComponents as _findConnectedComponents,
+  analyzeTerritorBoundaries as _analyzeTerritorBoundaries,
 } from './algorithms/GraphAlgorithms';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -728,7 +728,7 @@ export function generateSnapshot(
 ): GameSnapshot {
   const {
     forecastHorizon = 10,
-    monteCarloSamples = 1000,
+    monteCarloSamples: _monteCarloSamples = 1000,
     includeFullHistory = false,
     calculateTopology = true,
     generateInsights = true,
@@ -1051,7 +1051,7 @@ export function generateSnapshot(
   const dominance = topPlayerShare; // Simplified dominance index
 
   // Competitiveness: inverse of lead
-  const topTwoShare =
+  const _topTwoShare =
     sortedBySize.length >= 2
       ? ((territoryCounts.get(sortedBySize[0]) ?? 0) +
           (territoryCounts.get(sortedBySize[1]) ?? 0)) /
