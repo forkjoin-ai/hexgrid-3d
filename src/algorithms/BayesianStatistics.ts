@@ -204,14 +204,18 @@ export class ExponentialDistribution {
 
 // Hidden Markov Model
 export class HiddenMarkovModel {
-  private states: string[];
+  private _states: string[];
   private transitions: Map<string, Map<string, number>>;
   private emissions: Map<string, Map<string, number>>;
 
   constructor(states: string[]) {
-    this.states = states;
+    this._states = states;
     this.transitions = new Map();
     this.emissions = new Map();
+  }
+
+  getStates(): string[] {
+    return this._states;
   }
 
   addTransition(from: string, to: string, probability: number): void {
