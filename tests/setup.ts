@@ -1,4 +1,8 @@
+import { setDefaultTimeout } from 'bun:test';
 import { GlobalRegistrator } from '@a0n/happy/global';
+
+// Match monorepo default (root bunfig / CLI); this package uses a local preload instead of ../../bun.preload.ts.
+setDefaultTimeout(30_000);
 
 // Register happy-dom globals before any tests run
 GlobalRegistrator.register();

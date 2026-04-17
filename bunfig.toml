@@ -10,7 +10,7 @@ coverageDir = "./src"
 
 # Performance optimizations
 rerunOnChange = true
-timeout = 5000
+timeout = 30000
 
 [install]
 # Cache optimization - prefer offline mode when packages are cached
