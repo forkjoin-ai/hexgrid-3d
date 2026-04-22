@@ -254,8 +254,8 @@ export const GameSphere: React.FC<GameSphereProps> = ({
   paused = false,
   children,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererInternalRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneInternalRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);

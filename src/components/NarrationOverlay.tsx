@@ -22,8 +22,8 @@ export const NarrationOverlay: React.FC<NarrationOverlayProps> = ({
   isVisible,
   onClose,
 }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Auto-scroll to latest message
   useEffect(() => {

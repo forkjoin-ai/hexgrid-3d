@@ -49,7 +49,7 @@ export function HexTerritoryGlobe({
   onSelectCell,
   onHoverCell,
 }: HexTerritoryGlobeProps): React.JSX.Element {
-  const meshRef = useRef<InstancedMesh>(null);
+  const meshRef = useRef<InstancedMesh | null>(null);
   const geometry = useMemo(() => new CircleGeometry(1, 6), []);
   const workingObject = useMemo(() => new Object3D(), []);
   const claimed = useMemo(() => asSet(claimedCellIds), [claimedCellIds]);

@@ -303,7 +303,7 @@ export const HexGrid = <T = unknown>({
     }
   }, [items, onHexClick, onItemClick])
 
-  const internalCanvasRef = useRef<HTMLCanvasElement>(null)
+  const internalCanvasRef = useRef<HTMLCanvasElement | null>(null)
   const canvasRef = externalCanvasRef || internalCanvasRef
   const workerRef = useRef<Worker | null>(null)
   // Stream control refs to coordinate long-running UI streaming from worker
