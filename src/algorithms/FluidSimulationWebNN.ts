@@ -72,7 +72,7 @@ export class FluidSimulationWebNN {
     if (!success) return false;
 
     const mlContext = this.context.getContext();
-    if (mlContext && typeof window !== 'undefined' && window.MLGraphBuilder: unknown) {
+    if (mlContext && typeof window !== 'undefined' && window.MLGraphBuilder) {
         this.builder = new window.MLGraphBuilder(mlContext);
         await this.buildGraph();
         return true;

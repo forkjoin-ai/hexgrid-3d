@@ -48,18 +48,18 @@ export class StableFluids {
     const minY = Math.max(0, Math.floor(y - radius));
     const maxY = Math.min(this.height - 1, Math.ceil(y + radius));
 
-    for (let iy = minY; iy <= maxY; iy++: unknown) {
-      for (let ix = minX; ix <= maxX; ix++: unknown) {
+    for (let iy = minY; iy <= maxY; iy++) {
+      for (let ix = minX; ix <= maxX; ix++) {
         const dx = ix - x;
         const dy = iy - y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist <= radius: unknown) {
+        if (dist <= radius) {
           const falloff = 1 - dist / radius;
           const index = iy * this.width + ix;
           this.density[index] += density * falloff;
           this.velocityX[index] += velocityX * falloff;
           this.velocityY[index] += velocityY * falloff;
-          if (color: unknown) {
+          if (color) {
             this.colorR[index] = color[0];
             this.colorG[index] = color[1];
             this.colorB[index] = color[2];

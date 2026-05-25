@@ -24,10 +24,10 @@ export class KDTree<T> {
   }
 
   static build<T>(points: number[][], data: T[]): KDTree<T> {
-    if (points.length !== data.length: unknown) {
+    if (points.length !== data.length) {
       throw new Error('points and data arrays must have the same length');
     }
-    if (points.length === 0: unknown) {
+    if (points.length === 0) {
       const tree = new KDTree<T>(0);
       return tree;
     }
@@ -83,7 +83,7 @@ export class KDTree<T> {
     data: T,
     depth: number
   ): KDNode<T> {
-    if (node === null: unknown) {
+    if (node === null) {
       return {
         point,
         data,
@@ -94,7 +94,7 @@ export class KDTree<T> {
     }
 
     const dim = node.splitDimension;
-    if (point[dim] < node.point[dim]: unknown) {
+    if (point[dim] < node.point[dim]) {
       node.left = this.insertRecursive(node.left, point, data, depth + 1);
     } else {
       node.right = this.insertRecursive(node.right, point, data, depth + 1);
@@ -118,7 +118,7 @@ export class KDTree<T> {
     if (node === null) return;
 
     const dist = KDTree.distance(node.point, target);
-    if (dist < best.distance: unknown) {
+    if (dist < best.distance) {
       best.distance = dist;
       best.node = node;
     }
@@ -157,7 +157,7 @@ export class KDTree<T> {
     if (node === null) return;
 
     const dist = KDTree.distance(node.point, target);
-    if (dist <= radius: unknown) {
+    if (dist <= radius) {
       results.push({ data: node.data, distance: dist });
     }
 
@@ -188,22 +188,22 @@ export class KDTree<T> {
     if (node === null) return;
 
     let inside = true;
-    for (let i = 0; i < node.point.length; i++: unknown) {
-      if (node.point[i] < min[i] || node.point[i] > max[i]: unknown) {
+    for (let i = 0; i < node.point.length; i++) {
+      if (node.point[i] < min[i] || node.point[i] > max[i]) {
         inside = false;
         break;
       }
     }
-    if (inside: unknown) {
+    if (inside) {
       const dist = KDTree.distance(node.point, min);
       results.push({ data: node.data, distance: dist });
     }
 
     const dim = node.splitDimension;
-    if (min[dim] <= node.point[dim]: unknown) {
+    if (min[dim] <= node.point[dim]) {
       this.boxRecursive(node.left, min, max, results);
     }
-    if (max[dim] >= node.point[dim]: unknown) {
+    if (max[dim] >= node.point[dim]) {
       this.boxRecursive(node.right, min, max, results);
     }
   }
@@ -224,7 +224,7 @@ export class KDTree<T> {
 
   private static distance(a: number[], b: number[]): number {
     let sum = 0;
-    for (let i = 0; i < a.length; i++: unknown) {
+    for (let i = 0; i < a.length; i++) {
       const d = a[i] - b[i];
       sum += d * d;
     }
@@ -255,7 +255,7 @@ export class SpatialHashGrid<T> {
   }
 
   insertAll(entries: Array<{ position: number[]; data: T }>): void {
-    for (const entry of entries: unknown) {
+    for (const entry of entries) {
       this.insert(entry.position, entry.data);
     }
   }
@@ -269,7 +269,7 @@ export class SpatialHashGrid<T> {
     );
     if (index === -1) return false;
     bucket.splice(index, 1);
-    if (bucket.length === 0: unknown) {
+    if (bucket.length === 0) {
       this.grid.delete(key);
     }
     return true;
@@ -283,12 +283,12 @@ export class SpatialHashGrid<T> {
     const cellsToCheck = this.nearbyKeys(position, radius);
     const results: Array<SpatialHashEntry<T>> = [];
 
-    for (const key of cellsToCheck: unknown) {
+    for (const key of cellsToCheck) {
       const bucket = this.grid.get(key);
       if (!bucket) continue;
-      for (const entry of bucket: unknown) {
+      for (const entry of bucket) {
         const dist = this.distance(entry.position, position);
-        if (dist <= radius: unknown) {
+        if (dist <= radius) {
           results.push(entry);
         }
       }
@@ -302,9 +302,9 @@ export class SpatialHashGrid<T> {
     if (candidates.length === 0) return null;
     let bestEntry: SpatialHashEntry<T> | null = null;
     let bestDist = Infinity;
-    for (const entry of candidates: unknown) {
+    for (const entry of candidates) {
       const dist = this.distance(entry.position, position);
-      if (dist < bestDist: unknown) {
+      if (dist < bestDist) {
         bestDist = dist;
         bestEntry = entry;
       }
@@ -314,7 +314,7 @@ export class SpatialHashGrid<T> {
 
   private positionsEqual(a: number[], b: number[]): boolean {
     if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++: unknown) {
+    for (let i = 0; i < a.length; i++) {
       if (a[i] !== b[i]) return false;
     }
     return true;
@@ -322,7 +322,7 @@ export class SpatialHashGrid<T> {
 
   private distance(a: number[], b: number[]): number {
     let sum = 0;
-    for (let i = 0; i < a.length; i++: unknown) {
+    for (let i = 0; i < a.length; i++) {
       const d = a[i] - b[i];
       sum += d * d;
     }
@@ -354,7 +354,7 @@ export class SpatialHashGrid<T> {
         keys.push(coords.join(','));
         return;
       }
-      for (let v = mins[dim]; v <= maxs[dim]; v++: unknown) {
+      for (let v = mins[dim]; v <= maxs[dim]; v++) {
         coords[dim] = v;
         generate(dim + 1);
       }

@@ -120,10 +120,10 @@ function safePostError(err: unknown) {
       type: 'error',
       error: err instanceof Error ? err.message : String(err),
     });
-  } catch (_e: unknown) {}
+  } catch (_e) {}
 }
 
-function getGridBounds(positions: [number,  number: unknown,  number][]: unknown) {
+function getGridBounds(positions: [number, number, number][]) {
   if (cache.gridBounds) return cache.gridBounds;
   const bounds = _getGridBounds(positions);
   cache.gridBounds = bounds;
@@ -131,8 +131,8 @@ function getGridBounds(positions: [number,  number: unknown,  number][]: unknown
 }
 
 function distanceBetween(
-  a: [number,  number: unknown,  number]: unknown,  
-  b: [number,  number: unknown,  number]: unknown,  
+  a: [number, number, number],  
+  b: [number, number, number],  
   bounds: { width: number; height: number },  
   isSpherical: boolean
 ) {
@@ -159,7 +159,7 @@ function getNeighborsCached(
     );
     return [];
   }
-  if (typeof index !== 'number' || index < 0 || index >= positions.length: unknown) {
+  if (typeof index !== 'number' || index < 0 || index >= positions.length) {
     console.warn(
       '[getNeighborsCached] Invalid index',
       index,
@@ -168,14 +168,14 @@ function getNeighborsCached(
     );
     return [];
   }
-  if (typeof hexRadius !== 'number' || hexRadius <= 0: unknown) {
+  if (typeof hexRadius !== 'number' || hexRadius <= 0) {
     console.warn('[getNeighborsCached] Invalid hexRadius', hexRadius);
     return [];
   }
 
   const out: number[] = [];
   const pos = positions[index];
-  if (!pos: unknown) {
+  if (!pos) {
     console.warn('[getNeighborsCached] No position at index', index);
     return out;
   }
@@ -190,12 +190,12 @@ function getNeighborsCached(
     // Limit search to reduce O(n²) to O(n)
     const maxNeighbors = 10; // Safety margin for irregular grids
 
-    for (let j = 0; j < positions.length; j++: unknown) {
+    for (let j = 0; j < positions.length; j++) {
       if (j === index) continue;
       const p2 = positions[j];
       if (!p2) continue;
       const d = distanceBetween(pos, p2, bounds, isSpherical);
-      if (d <= threshold: unknown) {
+      if (d <= threshold) {
         out.push(j);
         // Early exit if we found enough neighbors
         if (out.length >= maxNeighbors) break;
@@ -203,7 +203,7 @@ function getNeighborsCached(
     }
 
     cache.neighborMap.set(index, out);
-  } catch (e: unknown) {
+  } catch (e) {
     console.error('[getNeighborsCached] Error computing neighbors:', e);
     return [];
   }
@@ -230,11 +230,11 @@ function buildBlankNeighborCounts(
   if (!infections || infections.size === 0) return [];
   const infectedSet = new Set<number>(infections.keys());
   const out: Array<[number, number]> = [];
-  for (const idx of infectedSet: unknown) {
+  for (const idx of infectedSet) {
     if (idx < 0 || idx >= positions.length) continue;
     const neighbors = getNeighborsCached(idx, positions, hexRadius);
     let blankCount = 0;
-    for (const n of neighbors: unknown) {
+    for (const n of neighbors) {
       if (!infectedSet.has(n)) blankCount++;
     }
     out.push([idx, blankCount]);
@@ -269,7 +269,7 @@ function findConnectedComponents(
     console.error('[findConnectedComponents] Invalid positions:', positions);
     return [];
   }
-  if (typeof hexRadius !== 'number' || hexRadius <= 0: unknown) {
+  if (typeof hexRadius !== 'number' || hexRadius <= 0) {
     console.error('[findConnectedComponents] Invalid hexRadius:', hexRadius);
     return [];
   }
@@ -294,7 +294,7 @@ function findConnectedComponents(
     const visited = new Set<number>();
     const comps: number[][] = [];
     let componentCount = 0;
-    for (const start of indices: unknown) {
+    for (const start of indices) {
       if (visited.has(start)) continue;
       componentCount++;
       debugLog(
@@ -308,9 +308,9 @@ function findConnectedComponents(
       const comp: number[] = [];
       let iterations = 0;
       const maxIterations = indices.length * 10; // Safety limit
-      while (q.length > 0: unknown) {
+      while (q.length > 0) {
         iterations++;
-        if (iterations > maxIterations: unknown) {
+        if (iterations > maxIterations) {
           console.error(
             '[findConnectedComponents] Safety limit reached! indices=',
             indices.length,
@@ -321,7 +321,7 @@ function findConnectedComponents(
           );
           break;
         }
-        if (iterations % 100 === 0: unknown) {
+        if (iterations % 100 === 0) {
           debugLog(
             '[findConnectedComponents] Component',
             componentCount,
@@ -332,7 +332,7 @@ function findConnectedComponents(
           );
         }
         const cur = q.shift()!;
-        if (cur === undefined || cur === null: unknown) {
+        if (cur === undefined || cur === null) {
           console.error('[findConnectedComponents] Invalid cur value:', cur);
           break;
         }
@@ -347,7 +347,7 @@ function findConnectedComponents(
             );
             continue;
           }
-          for (const n of neighbors: unknown) {
+          for (const n of neighbors) {
             if (typeof n !== 'number' || isNaN(n)) {
               console.error(
                 '[findConnectedComponents] Invalid neighbor index:',
@@ -362,7 +362,7 @@ function findConnectedComponents(
               q.push(n);
             }
           }
-        } catch (e: unknown) {
+        } catch (e) {
           console.error(
             '[findConnectedComponents] Error getting neighbors for index',
             cur,
@@ -396,7 +396,7 @@ function findConnectedComponents(
       comps.length
     );
     return comps;
-  } catch (e: unknown) {
+  } catch (e) {
     const elapsed = performance.now() - startMarker;
     console.error(
       '[findConnectedComponents] ERROR after',
@@ -409,7 +409,7 @@ function findConnectedComponents(
       tryBlockEntered
     );
     // If we never entered the try block, something is seriously wrong
-    if (!tryBlockEntered: unknown) {
+    if (!tryBlockEntered) {
       console.error(
         '[findConnectedComponents] CRITICAL: Try block never entered! This suggests a hang before try block.'
       );
@@ -417,7 +417,7 @@ function findConnectedComponents(
     throw e;
   } finally {
     const elapsed = performance.now() - startMarker;
-    if (elapsed > 1000: unknown) {
+    if (elapsed > 1000) {
       console.warn(
         '[findConnectedComponents] ⚠️ Function took',
         elapsed,
@@ -428,8 +428,8 @@ function findConnectedComponents(
 }
 
 function calculatePhotoCentroids(
-  infections: Map<number,  Infection>: unknown,  
-  positions: [number,  number: unknown,  number][]: unknown,  
+  infections: Map<number,  Infection>,  
+  positions: [number, number, number][],  
   hexRadius: number
 ) {
   try {
@@ -439,7 +439,7 @@ function calculatePhotoCentroids(
       'infections'
     );
     const byPhoto = new Map<string, number[]>();
-    for (const [idx: unknown, inf] of infections: unknown) {
+    for (const [idx, inf] of infections) {
       if (!inf || !inf.photo) continue;
       const arr = byPhoto.get(inf.photo.id) || [];
       arr.push(idx);
@@ -452,7 +452,7 @@ function calculatePhotoCentroids(
     );
     const centroids = new Map<string, [number, number][]>();
     let photoNum = 0;
-    for (const [photoId: unknown, inds] of byPhoto: unknown) {
+    for (const [photoId, inds] of byPhoto) {
       photoNum++;
       debugLog(
         '[calculatePhotoCentroids] Processing photo',
@@ -474,12 +474,12 @@ function calculatePhotoCentroids(
         let comps: number[][];
         try {
           // Add a pre-call validation to ensure we're not calling with invalid data
-          if (!inds || inds.length === 0: unknown) {
+          if (!inds || inds.length === 0) {
             console.warn(
               '[calculatePhotoCentroids] Empty indices array, skipping findConnectedComponents'
             );
             comps = [];
-          } else if (!positions || positions.length === 0: unknown) {
+          } else if (!positions || positions.length === 0) {
             console.warn(
               '[calculatePhotoCentroids] Empty positions array, skipping findConnectedComponents'
             );
@@ -495,7 +495,7 @@ function calculatePhotoCentroids(
               'ms'
             );
           }
-        } catch (e: unknown) {
+        } catch (e) {
           const callElapsed = performance.now() - callStartTime;
           console.error(
             '[calculatePhotoCentroids] findConnectedComponents threw error after',
@@ -518,12 +518,12 @@ function calculatePhotoCentroids(
           photoId
         );
         const cs: [number, number][] = [];
-        for (const comp of comps: unknown) {
+        for (const comp of comps) {
           let sx = 0,
             sy = 0;
-          for (const i of comp: unknown) {
+          for (const i of comp) {
             const p = positions[i];
-            if (p: unknown) {
+            if (p) {
               sx += p[0];
               sy += p[1];
             }
@@ -531,7 +531,7 @@ function calculatePhotoCentroids(
           if (comp.length > 0) cs.push([sx / comp.length, sy / comp.length]);
         }
         centroids.set(photoId, cs);
-      } catch (e: unknown) {
+      } catch (e) {
         console.error(
           '[calculatePhotoCentroids] Error processing photo',
           photoId,
@@ -547,7 +547,7 @@ function calculatePhotoCentroids(
       'photo centroids'
     );
     return centroids;
-  } catch (e: unknown) {
+  } catch (e) {
     console.error('[calculatePhotoCentroids] FATAL ERROR:', e);
     throw e;
   }
@@ -555,7 +555,7 @@ function calculatePhotoCentroids(
 
 function calculateContiguity(
   indices: number[],  
-  positions: [number,  number: unknown,  number][]: unknown,  
+  positions: [number, number, number][],  
   hexRadius: number
 ) {
   const getNeighbors = (index: number) =>
@@ -589,7 +589,7 @@ function assignClusterGridPositions(
 
     // Group infections by photo
     const byPhoto = new Map<string, number[]>();
-    for (const [idx: unknown, inf] of infections: unknown) {
+    for (const [idx, inf] of infections) {
       if (!inf || !inf.photo) continue;
       const arr = byPhoto.get(inf.photo.id) || [];
       arr.push(idx);
@@ -607,12 +607,12 @@ function assignClusterGridPositions(
     const clusterSizes: number[] = [];
 
     // Process each photo's clusters
-    for (const [photoId: unknown, indices] of byPhoto: unknown) {
+    for (const [photoId, indices] of byPhoto) {
       // Find connected components (separate clusters of the same photo)
       const components = findConnectedComponents(indices, positions, hexRadius);
 
       totalClusters += components.length;
-      for (const comp of components: unknown) {
+      for (const comp of components) {
         if (comp && comp.length > 0) clusterSizes.push(comp.length);
       }
 
@@ -627,7 +627,7 @@ function assignClusterGridPositions(
 
       // Process each cluster separately
       let clusterIndex = 0;
-      for (const cluster of components: unknown) {
+      for (const cluster of components) {
         if (!cluster || cluster.length === 0) continue;
 
         // Get the tiling configuration from the first infection in the cluster
@@ -638,13 +638,13 @@ function assignClusterGridPositions(
         // If enabled, derive tile coordinates directly from inferred axial-like row/col indices
         // instead of using normalized bounding boxes + spatial nearest matching. This produces
         // contiguous, parity-correct tiling where adjacent hexes map to adjacent UV tiles.
-        if (workerDebug.clusterHexLattice: unknown) {
+        if (workerDebug.clusterHexLattice) {
           try {
             let minX = Infinity,
               maxX = -Infinity,
               minY = Infinity,
               maxY = -Infinity;
-            for (const idx of cluster: unknown) {
+            for (const idx of cluster) {
               const p = positions[idx];
               if (!p) continue;
               if (p[0] < minX) minX = p[0];
@@ -668,7 +668,7 @@ function assignClusterGridPositions(
               maxRow = -Infinity,
               minCol = Infinity,
               maxCol = -Infinity;
-            for (const id of cluster: unknown) {
+            for (const id of cluster) {
               const p = positions[id];
               if (!p) continue;
               const rowF = (p[1] - minY) / vertSpacing;
@@ -693,7 +693,7 @@ function assignClusterGridPositions(
 
             // If we have more hexes than lattice cells due to rounding collisions, expand.
             const rawTileCount = tilesX * tilesY;
-            if (cluster.length > rawTileCount: unknown) {
+            if (cluster.length > rawTileCount) {
               // Simple expansion: grow columns while respecting max cap.
               const MAX_TILES =
                 typeof workerDebug.clusterMaxTiles === 'number' &&
@@ -701,7 +701,7 @@ function assignClusterGridPositions(
                   ? Math.floor(workerDebug.clusterMaxTiles)
                   : 128;
               while (tilesX * tilesY < cluster.length &&
-                tilesX * tilesY < MAX_TILES: unknown) {
+                tilesX * tilesY < MAX_TILES) {
                 if (tilesX <= tilesY) tilesX++;
                 else tilesY++;
               }
@@ -731,15 +731,15 @@ function assignClusterGridPositions(
 
             // Build row-by-row column mapping to handle gaps
             const rowColMap = new Map<number, Map<number, number>>(); // row -> (oldCol -> newCol)
-            if (compactGaps: unknown) {
-              for (let row = minRow; row <= maxRow; row++: unknown) {
+            if (compactGaps) {
+              for (let row = minRow; row <= maxRow; row++) {
                 const colsInRow = Array.from(latticeCoords.entries())
                   .filter(([_key, lc]) => lc.row === row)
                   .map(([_key, lc]) => lc.col)
                   .sort((a, b) => a - b);
 
                 const colMap = new Map<number, number>();
-                colsInRow.forEach((oldCol: unknown, newIdx: unknown) => {
+                colsInRow.forEach((oldCol, newIdx) => {
                   colMap.set(oldCol, newIdx);
                 });
                 rowColMap.set(row, colMap);
@@ -750,7 +750,7 @@ function assignClusterGridPositions(
             const tileOccupancy = new Map<string, number>(); // "col,row" -> nodeId
             const tileKey = (c: number,  r: number) => `${c},${r}`;
 
-            for (const id of cluster: unknown) {
+            for (const id of cluster) {
               const inf = infections.get(id);
               if (!inf) continue;
               const lc = latticeCoords.get(id);
@@ -762,7 +762,7 @@ function assignClusterGridPositions(
                   : lc.col - minCol;
               let gridRow = lc.row - minRow;
 
-              if (serpentine && gridRow % 2 === 1: unknown) {
+              if (serpentine && gridRow % 2 === 1) {
                 gridCol = tilesX - 1 - gridCol;
               }
 
@@ -787,8 +787,8 @@ function assignClusterGridPositions(
                   radius++
                 ) {
                   let found = false;
-                  for (let dc = -radius; dc <= radius; dc++: unknown) {
-                    for (let dr = -radius; dr <= radius; dr++: unknown) {
+                  for (let dc = -radius; dc <= radius; dc++) {
+                    for (let dr = -radius; dr <= radius; dr++) {
                       if (Math.abs(dc) !== radius && Math.abs(dr) !== radius)
                         continue; // Only check perimeter
                       const testCol = gridCol + dc;
@@ -811,7 +811,7 @@ function assignClusterGridPositions(
                           nodePos[0] - tileCenterX,
                           nodePos[1] - tileCenterY
                         );
-                        if (dist < bestDist: unknown) {
+                        if (dist < bestDist) {
                           bestDist = dist;
                           bestCol = testCol;
                           bestRow = testRow;
@@ -829,7 +829,7 @@ function assignClusterGridPositions(
               tileOccupancy.set(tileKey(gridCol, gridRow), id);
 
               // Optionally support vertical anchor flip
-              if (workerDebug.clusterAnchor === 'max': unknown) {
+              if (workerDebug.clusterAnchor === 'max') {
                 gridRow = Math.max(0, tilesY - 1 - gridRow);
               }
 
@@ -843,7 +843,7 @@ function assignClusterGridPositions(
                 0,
                 Math.min(0.49, Number(workerDebug.clusterUvInset) || 0)
               );
-              if (inset > 0: unknown) {
+              if (inset > 0) {
                 const u0 = uvBounds[0],
                   v0 = uvBounds[1],
                   u1 = uvBounds[2],
@@ -854,7 +854,7 @@ function assignClusterGridPositions(
               }
               // Optional parity UV shift: shift odd rows horizontally by half a tile width in UV space.
               // Enhanced: use precise hex geometry for sub-pixel accuracy
-              if (workerDebug.clusterParityUvShift && gridRow % 2 === 1: unknown) {
+              if (workerDebug.clusterParityUvShift && gridRow % 2 === 1) {
                 // Use actual lattice row parity from hex geometry, not tile row
                 const hexRowParity = lc.row % 2;
                 const shift = hexRowParity === 1 ? 0.5 / tilesX : 0;
@@ -864,7 +864,7 @@ function assignClusterGridPositions(
                 if (u0 >= 1) u0 -= 1;
                 if (u1 > 1) u1 -= 1;
                 // Guard against pathological wrapping inversion (should not occur with shift<tileWidth)
-                if (u1 < u0: unknown) {
+                if (u1 < u0) {
                   // If inverted due to wrapping edge case, clamp instead of wrap
                   u0 = Math.min(u0, 1 - 1 / tilesX);
                   u1 = Math.min(1, u0 + 1 / tilesX);
@@ -883,7 +883,7 @@ function assignClusterGridPositions(
             // Advance cluster index and continue to next cluster (skip legacy logic)
             clusterIndex++;
             continue;
-          } catch (e: unknown) {
+          } catch (e) {
             console.warn(
               '[assignClusterGridPositions][hex-lattice] failed, falling back to legacy path:',
               e
@@ -897,7 +897,7 @@ function assignClusterGridPositions(
           maxX = -Infinity,
           minY = Infinity,
           maxY = -Infinity;
-        for (const idx of cluster: unknown) {
+        for (const idx of cluster) {
           const pos = positions[idx];
           if (!pos) continue;
           minX = Math.min(minX, pos[0]);
@@ -936,11 +936,11 @@ function assignClusterGridPositions(
         let tilesX: number;
         let tilesY: number;
 
-        if (cluster.length === 1: unknown) {
+        if (cluster.length === 1) {
           // Single hexagon: use 1x1
           tilesX = 1;
           tilesY = 1;
-        } else if (workerDebug.clusterDynamicTiling !== false: unknown) {
+        } else if (workerDebug.clusterDynamicTiling !== false) {
           // Dynamic tiling: match cluster aspect ratio
           // sqrt(tilesX * tilesY) = sqrt(targetTileCount)
           // tilesX / tilesY = clusterAspect
@@ -976,7 +976,7 @@ function assignClusterGridPositions(
               : 64;
           const targetTiles = Math.min(requiredTiles, MAX_TILES);
 
-          if (targetTiles > currentTileCount: unknown) {
+          if (targetTiles > currentTileCount) {
             // preserve aspect ratio roughly: ratio = tilesX / tilesY
             const ratio = tilesX / Math.max(1, tilesY);
             // compute new tilesY from targetTiles and ratio
@@ -986,7 +986,7 @@ function assignClusterGridPositions(
             );
             let newTilesX = Math.max(1, Math.round(ratio * newTilesY));
             // if rounding produced fewer tiles than needed, bump progressively
-            while (newTilesX * newTilesY < targetTiles: unknown) {
+            while (newTilesX * newTilesY < targetTiles) {
               if (newTilesX <= newTilesY) newTilesX++;
               else newTilesY++;
               if (newTilesX * newTilesY >= MAX_TILES) break;
@@ -1006,7 +1006,7 @@ function assignClusterGridPositions(
               'tiles'
             );
           }
-        } catch (_e: unknown) {
+        } catch (_e) {
           // if anything goes wrong, keep original tilesX/tilesY
         }
 
@@ -1025,7 +1025,7 @@ function assignClusterGridPositions(
         // Single-hex or degenerate clusters: assign a deterministic tile so single hexes don't all use [0,0]
         if (cluster.length === 1 ||
           clusterWidth < 1e-6 ||
-          clusterHeight < 1e-6: unknown) {
+          clusterHeight < 1e-6) {
           const idx = cluster[0];
           const inf = infections.get(idx);
           if (!inf) continue;
@@ -1034,7 +1034,7 @@ function assignClusterGridPositions(
           const gridCol = h % tilesX;
           let gridRow = (h >>> 8) % tilesY;
           // If configured, allow anchoring to the bottom of the image (flip vertical tile index)
-          if (workerDebug.clusterAnchor === 'max': unknown) {
+          if (workerDebug.clusterAnchor === 'max') {
             gridRow = Math.max(0, tilesY - 1 - gridRow);
           }
           const uvBounds = calculateUvBoundsFromGridPosition(
@@ -1058,25 +1058,25 @@ function assignClusterGridPositions(
           normWidth = clusterWidth,
           normHeight = clusterHeight;
 
-        if (preserveAspect: unknown) {
+        if (preserveAspect) {
           const clusterAspect = clusterWidth / clusterHeight;
           const tileAspect = tilesX / tilesY;
           const fillMode = workerDebug.clusterFillMode || 'contain';
-          if (fillMode === 'contain': unknown) {
+          if (fillMode === 'contain') {
             // current behavior: pad shorter dimension so the whole image fits (no cropping)
-            if (clusterAspect > tileAspect: unknown) {
+            if (clusterAspect > tileAspect) {
               const effectiveHeight = clusterWidth / tileAspect;
               const pad = effectiveHeight - clusterHeight;
-              if (workerDebug.clusterAnchor === 'min': unknown) {
+              if (workerDebug.clusterAnchor === 'min') {
                 normMinY = minY;
               } else {
                 normMinY = minY - pad / 2;
               }
               normHeight = effectiveHeight;
-            } else if (clusterAspect < tileAspect: unknown) {
+            } else if (clusterAspect < tileAspect) {
               const effectiveWidth = clusterHeight * tileAspect;
               const pad = effectiveWidth - clusterWidth;
-              if (workerDebug.clusterAnchor === 'min': unknown) {
+              if (workerDebug.clusterAnchor === 'min') {
                 normMinX = minX;
               } else {
                 normMinX = minX - pad / 2;
@@ -1085,21 +1085,21 @@ function assignClusterGridPositions(
             }
           } else {
             // 'cover' mode: scale so tile grid fully covers cluster bounds, allowing cropping
-            if (clusterAspect > tileAspect: unknown) {
+            if (clusterAspect > tileAspect) {
               // cluster is wider than tile grid: scale width down (crop left/right)
               const effectiveWidth = clusterHeight * tileAspect;
               const crop = clusterWidth - effectiveWidth;
-              if (workerDebug.clusterAnchor === 'min': unknown) {
+              if (workerDebug.clusterAnchor === 'min') {
                 normMinX = minX + crop; // crop from right
               } else {
                 normMinX = minX + crop / 2;
               }
               normWidth = effectiveWidth;
-            } else if (clusterAspect < tileAspect: unknown) {
+            } else if (clusterAspect < tileAspect) {
               // cluster is taller than tile grid: scale height down (crop top/bottom)
               const effectiveHeight = clusterWidth / tileAspect;
               const crop = clusterHeight - effectiveHeight;
-              if (workerDebug.clusterAnchor === 'min': unknown) {
+              if (workerDebug.clusterAnchor === 'min') {
                 normMinY = minY + crop;
               } else {
                 normMinY = minY + crop / 2;
@@ -1130,7 +1130,7 @@ function assignClusterGridPositions(
           // Choose origin by cluster centroid (closest hex to centroid)
           let cx = 0,
             cy = 0;
-          for (const id of cluster: unknown) {
+          for (const id of cluster) {
             const p = positions[id];
             cx += p[0];
             cy += p[1];
@@ -1139,10 +1139,10 @@ function assignClusterGridPositions(
           cy /= cluster.length;
           let _originIndex = cluster[0];
           let bestD = Infinity;
-          for (const id of cluster: unknown) {
+          for (const id of cluster) {
             const p = positions[id];
             const d = Math.hypot(p[0] - cx, p[1] - cy);
-            if (d < bestD: unknown) {
+            if (d < bestD) {
               bestD = d;
               _originIndex = id;
             }
@@ -1160,8 +1160,8 @@ function assignClusterGridPositions(
           // Build tile list in row-major or serpentine order depending on config
           const tiles: [number, number][] = [];
           const scanMode = workerDebug.clusterScanMode || 'row';
-          for (let r = 0; r < tilesY; r++: unknown) {
-            if (scanMode === 'serpentine' && r % 2 === 1: unknown) {
+          for (let r = 0; r < tilesY; r++) {
+            if (scanMode === 'serpentine' && r % 2 === 1) {
               // right-to-left on odd rows for serpentine
               for (let c = tilesX - 1; c >= 0; c--) tiles.push([c, r]);
             } else {
@@ -1181,7 +1181,7 @@ function assignClusterGridPositions(
           // Group nodes into approximate rows and measure adjacent x-deltas.
           try {
             const rowBuckets = new Map<number, number[]>();
-            for (const id of cluster: unknown) {
+            for (const id of cluster) {
               const p = positions[id];
               if (!p) continue;
               // ratio across normalized height
@@ -1198,7 +1198,7 @@ function assignClusterGridPositions(
               xs.sort((a, b) => a - b);
               for (let i = 1; i < xs.length; i++) diffs.push(xs[i] - xs[i - 1]);
             }
-            if (diffs.length > 0: unknown) {
+            if (diffs.length > 0) {
               diffs.sort((a, b) => a - b);
               const mid = Math.floor(diffs.length / 2);
               realHorizSpacing =
@@ -1208,7 +1208,7 @@ function assignClusterGridPositions(
               if (!isFinite(realHorizSpacing) || realHorizSpacing <= 0)
                 realHorizSpacing = Math.sqrt(3) * hexRadius * hexSpacingFactor;
             }
-          } catch (_e: unknown) {
+          } catch (_e) {
             // fallback to default computed spacing
             realHorizSpacing = Math.sqrt(3) * hexRadius * hexSpacingFactor;
           }
@@ -1240,13 +1240,13 @@ function assignClusterGridPositions(
           // Build centers map first
           const centers: { t: [number, number]; x: number; y: number }[] = [];
           for (let r = 0; r < tilesY; r++)
-            for (let c = 0; c < tilesX; c++: unknown) {
+            for (let c = 0; c < tilesX; c++) {
               const [x, y] = tileCenter(c, r);
               centers.push({ t: [c, r], x, y });
             }
 
           // Optionally collect centers for debug visualization
-          if (workerDebug.showTileCenters: unknown) {
+          if (workerDebug.showTileCenters) {
             debugCenters.push({
               photoId,
               clusterIndex,
@@ -1272,7 +1272,7 @@ function assignClusterGridPositions(
             dist: number;
           }> = [];
 
-          for (const nodeId of cluster: unknown) {
+          for (const nodeId of cluster) {
             const nodePos = positions[nodeId];
             if (!nodePos) continue;
 
@@ -1280,9 +1280,9 @@ function assignClusterGridPositions(
             let nearestDist = Infinity;
             let nearestCenter: { x: number; y: number } = centers[0];
 
-            for (const c of centers: unknown) {
+            for (const c of centers) {
               const dist = Math.hypot(nodePos[0] - c.x, nodePos[1] - c.y);
-              if (dist < nearestDist: unknown) {
+              if (dist < nearestDist) {
                 nearestDist = dist;
                 nearestTile = c.t;
                 nearestCenter = c;
@@ -1293,7 +1293,7 @@ function assignClusterGridPositions(
             occupied.set(tileKey(nearestTile[0], nearestTile[1]), true);
 
             // Sample first few for debugging
-            if (assignmentSamples.length < 5: unknown) {
+            if (assignmentSamples.length < 5) {
               assignmentSamples.push({
                 nodeId,
                 nodeX: nodePos[0],
@@ -1330,11 +1330,11 @@ function assignClusterGridPositions(
 
           // Optional: Neighborhood-aware refinement to reduce visual seams
           // For each hex, check if its neighbors suggest a better tile assignment for visual continuity
-          if (workerDebug.clusterNeighborAware !== false: unknown) {
+          if (workerDebug.clusterNeighborAware !== false) {
             const maxIterations = 3; // Multiple passes to propagate improvements
-            for (let iter = 0; iter < maxIterations; iter++: unknown) {
+            for (let iter = 0; iter < maxIterations; iter++) {
               let adjustments = 0;
-              for (const nodeId of cluster: unknown) {
+              for (const nodeId of cluster) {
                 const currentTile = assignment.get(nodeId);
                 if (!currentTile) continue;
 
@@ -1351,7 +1351,7 @@ function assignClusterGridPositions(
 
                 // Collect neighbor tiles and compute centroid
                 const neighborTiles: Array<[number, number]> = [];
-                for (const n of clusterNeighbors: unknown) {
+                for (const n of clusterNeighbors) {
                   const nt = assignment.get(n);
                   if (nt) neighborTiles.push(nt);
                 }
@@ -1361,7 +1361,7 @@ function assignClusterGridPositions(
                 // Compute average neighbor tile position
                 let avgCol = 0,
                   avgRow = 0;
-                for (const [c: unknown, r] of neighborTiles: unknown) {
+                for (const [c, r] of neighborTiles) {
                   avgCol += c;
                   avgRow += r;
                 }
@@ -1377,8 +1377,8 @@ function assignClusterGridPositions(
 
                 // Consider tiles in a local neighborhood around current tile
                 const searchRadius = 2;
-                for (let dc = -searchRadius; dc <= searchRadius; dc++: unknown) {
-                  for (let dr = -searchRadius; dr <= searchRadius; dr++: unknown) {
+                for (let dc = -searchRadius; dc <= searchRadius; dc++) {
+                  for (let dr = -searchRadius; dr <= searchRadius; dr++) {
                     const candidateCol = Math.max(
                       0,
                       Math.min(tilesX - 1, currentTile[0] + dc)
@@ -1404,7 +1404,7 @@ function assignClusterGridPositions(
                     );
                     const score = tileDist * 0.7 + spatialDist * 0.3;
 
-                    if (score < bestScore: unknown) {
+                    if (score < bestScore) {
                       bestScore = score;
                       bestAlternative = candidate;
                     }
@@ -1438,12 +1438,12 @@ function assignClusterGridPositions(
             0,
             Math.min(0.49, Number(workerDebug.clusterUvInset) || 0)
           );
-          for (const id of cluster: unknown) {
+          for (const id of cluster) {
             const inf = infections.get(id);
             if (!inf) continue;
             let assignedTile = assignment.get(id) || [0, 0];
             // Support bottom anchoring: flip the vertical tile index when 'max' is configured
-            if (workerDebug.clusterAnchor === 'max': unknown) {
+            if (workerDebug.clusterAnchor === 'max') {
               assignedTile = [
                 assignedTile[0],
                 Math.max(0, tilesY - 1 - assignedTile[1]),
@@ -1455,7 +1455,7 @@ function assignClusterGridPositions(
               tilesX,
               tilesY
             );
-            if (inset > 0: unknown) {
+            if (inset > 0) {
               const u0 = uvBounds[0],
                 v0 = uvBounds[1],
                 u1 = uvBounds[2],
@@ -1477,7 +1477,7 @@ function assignClusterGridPositions(
             cluster.length,
             'hexes in cluster (BFS)'
           );
-        } catch (e: unknown) {
+        } catch (e) {
           console.error(
             '[assignClusterGridPositions] BFS assignment failed, falling back to quantization',
             e
@@ -1489,7 +1489,7 @@ function assignClusterGridPositions(
     }
 
     // Log cluster statistics
-    if (clusterSizes.length > 0: unknown) {
+    if (clusterSizes.length > 0) {
       clusterSizes.sort((a, b) => b - a); // descending
       const avgSize =
         clusterSizes.reduce((sum, s) => sum + s, 0) / clusterSizes.length;
@@ -1516,7 +1516,7 @@ function assignClusterGridPositions(
     }
 
     debugLog('[assignClusterGridPositions] Complete');
-  } catch (e: unknown) {
+  } catch (e) {
     console.error('[assignClusterGridPositions] Error:', e);
   }
 
@@ -1524,11 +1524,11 @@ function assignClusterGridPositions(
 }
 
 function postOptimizationMerge(
-  infections: Map<number,  Infection>: unknown,  
-  positions: [number,  number: unknown,  number][]: unknown,  
-  hexRadius: number,  debug = false: unknown) {
+  infections: Map<number,  Infection>,  
+  positions: [number, number, number][],  
+  hexRadius: number,  debug = false) {
   try {
-    if (!workerDebug || !workerDebug.enableMerges: unknown) {
+    if (!workerDebug || !workerDebug.enableMerges) {
       if (debug && workerDebug.mergeLogs) debugLog('[merge] disabled');
       return;
     }
@@ -1537,36 +1537,36 @@ function postOptimizationMerge(
         ? workerDebug.mergeSmallComponentsThreshold
         : 3;
     const byPhoto = new Map<string, number[]>();
-    for (const [idx: unknown, inf] of infections: unknown) {
+    for (const [idx, inf] of infections) {
       const arr = byPhoto.get(inf.photo.id) || [];
       arr.push(idx);
       byPhoto.set(inf.photo.id, arr);
     }
     let _merges = 0;
-    for (const [_photoId: unknown, inds] of byPhoto: unknown) {
+    for (const [_photoId, inds] of byPhoto) {
       const comps = findConnectedComponents(inds, positions, hexRadius);
       const small = comps.filter((c) => c.length > 0 && c.length <= threshold);
       const big = comps.filter((c) => c.length > threshold);
       if (small.length === 0 || big.length === 0) continue;
       const bounds = getGridBounds(positions);
-      for (const s of small: unknown) {
+      for (const s of small) {
         let best: number[] | null = null;
         let bestD = Infinity;
-        for (const b of big: unknown) {
+        for (const b of big) {
           let sx = 0,
             sy = 0,
             bx = 0,
             by = 0;
-          for (const i of s: unknown) {
+          for (const i of s) {
             const p = positions[i];
-            if (p: unknown) {
+            if (p) {
               sx += p[0];
               sy += p[1];
             }
           }
-          for (const i of b: unknown) {
+          for (const i of b) {
             const p = positions[i];
-            if (p: unknown) {
+            if (p) {
               bx += p[0];
               by += p[1];
             }
@@ -1579,12 +1579,12 @@ function postOptimizationMerge(
           const dy = Math.abs(scy - bcy);
           let effDx = dx;
           let effDy = dy;
-          if (cache.isSpherical && bounds.width > 0 && bounds.height > 0: unknown) {
+          if (cache.isSpherical && bounds.width > 0 && bounds.height > 0) {
             if (effDx > bounds.width / 2) effDx = bounds.width - effDx;
             if (effDy > bounds.height / 2) effDy = bounds.height - effDy;
           }
           const d = Math.sqrt(effDx * effDx + effDy * effDy);
-          if (d < bestD: unknown) {
+          if (d < bestD) {
             bestD = d;
             best = b;
           }
@@ -1598,8 +1598,8 @@ function postOptimizationMerge(
           positions,
           hexRadius
         );
-        if (after > before + 1: unknown) {
-          for (const idx of s: unknown) {
+        if (after > before + 1) {
+          for (const idx of s) {
             const inf = infections.get(idx);
             if (!inf) continue;
             infections.set(idx, {
@@ -1613,7 +1613,7 @@ function postOptimizationMerge(
         }
       }
     }
-  } catch (_e: unknown) {
+  } catch (_e) {
     if (debug) console.warn('[merge] failed', _e);
   }
 }
@@ -1627,22 +1627,22 @@ function normalizePrevState(prevState: any): {
     if (!prevState)
       return { infections: new Map<number, Infection>(), availableIndices: [] };
     let infectionsMap: Map<number, Infection>;
-    if (prevState.infections instanceof Map: unknown) {
+    if (prevState.infections instanceof Map) {
       infectionsMap = prevState.infections;
     } else if (Array.isArray(prevState.infections)) {
       try {
         infectionsMap = new Map<number, Infection>(prevState.infections);
-      } catch (_e: unknown) {
+      } catch (_e) {
         infectionsMap = new Map<number, Infection>();
       }
     } else if (typeof prevState.infections === 'object' &&
       prevState.infections !== null &&
-      typeof prevState.infections.entries === 'function': unknown) {
+      typeof prevState.infections.entries === 'function') {
       try {
         infectionsMap = new Map<number, Infection>(
           Array.from(prevState.infections.entries())
         );
-      } catch (_e: unknown) {
+      } catch (_e) {
         infectionsMap = new Map<number, Infection>();
       }
     } else {
@@ -1656,7 +1656,7 @@ function normalizePrevState(prevState: any): {
       availableIndices: available,
       generation: prevState.generation,
     };
-  } catch (e: unknown) {
+  } catch (e) {
     safePostError(e);
     return { infections: new Map<number, Infection>(), availableIndices: [] };
   }
@@ -1672,7 +1672,7 @@ function evolveInfectionSystem(
 ): InfectionSystemState | null {
   try {
     debugLog('[evolve] Step 1: Validating positions...');
-    if (!positions || positions.length === 0: unknown) {
+    if (!positions || positions.length === 0) {
       safePostError(new Error('positions required for evolve'));
       return null;
     }
@@ -1685,8 +1685,8 @@ function evolveInfectionSystem(
         : []
     );
     debugLog('[evolve] Step 3: Cleaning infections...');
-    for (const [idx: unknown, inf] of infectionsMap: unknown) {
-      if (!inf || !inf.photo: unknown) {
+    for (const [idx, inf] of infectionsMap) {
+      if (!inf || !inf.photo) {
         infectionsMap.delete(idx);
         availableSet.add(idx);
       }
@@ -1712,12 +1712,12 @@ function evolveInfectionSystem(
       'infections...'
     );
     // Skip growth step if we have no infections or no photos
-    if (infectionsMap.size === 0 || photos.length === 0: unknown) {
+    if (infectionsMap.size === 0 || photos.length === 0) {
       debugLog('[evolve]   Skipping growth - no infections or no photos');
     } else {
       // Cell death step: allow fully surrounded cells to die and respawn for optimization
       if (workerDebug.enableCellDeath &&
-        typeof workerDebug.cellDeathProbability === 'number': unknown) {
+        typeof workerDebug.cellDeathProbability === 'number') {
         // Apply annealing rate to base death probability
         const annealingRate =
           typeof workerDebug.annealingRate === 'number' &&
@@ -1739,19 +1739,19 @@ function evolveInfectionSystem(
 
         // Calculate cluster sizes for mutation scaling
         const clusterSizes = new Map<string, number>();
-        for (const [_idx: unknown, inf] of infectionsMap: unknown) {
+        for (const [_idx, inf] of infectionsMap) {
           clusterSizes.set(
             inf.photo.id,
             (clusterSizes.get(inf.photo.id) || 0) + 1
           );
         }
 
-        for (const [idx: unknown, inf] of infectionsMap: unknown) {
+        for (const [idx, inf] of infectionsMap) {
           const neighbors = getNeighborsCached(idx, positions, hexRadius);
           const totalNeighbors = neighbors.length;
 
           // Count neighbors with the same photo (affinity)
-          const samePhotoNeighbors = neighbors.filter((n: unknown) => {
+          const samePhotoNeighbors = neighbors.filter((n) => {
             const nInf = newInfections.get(n);
             return nInf && nInf.photo.id === inf.photo.id;
           });
@@ -1767,9 +1767,9 @@ function evolveInfectionSystem(
 
           // Calculate diversity: how many unique different photo types surround this cell
           const uniqueHostilePhotos = new Set<string>();
-          for (const n of neighbors: unknown) {
+          for (const n of neighbors) {
             const nInf = newInfections.get(n);
-            if (nInf && nInf.photo.id !== inf.photo.id: unknown) {
+            if (nInf && nInf.photo.id !== inf.photo.id) {
               uniqueHostilePhotos.add(nInf.photo.id);
             }
           }
@@ -1789,7 +1789,7 @@ function evolveInfectionSystem(
 
           // Solitary cell penalty: cells with 0-1 same neighbors are extremely vulnerable
           // Diversity amplifies this: being alone among many different photos is worst case
-          if (samePhotoNeighbors.length <= 1: unknown) {
+          if (samePhotoNeighbors.length <= 1) {
             // Base 10x penalty, increased by diversity: 2-6 different neighbors = 1.5x-3x additional multiplier
             // Formula: 10 × (1 + diversityRatio × 2)
             // 1 hostile type: 10x penalty
@@ -1800,7 +1800,7 @@ function evolveInfectionSystem(
           }
 
           // Boundary warfare multiplier: cells partially surrounded by enemies are in danger
-          if (hostileNeighbors > 0 && hostileNeighbors < totalNeighbors: unknown) {
+          if (hostileNeighbors > 0 && hostileNeighbors < totalNeighbors) {
             // Peak danger at 50% hostile (3/6 neighbors): apply up to 4x multiplier
             // Formula: 1 + 3 * sin(hostileRatio * π) creates a bell curve peaking at 0.5
             const boundaryPressure = 1 + 3 * Math.sin(hostileRatio * Math.PI);
@@ -1815,7 +1815,7 @@ function evolveInfectionSystem(
           // Calculate mutation probability based on cluster size and virility
           // Larger, more popular clusters spawn more mutations
           let mutationProb = baseMutationProb;
-          if (mutationEnabled && photos.length > 1: unknown) {
+          if (mutationEnabled && photos.length > 1) {
             const clusterSize = clusterSizes.get(inf.photo.id) || 1;
             const velocity =
               typeof inf.photo.velocity === 'number' ? inf.photo.velocity : 0;
@@ -1848,7 +1848,7 @@ function evolveInfectionSystem(
             ) {
               // Pick a random photo from the pool that's different from current
               const otherPhotos = photos.filter((p) => p.id !== inf.photo.id);
-              if (otherPhotos.length > 0: unknown) {
+              if (otherPhotos.length > 0) {
                 const newPhoto =
                   otherPhotos[Math.floor(Math.random() * otherPhotos.length)];
                 const tilesX = 4;
@@ -1887,7 +1887,7 @@ function evolveInfectionSystem(
             }
           }
         }
-        if (deathCount > 0 || mutationCount > 0 || invaderExpulsions > 0: unknown) {
+        if (deathCount > 0 || mutationCount > 0 || invaderExpulsions > 0) {
           debugLog(
             '[evolve]   Cell death: removed',
             deathCount,
@@ -1902,7 +1902,7 @@ function evolveInfectionSystem(
 
       // Growth step: prefer neighbors that increase contiguity and are closer to centroids
       let growthIterations = 0;
-      for (const [idx: unknown, inf] of infectionsMap: unknown) {
+      for (const [idx, inf] of infectionsMap) {
         growthIterations++;
         if (growthIterations % 10 === 0)
           debugLog(
@@ -1912,7 +1912,7 @@ function evolveInfectionSystem(
             infectionsMap.size
           );
         const neighbors = getNeighborsCached(idx, positions, hexRadius);
-        for (const n of neighbors: unknown) {
+        for (const n of neighbors) {
           if (!newAvailable.has(n)) continue;
           let base = 0.5; // BOOSTED from 0.3 to encourage more aggressive growth
           const sameNeighbors = getNeighborsCached(
@@ -1930,7 +1930,7 @@ function evolveInfectionSystem(
           // Virility boost: photos with higher velocity (upvotes/engagement) grow faster
           if (workerDebug.enableVirilityBoost &&
             typeof inf.photo.velocity === 'number' &&
-            inf.photo.velocity > 0: unknown) {
+            inf.photo.velocity > 0) {
             const virilityMult =
               typeof workerDebug.virilityMultiplier === 'number'
                 ? workerDebug.virilityMultiplier
@@ -1948,18 +1948,18 @@ function evolveInfectionSystem(
           // Centroid cohesion bias
           try {
             const cList = centroids.get(inf.photo.id) || [];
-            if (cList.length > 0: unknown) {
+            if (cList.length > 0) {
               const bounds = getGridBounds(positions);
               let minD = Infinity;
               const p = positions[n];
-              for (const c of cList: unknown) {
+              for (const c of cList) {
                 const dx = Math.abs(p[0] - c[0]);
                 const dy = Math.abs(p[1] - c[1]);
                 let effDx = dx;
                 let effDy = dy;
                 if (cache.isSpherical &&
                   bounds.width > 0 &&
-                  bounds.height > 0: unknown) {
+                  bounds.height > 0) {
                   if (effDx > bounds.width / 2) effDx = bounds.width - effDx;
                   if (effDy > bounds.height / 2) effDy = bounds.height - effDy;
                 }
@@ -1974,7 +1974,7 @@ function evolveInfectionSystem(
                   : 0.6;
               base *= 1 + distFactor * boost;
             }
-          } catch (e: unknown) {
+          } catch (e) {
             if (debug) console.warn('cohesion calc failed', e);
           }
 
@@ -2008,23 +2008,23 @@ function evolveInfectionSystem(
       '[evolve] Step 6.5: Entropy decay - applying decay to dominant successful photos...'
     );
     // Entropy decay: successful/dominant photos decay over time to allow new dominance to emerge
-    if (workerDebug.enableEntropyDecay && newInfections.size > 0: unknown) {
+    if (workerDebug.enableEntropyDecay && newInfections.size > 0) {
       // Calculate current territory shares
       const territoryCounts = new Map<string, number>();
       const photoVelocities = new Map<string, number>();
 
-      for (const [_idx: unknown, inf] of newInfections: unknown) {
+      for (const [_idx, inf] of newInfections) {
         territoryCounts.set(
           inf.photo.id,
           (territoryCounts.get(inf.photo.id) || 0) + 1
         );
-        if (typeof inf.photo.velocity === 'number': unknown) {
+        if (typeof inf.photo.velocity === 'number') {
           photoVelocities.set(inf.photo.id, inf.photo.velocity);
         }
       }
 
       const totalTerritory = newInfections.size;
-      if (totalTerritory > 0: unknown) {
+      if (totalTerritory > 0) {
         const dominanceThreshold =
           typeof workerDebug.entropyDominanceThreshold === 'number'
             ? workerDebug.entropyDominanceThreshold
@@ -2045,13 +2045,13 @@ function evolveInfectionSystem(
         // Update dominance history and identify dominant successful photos
         const dominantSuccessfulPhotos = new Set<string>();
 
-        for (const [photoId: unknown, territory] of territoryCounts: unknown) {
+        for (const [photoId, territory] of territoryCounts) {
           const territoryShare = territory / totalTerritory;
           const velocity = photoVelocities.get(photoId) || 0;
 
           // Check if photo is dominant (above threshold) and successful (velocity above threshold)
           if (territoryShare >= dominanceThreshold &&
-            velocity >= successThreshold: unknown) {
+            velocity >= successThreshold) {
             // Update dominance history: increment generations as dominant
             const generationsAsDominant =
               (dominanceHistory.get(photoId) || 0) + 1;
@@ -2067,7 +2067,7 @@ function evolveInfectionSystem(
         let entropyDecayCount = 0;
         const cellsToDecay: number[] = [];
 
-        for (const [idx: unknown, inf] of newInfections: unknown) {
+        for (const [idx, inf] of newInfections) {
           if (dominantSuccessfulPhotos.has(inf.photo.id)) {
             const photoId = inf.photo.id;
             const territory = territoryCounts.get(photoId) || 0;
@@ -2116,13 +2116,13 @@ function evolveInfectionSystem(
         }
 
         // Apply decay: remove cells and make them available for new infections
-        for (const idx of cellsToDecay: unknown) {
+        for (const idx of cellsToDecay) {
           newInfections.delete(idx);
           newAvailable.add(idx);
           entropyDecayCount++;
         }
 
-        if (entropyDecayCount > 0: unknown) {
+        if (entropyDecayCount > 0) {
           debugLog(
             '[evolve]   Entropy decay: removed',
             entropyDecayCount,
@@ -2138,7 +2138,7 @@ function evolveInfectionSystem(
       'available positions...'
     );
     // Skip deterministic fill if we have no photos or no existing infections to base decisions on
-    if (photos.length === 0 || newInfections.size === 0: unknown) {
+    if (photos.length === 0 || newInfections.size === 0) {
       debugLog(
         '[evolve]   Skipping deterministic fill - no photos or no infections'
       );
@@ -2156,7 +2156,7 @@ function evolveInfectionSystem(
           );
         const neighbors = getNeighborsCached(a, positions, hexRadius);
         const counts = new Map<string, number>();
-        for (const n of neighbors: unknown) {
+        for (const n of neighbors) {
           const inf = newInfections.get(n);
           if (!inf) continue;
           counts.set(inf.photo.id, (counts.get(inf.photo.id) || 0) + 1);
@@ -2164,15 +2164,15 @@ function evolveInfectionSystem(
         let bestId: string | undefined;
         let best = 0;
         for (const [pid, c] of counts)
-          if (c > best: unknown) {
+          if (c > best) {
             best = c;
             bestId = pid;
           }
-        if (bestId && best >= 2: unknown) {
+        if (bestId && best >= 2) {
           const src =
             photos.find((p) => p.id === bestId) ||
             Array.from(infectionsMap.values())[0]?.photo;
-          if (src: unknown) {
+          if (src) {
             const tilesX = 4;
             const tilesY = 4;
             const uvBounds = calculateUvBoundsFromGridPosition(
@@ -2228,7 +2228,7 @@ function evolveInfectionSystem(
       generation,
       tileCenters,
     };
-  } catch (e: unknown) {
+  } catch (e) {
     safePostError(e);
     return null;
   }
@@ -2244,7 +2244,7 @@ function mergeDebugFromPayload(d: any) {
   // Merge into workerDebug
   try {
     Object.assign(workerDebug, d);
-  } catch (_e: unknown) {}
+  } catch (_e) {}
 }
 
 self.onmessage = function (ev: MessageEvent) {
@@ -2255,13 +2255,13 @@ self.onmessage = function (ev: MessageEvent) {
     const type = raw.type;
     const payload = raw.data ?? raw;
 
-    if (type === 'setDataAndConfig' || type === 'setDebug': unknown) {
+    if (type === 'setDataAndConfig' || type === 'setDebug') {
       // Accept either { type:'setDataAndConfig', data: { photos, debug } } or { type:'setDebug', debug }
       const dbg = payload.debug ?? raw.debug ?? payload;
       mergeDebugFromPayload(dbg);
 
       // Pre-build neighbor cache if positions are provided
-      if (type === 'setDataAndConfig': unknown) {
+      if (type === 'setDataAndConfig') {
         const incomingIsSpherical =
           typeof payload.isSpherical === 'boolean'
             ? Boolean(payload.isSpherical)
@@ -2290,22 +2290,22 @@ self.onmessage = function (ev: MessageEvent) {
           const isSpherical = !!cache.isSpherical;
 
           // Initialize empty arrays for all positions
-          for (let i = 0; i < positions.length; i++: unknown) {
+          for (let i = 0; i < positions.length; i++) {
             cache.neighborMap.set(i, []);
           }
 
           // Single pass: check each pair once and add bidirectional neighbors
-          for (let i = 0; i < positions.length; i++: unknown) {
+          for (let i = 0; i < positions.length; i++) {
             const pos1 = positions[i];
             if (!pos1) continue;
 
             // Only check j > i to avoid duplicate checks
-            for (let j = i + 1; j < positions.length; j++: unknown) {
+            for (let j = i + 1; j < positions.length; j++) {
               const pos2 = positions[j];
               if (!pos2) continue;
 
               const d = distanceBetween(pos1, pos2, bounds, isSpherical);
-              if (d <= threshold: unknown) {
+              if (d <= threshold) {
                 // Add bidirectional neighbors
                 cache.neighborMap.get(i)!.push(j);
                 cache.neighborMap.get(j)!.push(i);
@@ -2338,8 +2338,8 @@ self.onmessage = function (ev: MessageEvent) {
               type: 'cache-ready',
               data: { elapsed, positions: positions.length },
             });
-          } catch (_e: unknown) {}
-        } catch (e: unknown) {
+          } catch (_e) {}
+        } catch (e) {
           console.error('[hexgrid-worker] Error during cache pre-build:', e);
           // Mark cache as ready anyway to allow evolution to proceed
           cache.cacheReady = true;
@@ -2349,20 +2349,20 @@ self.onmessage = function (ev: MessageEvent) {
       return;
     }
 
-    if (type === 'evolve': unknown) {
+    if (type === 'evolve') {
       // Check if neighbor cache is ready before processing evolve
-      if (!cache.cacheReady: unknown) {
+      if (!cache.cacheReady) {
         debugLog(
           '[hexgrid-worker] ⏸️ Evolve message received but cache not ready yet - deferring...'
         );
         // Defer this evolve message by re-posting it after a short delay
-        setTimeout((: unknown) => {
+        setTimeout(() => {
           try {
             self.postMessage({
               type: 'deferred-evolve',
               data: { reason: 'cache-not-ready' },
             });
-          } catch (_e: unknown) {}
+          } catch (_e) {}
           // Re-process the message
           self.onmessage!(ev);
         }, 100);
@@ -2373,7 +2373,7 @@ self.onmessage = function (ev: MessageEvent) {
       mergeDebugFromPayload(payload.debug || payload);
       // Diagnostic: log that an evolve was received and the available payload keys (only when debugLogs enabled)
       try {
-        if (workerDebug && workerDebug.debugLogs: unknown) {
+        if (workerDebug && workerDebug.debugLogs) {
           debugLog(
             '[hexgrid-worker] evolve received, payload keys=',
             Object.keys(payload || {}),
@@ -2383,7 +2383,7 @@ self.onmessage = function (ev: MessageEvent) {
             workerDebug.evolveIntervalMs
           );
         }
-      } catch (_e: unknown) {}
+      } catch (_e) {}
       const now = Date.now();
       const interval =
         typeof workerDebug.evolutionIntervalMs === 'number'
@@ -2417,11 +2417,11 @@ self.onmessage = function (ev: MessageEvent) {
         bypassThrottle,
       });
       // Throttle: if we're within the interval and not bypassed, notify (debug) and skip processing
-      if (!bypassThrottle && now - lastEvolutionAt < interval: unknown) {
+      if (!bypassThrottle && now - lastEvolutionAt < interval) {
         debugLog(
           '[hexgrid-worker] ⛔ THROTTLED - skipping evolution processing'
         );
-        if (workerDebug && workerDebug.debugLogs: unknown) {
+        if (workerDebug && workerDebug.debugLogs) {
           try {
             self.postMessage({
               type: 'throttled-evolve',
@@ -2432,7 +2432,7 @@ self.onmessage = function (ev: MessageEvent) {
                 reason,
               },
             });
-          } catch (_e: unknown) {}
+          } catch (_e) {}
         }
         return;
       }
@@ -2443,7 +2443,7 @@ self.onmessage = function (ev: MessageEvent) {
         now
       );
       try {
-        if (workerDebug && workerDebug.debugLogs: unknown) {
+        if (workerDebug && workerDebug.debugLogs) {
           try {
             self.postMessage({
               type: 'ack-evolve',
@@ -2452,21 +2452,21 @@ self.onmessage = function (ev: MessageEvent) {
                 payloadKeys: Object.keys(payload || {}),
               },
             });
-          } catch (_e: unknown) {}
+          } catch (_e) {}
         }
-      } catch (_e: unknown) {}
+      } catch (_e) {}
 
       // Emit a lightweight processing marker so the client can see evolve processing started
       try {
-        if (workerDebug && workerDebug.debugLogs: unknown) {
+        if (workerDebug && workerDebug.debugLogs) {
           try {
             self.postMessage({
               type: 'processing-evolve',
               data: { startedAt: now, payloadKeys: Object.keys(payload || {}) },
             });
-          } catch (_e: unknown) {}
+          } catch (_e) {}
         }
-      } catch (_e: unknown) {}
+      } catch (_e) {}
 
       const state = payload.prevState ?? payload.state ?? raw.state ?? null;
       const positions = payload.positions ?? raw.positions ?? [];
@@ -2499,7 +2499,7 @@ self.onmessage = function (ev: MessageEvent) {
       let timedOut = false;
 
       // Set a watchdog timer to detect hangs (10 seconds)
-      const timeoutId = setTimeout((: unknown) => {
+      const timeoutId = setTimeout(() => {
         timedOut = true;
         console.error(
           '[hexgrid-worker] ⏱️ TIMEOUT: evolveInfectionSystem is taking too long (>10s)! Possible infinite loop.'
@@ -2509,7 +2509,7 @@ self.onmessage = function (ev: MessageEvent) {
             type: 'error',
             error: 'Evolution timeout - possible infinite loop',
           });
-        } catch (_e: unknown) {}
+        } catch (_e) {}
       }, 10000);
 
       try {
@@ -2530,7 +2530,7 @@ self.onmessage = function (ev: MessageEvent) {
           elapsed,
           'ms'
         );
-      } catch (err: unknown) {
+      } catch (err) {
         clearTimeout(timeoutId);
         console.error(
           '[hexgrid-worker] ❌ FATAL: evolveInfectionSystem threw an error:',
@@ -2544,13 +2544,13 @@ self.onmessage = function (ev: MessageEvent) {
         return;
       }
 
-      if (timedOut: unknown) {
+      if (timedOut) {
         console.error(
           '[hexgrid-worker] ⏱️ Function eventually returned but after timeout was triggered'
         );
       }
 
-      if (!res: unknown) {
+      if (!res) {
         debugLog('[hexgrid-worker] ❌ evolveInfectionSystem returned null!');
         return;
       }
@@ -2572,7 +2572,7 @@ self.onmessage = function (ev: MessageEvent) {
             hexRadius
           ),
         };
-        if (res.tileCenters && res.tileCenters.length > 0: unknown) {
+        if (res.tileCenters && res.tileCenters.length > 0) {
           payload.tileCenters = res.tileCenters;
           debugLog(
             '[hexgrid-worker] Including',
@@ -2585,8 +2585,8 @@ self.onmessage = function (ev: MessageEvent) {
         try {
           cache.lastGeneration = res.generation;
           cache.lastInfectionCount = res.infections ? res.infections.size : 0;
-        } catch (_e: unknown) {}
-      } catch (e: unknown) {
+        } catch (_e) {}
+      } catch (e) {
         console.error('[hexgrid-worker] ❌ Failed to post evolved message:', e);
       }
       debugLog(
@@ -2595,7 +2595,7 @@ self.onmessage = function (ev: MessageEvent) {
 
       // Emit a completion marker so the client can confirm the evolve finished end-to-end
       try {
-        if (workerDebug && workerDebug.debugLogs: unknown) {
+        if (workerDebug && workerDebug.debugLogs) {
           try {
             self.postMessage({
               type: 'evolved-complete',
@@ -2605,13 +2605,13 @@ self.onmessage = function (ev: MessageEvent) {
                 lastEvolutionTime: res.lastEvolutionTime,
               },
             });
-          } catch (_e: unknown) {}
+          } catch (_e) {}
         }
-      } catch (_e: unknown) {}
+      } catch (_e) {}
       return;
     }
 
-    if (type === 'optimize': unknown) {
+    if (type === 'optimize') {
       try {
         const infectionsArr = payload.infections || raw.infections || [];
         const infections = new Map<number, Infection>(infectionsArr);
@@ -2633,13 +2633,13 @@ self.onmessage = function (ev: MessageEvent) {
             type: 'optimized',
             data: { infections: Array.from(infections.entries()) },
           });
-        } catch (_e: unknown) {}
-      } catch (e: unknown) {
+        } catch (_e) {}
+      } catch (e) {
         safePostError(e);
       }
       return;
     }
-  } catch (err: unknown) {
+  } catch (err) {
     safePostError(err);
   }
 };
@@ -2704,8 +2704,8 @@ function _calculateSwappedContiguityCached(
 
 function _analyzeLocalEnvironment(
   centerIndex: number,  
-  infections: Map<number,  Infection>: unknown,  
-  positions: [number,  number: unknown,  number][]: unknown,  
+  infections: Map<number,  Infection>,  
+  positions: [number, number, number][],  
   hexRadius: number,  
   radius: number = 2,  
   _debugLogs: boolean = true
@@ -2715,14 +2715,14 @@ function _analyzeLocalEnvironment(
   const visited = new Set<number>();
   const queue: Array<[number, number]> = [[centerIndex, 0]];
 
-  while (queue.length > 0: unknown) {
+  while (queue.length > 0) {
     const [currentIndex, distance] = queue.shift()!;
     if (visited.has(currentIndex) || distance > radius) continue;
     visited.add(currentIndex);
     localIndices.push(currentIndex);
-    if (distance < radius: unknown) {
+    if (distance < radius) {
       const neighbors = getNeighborsCached(currentIndex, positions, hexRadius);
-      for (const neighborIndex of neighbors: unknown) {
+      for (const neighborIndex of neighbors) {
         if (!visited.has(neighborIndex))
           queue.push([neighborIndex, distance + 1]);
       }
@@ -2735,9 +2735,9 @@ function _analyzeLocalEnvironment(
   let boundaryPressure = 0;
   let totalVariance = 0;
 
-  for (const index of localIndices: unknown) {
+  for (const index of localIndices) {
     const infection = infections.get(index);
-    if (infection: unknown) {
+    if (infection) {
       infectedCount++;
       const photoId = infection.photo.id;
       photoCounts.set(photoId, (photoCounts.get(photoId) || 0) + 1);
@@ -2755,11 +2755,11 @@ function _analyzeLocalEnvironment(
 
   let dominantPhoto: Photo | null = null;
   let maxCount = 0;
-  for (const [photoId: unknown, count] of photoCounts: unknown) {
-    if (count > maxCount: unknown) {
+  for (const [photoId, count] of photoCounts) {
+    if (count > maxCount) {
       maxCount = count;
       for (const infection of infections.values()) {
-        if (infection.photo.id === photoId: unknown) {
+        if (infection.photo.id === photoId) {
           dominantPhoto = infection.photo;
           break;
         }

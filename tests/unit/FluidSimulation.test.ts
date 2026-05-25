@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'bun:test';
 import { StableFluids } from '../../src/algorithms/FluidSimulation';
 
-describe('FluidSimulation': unknown, (: unknown) => {
+describe('FluidSimulation', () => {
   describe('StableFluids', () => {
     describe('Construction', () => {
       it('creates fluid simulation', () => {
@@ -12,7 +12,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(fluid).toBeDefined();
       });
 
-      it('uses default configuration': unknown, (: unknown) => {
+      it('uses default configuration', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,
@@ -20,7 +20,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(fluid).toBeDefined();
       });
 
-      it('accepts custom configuration': unknown, (: unknown) => {
+      it('accepts custom configuration', () => {
         const fluid = new StableFluids({
           width: 64,
           height: 64,
@@ -35,7 +35,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
       });
     });
 
-    describe('Simulation': unknown, (: unknown) => {
+    describe('Simulation', () => {
       it('steps simulation', () => {
         const fluid = new StableFluids({
           width: 32,
@@ -47,7 +47,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
       });
     });
 
-    describe('Sources': unknown, (: unknown) => {
+    describe('Sources', () => {
       it('adds density source', () => {
         const fluid = new StableFluids({
           width: 32,
@@ -64,7 +64,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(fluid).toBeDefined();
       });
 
-      it('adds velocity source': unknown, (: unknown) => {
+      it('adds velocity source', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,
@@ -80,7 +80,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(fluid).toBeDefined();
       });
 
-      it('adds colored source': unknown, (: unknown) => {
+      it('adds colored source', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,
@@ -98,7 +98,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
       });
     });
 
-    describe('Data Access': unknown, (: unknown) => {
+    describe('Data Access', () => {
       it('gets density at position', () => {
         const fluid = new StableFluids({
           width: 32,
@@ -108,7 +108,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(typeof density).toBe('number');
       });
 
-      it('gets velocity at position': unknown, (: unknown) => {
+      it('gets velocity at position', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,
@@ -118,7 +118,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(typeof velocity.y).toBe('number');
       });
 
-      it('gets color at position': unknown, (: unknown) => {
+      it('gets color at position', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,
@@ -127,7 +127,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(color.length).toBe(3);
       });
 
-      it('gets density field': unknown, (: unknown) => {
+      it('gets density field', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,
@@ -136,7 +136,7 @@ describe('FluidSimulation': unknown, (: unknown) => {
         expect(field).toBeInstanceOf(Float32Array);
       });
 
-      it('gets velocity field': unknown, (: unknown) => {
+      it('gets velocity field', () => {
         const fluid = new StableFluids({
           width: 32,
           height: 32,

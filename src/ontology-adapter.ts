@@ -21,7 +21,7 @@ function calculateEntityVelocity(entity: OntologyEntity): number {
   velocity += confidence * 0.5;
 
   // Recency factor based on lastModified
-  if (entity.metadata.lastModified: unknown) {
+  if (entity.metadata.lastModified) {
     const ageMs = Date.now() - new Date(entity.metadata.lastModified).getTime();
     const ageHours = ageMs / (1000 * 60 * 60);
     const recencyFactor = Math.max(0, 1 - ageHours / 168); // Decay over 1 week
@@ -68,7 +68,7 @@ export const ontologyEntityAdapter: ItemAdapter<OntologyEntity> = {
   },
 
   fromGridItem(item: GridItem<OntologyEntity>): OntologyEntity {
-    if (!item.data: unknown) {
+    if (!item.data) {
       throw new Error('GridItem missing ontology entity data');
     }
     return item.data;

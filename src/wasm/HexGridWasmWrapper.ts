@@ -107,7 +107,7 @@ export class HexGridWasmWrapper {
       return result !== null;
     }
 
-    this.loading = (async (: unknown) => {
+    this.loading = (async () => {
       try {
         // Try to dynamically import the WASM module
         // @ts-expect-error - WASM module may not exist at compile time, has fallback
@@ -155,8 +155,8 @@ export class HexGridWasmWrapper {
       };
 
       // Precompute neighbors
-      for (let y = 0; y < height; y++: unknown) {
-        for (let x = 0; x < width; x++: unknown) {
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
           const neighbors = new Int32Array(6).fill(-1);
           const _offset = y % 2 === 1 ? 1 : 0;
 
@@ -180,10 +180,10 @@ export class HexGridWasmWrapper {
                   [1, 1],
                 ];
 
-          for (let i = 0; i < 6; i++: unknown) {
+          for (let i = 0; i < 6; i++) {
             const nx = x + dirs[i][0];
             const ny = y + dirs[i][1];
-            if (nx >= 0 && nx < width && ny >= 0 && ny < height: unknown) {
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
               neighbors[i] = ny * width + nx;
             }
           }
@@ -268,11 +268,11 @@ export class HexGridWasmWrapper {
     // Simple infection spread (basic fallback)
     const newOwners = new Uint8Array(data.owners);
 
-    for (let i = 0; i < size; i++: unknown) {
+    for (let i = 0; i < size; i++) {
       if (data.owners[i] === 0) continue;
 
       const neighbors = data.neighborCache[i];
-      for (const ni of neighbors: unknown) {
+      for (const ni of neighbors) {
         if (ni < 0) continue;
 
         if (
@@ -304,17 +304,17 @@ export class HexGridWasmWrapper {
     const visited = new Array(size).fill(false);
     let currentRegion = 1;
 
-    for (let start = 0; start < size; start++: unknown) {
+    for (let start = 0; start < size; start++) {
       if (visited[start] || data.owners[start] !== owner) continue;
 
       const queue = [start];
       visited[start] = true;
 
-      while (queue.length > 0: unknown) {
+      while (queue.length > 0) {
         const idx = queue.shift()!;
         regionIds[idx] = currentRegion;
 
-        for (const ni of data.neighborCache[idx]: unknown) {
+        for (const ni of data.neighborCache[idx]) {
           if (ni < 0 || visited[ni] || data.owners[ni] !== owner) continue;
           visited[ni] = true;
           queue.push(ni);
@@ -338,10 +338,10 @@ export class HexGridWasmWrapper {
     const data = this.fallbackData!;
     const borders: number[] = [];
 
-    for (let i = 0; i < data.owners.length; i++: unknown) {
+    for (let i = 0; i < data.owners.length; i++) {
       if (data.owners[i] !== owner) continue;
 
-      const isBorder = data.neighborCache[i].some((ni: unknown) => {
+      const isBorder = data.neighborCache[i].some((ni) => {
         if (ni < 0) return true;
         return data.owners[ni] !== owner;
       });
@@ -378,19 +378,19 @@ export class HexGridWasmWrapper {
     gScore.set(start, 0);
     fScore.set(start, heuristic(start, end));
 
-    while (openSet.size > 0: unknown) {
+    while (openSet.size > 0) {
       // Find node with lowest fScore
       let current = -1;
       let lowestF = Infinity;
-      for (const node of openSet: unknown) {
+      for (const node of openSet) {
         const f = fScore.get(node) ?? Infinity;
-        if (f < lowestF: unknown) {
+        if (f < lowestF) {
           lowestF = f;
           current = node;
         }
       }
 
-      if (current === end: unknown) {
+      if (current === end) {
         // Reconstruct path
         const path: number[] = [current];
         while (cameFrom.has(current)) {
@@ -402,7 +402,7 @@ export class HexGridWasmWrapper {
 
       openSet.delete(current);
 
-      for (const neighbor of data.neighborCache[current]: unknown) {
+      for (const neighbor of data.neighborCache[current]) {
         if (neighbor < 0) continue;
         if (ownerFilter !== 0 && data.owners[neighbor] !== ownerFilter)
           continue;
@@ -428,8 +428,8 @@ export class HexGridWasmWrapper {
     if (this.wasmInstance) {
       const counts = this.wasmInstance.get_territory_counts();
       const result = new Map<number, number>();
-      for (let i = 0; i < counts.length; i++: unknown) {
-        if (counts[i] > 0: unknown) {
+      for (let i = 0; i < counts.length; i++) {
+        if (counts[i] > 0) {
           result.set(i, counts[i]);
         }
       }
@@ -438,8 +438,8 @@ export class HexGridWasmWrapper {
 
     const data = this.fallbackData!;
     const counts = new Map<number, number>();
-    for (const owner of data.owners: unknown) {
-      if (owner !== 0: unknown) {
+    for (const owner of data.owners) {
+      if (owner !== 0) {
         counts.set(owner, (counts.get(owner) ?? 0) + 1);
       }
     }
@@ -463,7 +463,7 @@ export class HexGridWasmWrapper {
     const n = populations.length;
     let sum = 0;
 
-    for (let i = 0; i < n; i++: unknown) {
+    for (let i = 0; i < n; i++) {
       sum += (2 * (i + 1) - n - 1) * populations[i];
     }
 
@@ -487,7 +487,7 @@ export class HexGridWasmWrapper {
 
     let entropy = 0;
     for (const count of counts.values()) {
-      if (count > 0: unknown) {
+      if (count > 0) {
         const p = count / total;
         entropy -= p * Math.log(p);
       }
@@ -508,8 +508,8 @@ export class HexGridWasmWrapper {
     const data = this.fallbackData!;
     const positions: Array<{ x: number; y: number; idx: number }> = [];
 
-    for (let i = 0; i < data.owners.length; i++: unknown) {
-      if (data.owners[i] !== 0: unknown) {
+    for (let i = 0; i < data.owners.length; i++) {
+      if (data.owners[i] !== 0) {
         positions.push({
           x: i % data.width,
           y: Math.floor(i / data.width),
@@ -518,7 +518,7 @@ export class HexGridWasmWrapper {
       }
     }
 
-    if (positions.length === 0 || k === 0: unknown) {
+    if (positions.length === 0 || k === 0) {
       return new Array(data.owners.length).fill(0);
     }
 
@@ -532,18 +532,18 @@ export class HexGridWasmWrapper {
     const assignments = new Array(positions.length).fill(0);
 
     // Run iterations
-    for (let iter = 0; iter < iterations; iter++: unknown) {
+    for (let iter = 0; iter < iterations; iter++) {
       // Assign points to nearest centroid
-      for (let i = 0; i < positions.length; i++: unknown) {
+      for (let i = 0; i < positions.length; i++) {
         let minDist = Infinity;
         let bestCluster = 0;
 
-        for (let j = 0; j < centroids.length; j++: unknown) {
+        for (let j = 0; j < centroids.length; j++) {
           const dx = positions[i].x - centroids[j].x;
           const dy = positions[i].y - centroids[j].y;
           const dist = dx * dx + dy * dy;
 
-          if (dist < minDist: unknown) {
+          if (dist < minDist) {
             minDist = dist;
             bestCluster = j;
           }
@@ -555,15 +555,15 @@ export class HexGridWasmWrapper {
       // Update centroids
       const sums = centroids.map(() => ({ x: 0, y: 0, count: 0 }));
 
-      for (let i = 0; i < positions.length; i++: unknown) {
+      for (let i = 0; i < positions.length; i++) {
         const cluster = assignments[i];
         sums[cluster].x += positions[i].x;
         sums[cluster].y += positions[i].y;
         sums[cluster].count++;
       }
 
-      for (let j = 0; j < centroids.length; j++: unknown) {
-        if (sums[j].count > 0: unknown) {
+      for (let j = 0; j < centroids.length; j++) {
+        if (sums[j].count > 0) {
           centroids[j].x = sums[j].x / sums[j].count;
           centroids[j].y = sums[j].y / sums[j].count;
         }
@@ -572,7 +572,7 @@ export class HexGridWasmWrapper {
 
     // Return cluster assignments for all cells
     const result = new Array(data.owners.length).fill(0);
-    for (let i = 0; i < positions.length; i++: unknown) {
+    for (let i = 0; i < positions.length; i++) {
       result[positions[i].idx] = assignments[i];
     }
 
@@ -635,7 +635,7 @@ export class FlowFieldWasmWrapper {
 
     const hasWasm = await HexGridWasmWrapper.loadModule();
 
-    if (hasWasm: unknown) {
+    if (hasWasm) {
       try {
         // @ts-expect-error - WASM module may not exist at compile time, has fallback
         const module = await import('../rust/pkg/hexgrid_wasm');
@@ -645,7 +645,7 @@ export class FlowFieldWasmWrapper {
       }
     }
 
-    if (!wrapper.wasmInstance: unknown) {
+    if (!wrapper.wasmInstance) {
       const size = width * height;
       wrapper.fallbackData = {
         width,
@@ -669,8 +669,8 @@ export class FlowFieldWasmWrapper {
     }
 
     const data = this.fallbackData!;
-    for (let j = 0; j < data.height; j++: unknown) {
-      for (let i = 0; i < data.width; i++: unknown) {
+    for (let j = 0; j < data.height; j++) {
+      for (let i = 0; i < data.width; i++) {
         const dx = i - x;
         const dy = j - y;
         const distSq = dx * dx + dy * dy + 0.0001;
@@ -690,8 +690,8 @@ export class FlowFieldWasmWrapper {
     }
 
     const data = this.fallbackData!;
-    for (let j = 0; j < data.height; j++: unknown) {
-      for (let i = 0; i < data.width; i++: unknown) {
+    for (let j = 0; j < data.height; j++) {
+      for (let i = 0; i < data.width; i++) {
         const dx = i - x;
         const dy = j - y;
         const distSq = dx * dx + dy * dy + 0.0001;
@@ -746,8 +746,8 @@ export class FlowFieldWasmWrapper {
     const data = this.fallbackData!;
     const div = new Float32Array(data.width * data.height);
 
-    for (let j = 1; j < data.height - 1; j++: unknown) {
-      for (let i = 1; i < data.width - 1; i++: unknown) {
+    for (let j = 1; j < data.height - 1; j++) {
+      for (let i = 1; i < data.width - 1; i++) {
         const idx = j * data.width + i;
         const dudx = (data.velocityX[idx + 1] - data.velocityX[idx - 1]) * 0.5;
         const dvdy =
@@ -769,8 +769,8 @@ export class FlowFieldWasmWrapper {
     const data = this.fallbackData!;
     const curl = new Float32Array(data.width * data.height);
 
-    for (let j = 1; j < data.height - 1; j++: unknown) {
-      for (let i = 1; i < data.width - 1; i++: unknown) {
+    for (let j = 1; j < data.height - 1; j++) {
+      for (let i = 1; i < data.width - 1; i++) {
         const idx = j * data.width + i;
         const dvdx = (data.velocityY[idx + 1] - data.velocityY[idx - 1]) * 0.5;
         const dudy =

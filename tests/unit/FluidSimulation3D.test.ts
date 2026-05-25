@@ -8,7 +8,7 @@ import {
 } from '../../src/algorithms/FluidSimulation3D';
 import { Vector3 } from '../../src/math/Vector3';
 
-describe('StableFluids3D': unknown, (: unknown) => {
+describe('StableFluids3D', () => {
   let fluid: StableFluids3D;
 
   beforeEach(() => {
@@ -22,11 +22,11 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  afterEach((: unknown) => {
+  afterEach(() => {
     fluid.clear();
   });
 
-  describe('initialization': unknown, (: unknown) => {
+  describe('initialization', () => {
     it('should initialize with correct dimensions', () => {
       const dims = fluid.getDimensions();
       expect(dims.width).toBe(16);
@@ -34,12 +34,12 @@ describe('StableFluids3D': unknown, (: unknown) => {
       expect(dims.depth).toBe(16);
     });
 
-    it('should initialize with zero density': unknown, (: unknown) => {
+    it('should initialize with zero density', () => {
       const density = fluid.getDensityAt(new Vector3(8, 8, 8));
       expect(density).toBe(0);
     });
 
-    it('should initialize with zero velocity': unknown, (: unknown) => {
+    it('should initialize with zero velocity', () => {
       const velocity = fluid.getVelocityAt(new Vector3(8, 8, 8));
       expect(velocity.x).toBe(0);
       expect(velocity.y).toBe(0);
@@ -47,14 +47,14 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  describe('addDensity': unknown, (: unknown) => {
+  describe('addDensity', () => {
     it('should add density at specified point', () => {
       fluid.addDensity(8, 8, 8, 10, 2);
       const density = fluid.getDensityAt(new Vector3(8, 8, 8));
       expect(density).toBeGreaterThan(0);
     });
 
-    it('should spread density within radius': unknown, (: unknown) => {
+    it('should spread density within radius', () => {
       fluid.addDensity(8, 8, 8, 10, 3);
       const center = fluid.getDensityAt(new Vector3(8, 8, 8));
       const nearby = fluid.getDensityAt(new Vector3(9, 8, 8));
@@ -63,7 +63,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  describe('addForce': unknown, (: unknown) => {
+  describe('addForce', () => {
     it('should add velocity at specified point', () => {
       fluid.addForce(new Vector3(8, 8, 8), new Vector3(1, 0, 0), 2);
       const velocity = fluid.getVelocityAt(new Vector3(8, 8, 8));
@@ -71,7 +71,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  describe('step': unknown, (: unknown) => {
+  describe('step', () => {
     it('should step simulation without errors', () => {
       fluid.addDensity(8, 8, 8, 10, 2);
       fluid.addForce(new Vector3(8, 8, 8), new Vector3(1, 0, 0), 2);
@@ -79,7 +79,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
       expect(() => fluid.step(0.016)).not.toThrow();
     });
 
-    it('should advect density over time': unknown, (: unknown) => {
+    it('should advect density over time', () => {
       // Add density and force
       fluid.addDensity(8, 8, 8, 100, 2);
       fluid.addForce(new Vector3(8, 8, 8), new Vector3(5, 0, 0), 3);
@@ -87,7 +87,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
       const initialDensity = fluid.getDensityAt(new Vector3(8, 8, 8));
 
       // Step simulation multiple times
-      for (let i = 0; i < 10; i++: unknown) {
+      for (let i = 0; i < 10; i++) {
         fluid.step(0.1);
       }
 
@@ -98,7 +98,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  describe('clear': unknown, (: unknown) => {
+  describe('clear', () => {
     it('should reset all fields to zero', () => {
       fluid.addDensity(8, 8, 8, 10, 2);
       fluid.addForce(new Vector3(8, 8, 8), new Vector3(1, 0, 0), 2);
@@ -115,7 +115,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  describe('getVelocityFields': unknown, (: unknown) => {
+  describe('getVelocityFields', () => {
     it('should return velocity field arrays', () => {
       const fields = fluid.getVelocityFields();
       expect(fields.x).toBeInstanceOf(Float32Array);
@@ -125,7 +125,7 @@ describe('StableFluids3D': unknown, (: unknown) => {
     });
   });
 
-  describe('getDensityField': unknown, (: unknown) => {
+  describe('getDensityField', () => {
     it('should return density field array', () => {
       const field = fluid.getDensityField();
       expect(field).toBeInstanceOf(Float32Array);
@@ -134,33 +134,33 @@ describe('StableFluids3D': unknown, (: unknown) => {
   });
 });
 
-describe('PensieveFluidSimulator': unknown, (: unknown) => {
+describe('PensieveFluidSimulator', () => {
   let simulator: PensieveFluidSimulator;
 
   beforeEach(() => {
     simulator = new PensieveFluidSimulator(32);
   });
 
-  afterEach((: unknown) => {
+  afterEach(() => {
     simulator.clear();
   });
 
-  it('should create fluid with default size': unknown, (: unknown) => {
+  it('should create fluid with default size', () => {
     const defaultSimulator = new PensieveFluidSimulator();
     expect(defaultSimulator.getFluid()).toBeDefined();
   });
 
-  it('should add memory splash': unknown, (: unknown) => {
+  it('should add memory splash', () => {
     simulator.addMemorySplash(new Vector3(16, 16, 16), 0.5);
     const density = simulator.getFluid().getDensityAt(new Vector3(16, 16, 16));
     expect(density).toBeGreaterThan(0);
   });
 
-  it('should step simulation with swirl': unknown, (: unknown) => {
+  it('should step simulation with swirl', () => {
     expect(() => simulator.step(0.016)).not.toThrow();
   });
 
-  it('should get velocity at point': unknown, (: unknown) => {
+  it('should get velocity at point', () => {
     const velocity = simulator.getVelocityAt(new Vector3(16, 16, 16));
     expect(velocity).toBeDefined();
     expect(velocity.x).toBeDefined();
@@ -168,7 +168,7 @@ describe('PensieveFluidSimulator': unknown, (: unknown) => {
     expect(velocity.z).toBeDefined();
   });
 
-  it('should clear simulation': unknown, (: unknown) => {
+  it('should clear simulation', () => {
     simulator.addMemorySplash(new Vector3(16, 16, 16), 1);
     simulator.clear();
     const density = simulator.getFluid().getDensityAt(new Vector3(16, 16, 16));

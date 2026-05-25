@@ -91,14 +91,14 @@ export class StableFluids3D {
     const iz0 = Math.max(0, Math.floor(z - radius));
     const iz1 = Math.min(this.depth - 1, Math.ceil(z + radius));
 
-    for (let iz = iz0; iz <= iz1; iz++: unknown) {
-      for (let iy = iy0; iy <= iy1; iy++: unknown) {
-        for (let ix = ix0; ix <= ix1; ix++: unknown) {
+    for (let iz = iz0; iz <= iz1; iz++) {
+      for (let iy = iy0; iy <= iy1; iy++) {
+        for (let ix = ix0; ix <= ix1; ix++) {
           const dx = ix - x;
           const dy = iy - y;
           const dz = iz - z;
           const dist2 = dx * dx + dy * dy + dz * dz;
-          if (dist2 < r2: unknown) {
+          if (dist2 < r2) {
             const falloff = 1 - dist2 / r2;
             const idx = this.indexFor(ix, iy, iz);
             this.density[idx] += amount * falloff;
@@ -120,14 +120,14 @@ export class StableFluids3D {
     const iz0 = Math.max(0, Math.floor(pos.z - radius));
     const iz1 = Math.min(this.depth - 1, Math.ceil(pos.z + radius));
 
-    for (let iz = iz0; iz <= iz1; iz++: unknown) {
-      for (let iy = iy0; iy <= iy1; iy++: unknown) {
-        for (let ix = ix0; ix <= ix1; ix++: unknown) {
+    for (let iz = iz0; iz <= iz1; iz++) {
+      for (let iy = iy0; iy <= iy1; iy++) {
+        for (let ix = ix0; ix <= ix1; ix++) {
           const dx = ix - pos.x;
           const dy = iy - pos.y;
           const dz = iz - pos.z;
           const dist2 = dx * dx + dy * dy + dz * dz;
-          if (dist2 < r2: unknown) {
+          if (dist2 < r2) {
             const falloff = 1 - dist2 / r2;
             const idx = this.indexFor(ix, iy, iz);
             this.velocityX[idx] += force.x * falloff;

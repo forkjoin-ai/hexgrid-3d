@@ -5,7 +5,7 @@ import { HexGrid } from '../../src/components/HexGrid';
 import { uiStore } from '../../src/stores/uiStore';
 import { Photo } from '../../src/types';
 
-describe('HexGrid Integration Tests': unknown, (: unknown) => {
+describe('HexGrid Integration Tests', () => {
   const mockPhotos: Photo[] = Array.from({ length: 20 }, (_, i) => ({
     id: `${i + 1}`,
     url: `https://example.com/photo${i + 1}.jpg`,
@@ -14,7 +14,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     title: `Photo ${i + 1}`,
   }));
 
-  beforeEach((: unknown) => {
+  beforeEach(() => {
     jest.clearAllMocks();
     uiStore.set({
       debugOpen: false,
@@ -24,7 +24,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     });
   });
 
-  it('integrates with uiStore for debug panel': unknown, async (: unknown) => {
+  it('integrates with uiStore for debug panel', async () => {
     render(<HexGrid photos={mockPhotos} />);
 
     expect(uiStore).toBeDefined();
@@ -32,13 +32,13 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     // Toggle debug via store
     uiStore.toggleDebug();
 
-    await waitFor((: unknown) => {
+    await waitFor(() => {
       // Debug panel should be visible
       // Note: Actual implementation depends on HexGrid internals
     });
   });
 
-  it('handles large photo sets': unknown, (: unknown) => {
+  it('handles large photo sets', () => {
     const largePhotoSet = Array.from({ length: 1000 }, (_, i) => ({
       id: `${i + 1}`,
       url: `https://example.com/photo${i + 1}.jpg`,
@@ -50,7 +50,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     expect(screen.getByRole('canvas')).toBeInTheDocument();
   });
 
-  it('handles photo updates and re-renders efficiently': unknown, (: unknown) => {
+  it('handles photo updates and re-renders efficiently', () => {
     const { rerender } = render(<HexGrid photos={mockPhotos} />);
 
     // Update with new photos
@@ -68,7 +68,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     expect(screen.getByRole('canvas')).toBeInTheDocument();
   });
 
-  it('maintains camera state across re-renders': unknown, (: unknown) => {
+  it('maintains camera state across re-renders', () => {
     const { rerender } = render(<HexGrid photos={mockPhotos} />);
 
     // Simulate camera interaction
@@ -81,7 +81,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     expect(screen.getByRole('canvas')).toBeInTheDocument();
   });
 
-  it('coordinates with external canvas ref': unknown, (: unknown) => {
+  it('coordinates with external canvas ref', () => {
     const canvasRef = { current: null };
     const { rerender } = render(
       <HexGrid photos={mockPhotos} canvasRef={canvasRef as any} />
@@ -96,7 +96,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     expect(canvasRef.current).not.toBeNull();
   });
 
-  it('handles autoplay queue limit changes': unknown, (: unknown) => {
+  it('handles autoplay queue limit changes', () => {
     const onAutoplayQueueLimitChange = jest.fn();
 
     render(
@@ -110,7 +110,7 @@ describe('HexGrid Integration Tests': unknown, (: unknown) => {
     expect(screen.getByRole('canvas')).toBeInTheDocument();
   });
 
-  it('integrates leaderboard updates': unknown, (: unknown) => {
+  it('integrates leaderboard updates', () => {
     const onLeaderboardUpdate = jest.fn();
 
     render(

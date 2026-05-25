@@ -19,7 +19,7 @@ interface LeaderboardEntry {
   streak: number;
 }
 
-describe('NarrationOverlay Component': unknown, (: unknown) => {
+describe('NarrationOverlay Component', () => {
   const createMockMessage = (
     overrides: Partial<NarrationMessage> = {}
   ): NarrationMessage => ({
@@ -54,7 +54,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
       ].slice(0, limit),
   });
 
-  it('renders when visible': unknown, (: unknown) => {
+  it('renders when visible', () => {
     const { container } = render(
       <NarrationOverlay
         messages={mockMessages}
@@ -78,7 +78,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.firstChild).not.toBeNull();
   });
 
-  it('calls onClose when close button is clicked': unknown, (: unknown) => {
+  it('calls onClose when close button is clicked', () => {
     const onClose = mock(() => {});
     const { container } = render(
       <NarrationOverlay
@@ -90,13 +90,13 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     );
 
     const closeButton = container.querySelector('button');
-    if (closeButton: unknown) {
+    if (closeButton) {
       closeButton.click();
       expect(onClose).toHaveBeenCalled();
     }
   });
 
-  it('displays all messages': unknown, (: unknown) => {
+  it('displays all messages', () => {
     const { container } = render(
       <NarrationOverlay
         messages={mockMessages}
@@ -110,7 +110,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('Test message 2');
   });
 
-  it('shows empty state when no messages': unknown, (: unknown) => {
+  it('shows empty state when no messages', () => {
     const { container } = render(
       <NarrationOverlay
         messages={[]}
@@ -123,7 +123,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('No narration yet');
   });
 
-  it('displays stats dashboard when statsTracker is provided': unknown, (: unknown) => {
+  it('displays stats dashboard when statsTracker is provided', () => {
     const { container } = render(
       <NarrationOverlay
         messages={mockMessages}
@@ -136,7 +136,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('Stats Dashboard');
   });
 
-  it('displays leaderboard when provided': unknown, (: unknown) => {
+  it('displays leaderboard when provided', () => {
     const { container } = render(
       <NarrationOverlay
         messages={mockMessages}
@@ -151,7 +151,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('40 hexes');
   });
 
-  it('highlights high priority messages': unknown, (: unknown) => {
+  it('highlights high priority messages', () => {
     const highPriorityMessage = createMockMessage({
       text: 'High priority!',
       priority: 9,
@@ -169,7 +169,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('High priority!');
   });
 
-  it('displays sparklines in messages when available': unknown, (: unknown) => {
+  it('displays sparklines in messages when available', () => {
     const messageWithSparkline = createMockMessage({
       text: 'Trending up!',
       sparkline: '▁▂▃▄▅▆▇█',
@@ -188,7 +188,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('▁▂▃▄▅▆▇█');
   });
 
-  it('colors sparklines based on event type': unknown, (: unknown) => {
+  it('colors sparklines based on event type', () => {
     const declineMessage = createMockMessage({
       text: 'Going down',
       sparkline: '█▇▆▅▄▃▂▁',
@@ -208,7 +208,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('█▇▆▅▄▃▂▁');
   });
 
-  it('displays generation number for each message': unknown, (: unknown) => {
+  it('displays generation number for each message', () => {
     const messagesWithGenerations: NarrationMessage[] = [
       createMockMessage({ text: 'Gen 5 message', generation: 5 }),
       createMockMessage({ text: 'Gen 10 message', generation: 10 }),
@@ -227,7 +227,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('Gen 10');
   });
 
-  it('handles null statsTracker gracefully': unknown, (: unknown) => {
+  it('handles null statsTracker gracefully', () => {
     const { container } = render(
       <NarrationOverlay
         messages={mockMessages}
@@ -240,7 +240,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.firstChild).not.toBeNull();
   });
 
-  it('handles empty leaderboard': unknown, (: unknown) => {
+  it('handles empty leaderboard', () => {
     const emptyLeaderboardTracker = {
       getCurrentStats: () => ({
         generation: 10,
@@ -266,7 +266,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).not.toContain('Top 10 Leaderboard');
   });
 
-  it('renders timestamps for messages': unknown, (: unknown) => {
+  it('renders timestamps for messages', () => {
     const timestamp = Date.now();
     const messageWithTimestamp = createMockMessage({
       text: 'Timed message',
@@ -287,7 +287,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain(timeString);
   });
 
-  it('applies on_fire event styling': unknown, (: unknown) => {
+  it('applies on_fire event styling', () => {
     const onFireMessage = createMockMessage({
       text: 'On fire!',
       sparkline: '🔥',
@@ -306,7 +306,7 @@ describe('NarrationOverlay Component': unknown, (: unknown) => {
     expect(container.textContent).toContain('On fire!');
   });
 
-  it('applies missed_shot event styling': unknown, (: unknown) => {
+  it('applies missed_shot event styling', () => {
     const missedMessage = createMockMessage({
       text: 'Missed shot',
       sparkline: '❌',

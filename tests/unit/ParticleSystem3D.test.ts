@@ -8,7 +8,7 @@ import {
 } from '../../src/algorithms/ParticleSystem3D';
 import { Vector3 } from '../../src/math/Vector3';
 
-describe('ParticleSystem3D': unknown, (: unknown) => {
+describe('ParticleSystem3D', () => {
   let system: ParticleSystem3D;
 
   beforeEach(() => {
@@ -22,44 +22,44 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  afterEach((: unknown) => {
+  afterEach(() => {
     system.clear();
   });
 
-  describe('emit': unknown, (: unknown) => {
+  describe('emit', () => {
     it('should emit a single particle', () => {
       const ids = system.emit(new Vector3(0, 0, 0));
       expect(ids).toHaveLength(1);
       expect(system.getCount()).toBe(1);
     });
 
-    it('should emit multiple particles': unknown, (: unknown) => {
+    it('should emit multiple particles', () => {
       const ids = system.emit(new Vector3(0, 0, 0), { count: 5 });
       expect(ids).toHaveLength(5);
       expect(system.getCount()).toBe(5);
     });
 
-    it('should apply color to emitted particles': unknown, (: unknown) => {
+    it('should apply color to emitted particles', () => {
       system.emit(new Vector3(0, 0, 0), { color: [1, 0, 0] });
       const particles = system.getParticles();
       expect(particles[0].color).toEqual([1, 0, 0]);
     });
 
-    it('should apply size to emitted particles': unknown, (: unknown) => {
+    it('should apply size to emitted particles', () => {
       system.emit(new Vector3(0, 0, 0), { size: 2 });
       const particles = system.getParticles();
       expect(particles[0].size).toBe(2);
     });
 
-    it('should respect max particles limit': unknown, (: unknown) => {
-      for (let i = 0; i < 150; i++: unknown) {
+    it('should respect max particles limit', () => {
+      for (let i = 0; i < 150; i++) {
         system.emit(new Vector3(0, 0, 0));
       }
       expect(system.getCount()).toBeLessThanOrEqual(100);
     });
   });
 
-  describe('setParticle': unknown, (: unknown) => {
+  describe('setParticle', () => {
     it('should add a persistent particle', () => {
       system.setParticle('test-1', {
         id: 'test-1',
@@ -77,7 +77,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
       expect(particle?.position.x).toBe(10);
     });
 
-    it('should update existing particle': unknown, (: unknown) => {
+    it('should update existing particle', () => {
       system.setParticle('test-1', {
         id: 'test-1',
         position: new Vector3(10, 10, 10),
@@ -106,7 +106,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('removeParticle': unknown, (: unknown) => {
+  describe('removeParticle', () => {
     it('should remove particle by id', () => {
       system.setParticle('test-1', {
         id: 'test-1',
@@ -124,7 +124,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('update': unknown, (: unknown) => {
+  describe('update', () => {
     it('should update particle positions', () => {
       system.emit(new Vector3(0, 0, 0), {
         velocity: new Vector3(10, 0, 0),
@@ -137,7 +137,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
       expect(newPos).toBeGreaterThan(initialPos);
     });
 
-    it('should apply gravity': unknown, (: unknown) => {
+    it('should apply gravity', () => {
       system.emit(new Vector3(0, 10, 0), {
         velocity: new Vector3(0, 0, 0),
       });
@@ -148,7 +148,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
       expect(particle.velocity.y).toBeLessThan(0);
     });
 
-    it('should remove dead particles': unknown, (: unknown) => {
+    it('should remove dead particles', () => {
       system.emit(new Vector3(0, 0, 0), { life: 0.05 });
       expect(system.getCount()).toBe(1);
 
@@ -156,7 +156,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
       expect(system.getCount()).toBe(0);
     });
 
-    it('should not remove particles with infinite life': unknown, (: unknown) => {
+    it('should not remove particles with infinite life', () => {
       system.setParticle('persistent', {
         id: 'persistent',
         position: new Vector3(0, 0, 0),
@@ -168,14 +168,14 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
         mass: 1,
       });
 
-      for (let i = 0; i < 100; i++: unknown) {
+      for (let i = 0; i < 100; i++) {
         system.update(0.1);
       }
 
       expect(system.getParticle('persistent')).toBeDefined();
     });
 
-    it('should update pulse scale for particles with heartRate': unknown, (: unknown) => {
+    it('should update pulse scale for particles with heartRate', () => {
       system.setParticle('biometric', {
         id: 'biometric',
         position: new Vector3(0, 0, 0),
@@ -194,13 +194,13 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('bounds collision': unknown, (: unknown) => {
+  describe('bounds collision', () => {
     it('should bounce particles off sphere boundary', () => {
       system.emit(new Vector3(48, 0, 0), {
         velocity: new Vector3(100, 0, 0),
       });
 
-      for (let i = 0; i < 10; i++: unknown) {
+      for (let i = 0; i < 10; i++) {
         system.update(0.1);
       }
 
@@ -215,7 +215,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('applyForceField': unknown, (: unknown) => {
+  describe('applyForceField', () => {
     it('should apply force to all particles', () => {
       system.emit(new Vector3(0, 0, 0));
 
@@ -227,7 +227,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('applyAttractor': unknown, (: unknown) => {
+  describe('applyAttractor', () => {
     it('should pull particles toward attractor', () => {
       system.emit(new Vector3(10, 0, 0), { velocity: new Vector3(0, 0, 0) });
 
@@ -239,7 +239,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('getInstanceData': unknown, (: unknown) => {
+  describe('getInstanceData', () => {
     it('should return GPU-ready data', () => {
       system.emit(new Vector3(1, 2, 3), { color: [1, 0, 0], size: 2 });
 
@@ -252,7 +252,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
       expect(data.ids).toHaveLength(1);
     });
 
-    it('should include position data': unknown, (: unknown) => {
+    it('should include position data', () => {
       system.emit(new Vector3(1, 2, 3));
 
       const data = system.getInstanceData();
@@ -263,7 +263,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('findNearest': unknown, (: unknown) => {
+  describe('findNearest', () => {
     it('should find nearest particle', () => {
       system.setParticle('a', {
         id: 'a',
@@ -291,7 +291,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
       expect(nearest?.id).toBe('b');
     });
 
-    it('should return null if no particles within maxDistance': unknown, (: unknown) => {
+    it('should return null if no particles within maxDistance', () => {
       system.setParticle('far', {
         id: 'far',
         position: new Vector3(100, 0, 0),
@@ -308,7 +308,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('findWithinRadius': unknown, (: unknown) => {
+  describe('findWithinRadius', () => {
     it('should find particles within radius', () => {
       system.setParticle('near', {
         id: 'near',
@@ -338,7 +338,7 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
     });
   });
 
-  describe('clear': unknown, (: unknown) => {
+  describe('clear', () => {
     it('should remove all particles', () => {
       system.emit(new Vector3(0, 0, 0), { count: 10 });
       expect(system.getCount()).toBe(10);
@@ -349,27 +349,27 @@ describe('ParticleSystem3D': unknown, (: unknown) => {
   });
 });
 
-describe('PensieveParticleSystem': unknown, (: unknown) => {
+describe('PensieveParticleSystem', () => {
   let system: PensieveParticleSystem;
 
   beforeEach(() => {
     system = new PensieveParticleSystem(100);
   });
 
-  afterEach((: unknown) => {
+  afterEach(() => {
     system.clear();
   });
 
-  it('should create with default settings': unknown, (: unknown) => {
+  it('should create with default settings', () => {
     expect(system.getCount()).toBe(0);
   });
 
-  it('should add memory particle': unknown, (: unknown) => {
+  it('should add memory particle', () => {
     system.addMemoryParticle('memory-1', new Vector3(0, 0, 0), [1, 0.5, 0]);
     expect(system.getCount()).toBe(1);
   });
 
-  it('should add memory particle with options': unknown, (: unknown) => {
+  it('should add memory particle with options', () => {
     system.addMemoryParticle('memory-1', new Vector3(0, 0, 0), [1, 0.5, 0], {
       intensity: 0.8,
       heartRate: 72,
@@ -382,7 +382,7 @@ describe('PensieveParticleSystem': unknown, (: unknown) => {
     expect(particle?.hrvValue).toBe(45);
   });
 
-  it('should apply age factor to color': unknown, (: unknown) => {
+  it('should apply age factor to color', () => {
     system.addMemoryParticle('memory-1', new Vector3(0, 0, 0), [1, 1, 1], {
       ageFactor: 0.5,
     });
@@ -393,7 +393,7 @@ describe('PensieveParticleSystem': unknown, (: unknown) => {
     expect(particle?.color[2]).toBe(0.5);
   });
 
-  it('should create particles with infinite life': unknown, (: unknown) => {
+  it('should create particles with infinite life', () => {
     system.addMemoryParticle('memory-1', new Vector3(0, 0, 0), [1, 1, 1]);
 
     const particle = system.getParticle('memory-1');

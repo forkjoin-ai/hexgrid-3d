@@ -17,13 +17,13 @@ export interface NarrationOverlayProps {
 }
 
 export const NarrationOverlay: React.FC<NarrationOverlayProps> = ({
-  messages, statsTracker: unknown, isVisible: unknown, onClose: unknown, }: unknown) => {
+  messages, statsTracker, isVisible, onClose, }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Auto-scroll to latest message
   useEffect(() => {
-    if (messagesEndRef.current && scrollContainerRef.current: unknown) {
+    if (messagesEndRef.current && scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }

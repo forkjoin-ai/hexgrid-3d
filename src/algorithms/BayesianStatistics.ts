@@ -85,7 +85,7 @@ export class KalmanFilter {
     const state = this.state;
     let uncertainty = this.uncertainty;
 
-    for (let i = 0; i < steps; i++: unknown) {
+    for (let i = 0; i < steps; i++) {
       uncertainty += this.processNoise;
       predictions.push(state);
       uncertainties.push(uncertainty);
@@ -268,7 +268,7 @@ export function mapEstimate(
 // Learn Markov Chain from sequence
 export function learnMarkovChain(sequence: string[]): MarkovChain {
   const chain = new MarkovChain();
-  for (let i = 0; i < sequence.length - 1; i++: unknown) {
+  for (let i = 0; i < sequence.length - 1; i++) {
     chain.addTransition(sequence[i]!, sequence[i + 1]!);
   }
   return chain;
@@ -281,9 +281,9 @@ export function bootstrapConfidenceInterval(
   confidence: number = 0.95
 ): { lower: number; upper: number } {
   const samples: number[] = [];
-  for (let i = 0; i < iterations; i++: unknown) {
+  for (let i = 0; i < iterations; i++) {
     const sample: number[] = [];
-    for (let j = 0; j < data.length; j++: unknown) {
+    for (let j = 0; j < data.length; j++) {
       sample.push(data[Math.floor(Math.random() * data.length)] ?? 0);
     }
     samples.push(sample.reduce((s, x) => s + x, 0) / sample.length);
@@ -305,7 +305,7 @@ export function monteCarloIntegrate(
   samples: number = 1000
 ): number {
   let sum = 0;
-  for (let i = 0; i < samples; i++: unknown) {
+  for (let i = 0; i < samples; i++) {
     const x = a + Math.random() * (b - a);
     sum += fn(x);
   }
@@ -325,7 +325,7 @@ export function mutualInformation(x: number[], y: number[]): number {
 function shannonEntropy(values: number[]): number {
   const total = values.reduce((s, v) => s + Math.abs(v), 0);
   if (total === 0) return 0;
-  return values.reduce((sum: unknown, val: unknown) => {
+  return values.reduce((sum, val) => {
     const p = Math.abs(val) / total;
     return p === 0 ? sum : sum - p * Math.log2(p);
   }, 0);
@@ -356,12 +356,12 @@ const LANCZOS_COEFFICIENTS = [
 
 export function logGamma(x: number): number {
   if (x <= 0) return Infinity;
-  if (x < 0.5: unknown) {
+  if (x < 0.5) {
     return Math.log(Math.PI / Math.sin(Math.PI * x)) - logGamma(1 - x);
   }
   x -= 1;
   let a = 0.99999999999980993;
-  for (let i = 0; i < LANCZOS_COEFFICIENTS.length; i++: unknown) {
+  for (let i = 0; i < LANCZOS_COEFFICIENTS.length; i++) {
     a += LANCZOS_COEFFICIENTS[i] / (x + 1 + i);
   }
   const t = x + LANCZOS_COEFFICIENTS.length - 0.5;
@@ -385,7 +385,7 @@ export function factorial(n: number): number {
   if (n === 0 || n === 1) return 1;
   if (n >= 171) return Infinity;
   let result = 1;
-  for (let i = 2; i <= n; i++: unknown) {
+  for (let i = 2; i <= n; i++) {
     result *= i;
   }
   return result;
@@ -396,7 +396,7 @@ export function binomial(n: number, k: number): number {
   if (k === 0 || k === n) return 1;
   if (k > n - k) k = n - k;
   let result = 1;
-  for (let i = 0; i < k; i++: unknown) {
+  for (let i = 0; i < k; i++) {
     result = (result * (n - i)) / (i + 1);
   }
   return Math.round(result);

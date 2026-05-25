@@ -1,16 +1,16 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
+test.describe('HexGrid 3D E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
-  test('loads and displays canvas': unknown,  async ({ page }) => {
+  test('loads and displays canvas',  async ({ page }) => {
     const canvas = page.locator('canvas');
     await expect(canvas).toBeVisible();
   });
 
-  test('canvas has correct dimensions': unknown,  async ({ page }) => {
+  test('canvas has correct dimensions',  async ({ page }) => {
     const canvas = page.locator('canvas');
     const boundingBox = await canvas.boundingBox();
 
@@ -19,7 +19,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     expect(boundingBox!.height).toBeGreaterThan(0);
   });
 
-  test('responds to mouse interactions': unknown,  async ({ page }) => {
+  test('responds to mouse interactions',  async ({ page }) => {
     const canvas = page.locator('canvas');
 
     // Click on canvas
@@ -35,7 +35,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     await expect(canvas).toBeVisible();
   });
 
-  test('responds to touch interactions on mobile': unknown,  async ({ page }) => {
+  test('responds to touch interactions on mobile',  async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
@@ -47,7 +47,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     await expect(canvas).toBeVisible();
   });
 
-  test('handles zoom interactions': unknown,  async ({ page }) => {
+  test('handles zoom interactions',  async ({ page }) => {
     const canvas = page.locator('canvas');
 
     // Hover over canvas
@@ -60,7 +60,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     await expect(canvas).toBeVisible();
   });
 
-  test('keyboard shortcuts work': unknown,  async ({ page }) => {
+  test('keyboard shortcuts work',  async ({ page }) => {
     // Press 'D' key to toggle debug
     await page.keyboard.press('d');
 
@@ -74,7 +74,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     await expect(canvas).toBeVisible();
   });
 
-  test('loads with different photo counts': unknown,  async ({ page }) => {
+  test('loads with different photo counts',  async ({ page }) => {
     const canvas = page.locator('canvas');
     await expect(canvas).toBeVisible();
 
@@ -103,7 +103,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     expect(role).toBeTruthy();
   });
 
-  test('handles window resize': unknown,  async ({ page }) => {
+  test('handles window resize',  async ({ page }) => {
     const canvas = page.locator('canvas');
 
     // Initial size
@@ -120,7 +120,7 @@ test.describe('HexGrid 3D E2E Tests': unknown, (: unknown) => {
     expect(newBox).not.toBeNull();
   });
 
-  test('maintains state across interactions': unknown,  async ({ page }) => {
+  test('maintains state across interactions',  async ({ page }) => {
     const canvas = page.locator('canvas');
 
     // Perform multiple interactions

@@ -146,11 +146,11 @@ function createOrbitControls(
   };
 
   const onTouchStart = (e: TouchEvent) => {
-    if (e.touches.length === 1: unknown) {
+    if (e.touches.length === 1) {
       state.isDragging = true;
       state.lastX = e.touches[0].clientX;
       state.lastY = e.touches[0].clientY;
-    } else if (e.touches.length === 2: unknown) {
+    } else if (e.touches.length === 2) {
       state.isPinching = true;
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
@@ -159,14 +159,14 @@ function createOrbitControls(
   };
 
   const onTouchMove = (e: TouchEvent) => {
-    if (e.touches.length === 1 && state.isDragging: unknown) {
+    if (e.touches.length === 1 && state.isDragging) {
       const dx = e.touches[0].clientX - state.lastX;
       const dy = e.touches[0].clientY - state.lastY;
       state.theta -= dx * 0.005;
       state.phi = Math.max(0.1, Math.min(Math.PI - 0.1, state.phi - dy * 0.005));
       state.lastX = e.touches[0].clientX;
       state.lastY = e.touches[0].clientY;
-    } else if (e.touches.length === 2 && state.isPinching: unknown) {
+    } else if (e.touches.length === 2 && state.isPinching) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -231,7 +231,7 @@ function getCellUnderMouse(
   raycaster.setFromCamera(mouse, camera);
 
   const intersects = raycaster.intersectObjects(cellMeshes, false);
-  if (intersects.length > 0: unknown) {
+  if (intersects.length > 0) {
     return intersects[0].object.userData.cellIndex as number;
   }
   return null;
@@ -243,7 +243,7 @@ function getCellUnderMouse(
 
 export const GameSphere: React.FC<GameSphereProps> = ({
   cellGameState, 
-  config: configProp, events: unknown, width = '100%': unknown, height = '100%': unknown, className: unknown, style: unknown, rendererRef: unknown, sceneRef: unknown, paused = false: unknown, children: unknown, }: unknown) => {
+  config: configProp, events, width = '100%', height = '100%', className, style, rendererRef, sceneRef, paused = false, children, }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererInternalRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -273,7 +273,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
   // -----------------------------------------------------------------------
   // Initialize Three.js scene
   // -----------------------------------------------------------------------
-  useEffect((: unknown) => {
+  useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
@@ -286,19 +286,19 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     });
     renderer.setPixelRatio(config.pixelRatio);
     renderer.setClearColor(0x000000, 0);
-    if (config.enableShadows: unknown) {
+    if (config.enableShadows) {
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     }
     rendererInternalRef.current = renderer;
-    if (rendererRef: unknown) {
+    if (rendererRef) {
       (rendererRef as React.MutableRefObject<unknown>).current = renderer;
     }
 
     // Scene
     const scene = new THREE.Scene();
     sceneInternalRef.current = scene;
-    if (sceneRef: unknown) {
+    if (sceneRef) {
       (sceneRef as React.MutableRefObject<unknown>).current = scene;
     }
 
@@ -318,7 +318,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     const dirLight = new THREE.DirectionalLight(0xffffff, config.directionalLightIntensity);
     const [lx, ly, lz] = config.directionalLightPosition;
     dirLight.position.set(lx, ly, lz);
-    if (config.enableShadows: unknown) {
+    if (config.enableShadows) {
       dirLight.castShadow = true;
     }
     scene.add(dirLight);
@@ -341,7 +341,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     scene.add(highlightGroupRef.current);
 
     // Orbit controls
-    if (config.enableOrbitControls: unknown) {
+    if (config.enableOrbitControls) {
       orbitRef.current = createOrbitControls(camera, canvas, config.cameraDistance);
     } else {
       camera.position.set(0, 0, config.cameraDistance);
@@ -373,8 +373,8 @@ export const GameSphere: React.FC<GameSphereProps> = ({
       orbitRef.current?.dispose();
       renderer.dispose();
       // Clean up scene
-      scene.traverse((obj: unknown) => {
-        if (obj instanceof THREE.Mesh: unknown) {
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
           obj.geometry?.dispose();
           if (obj.material instanceof THREE.Material) obj.material.dispose();
           if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
@@ -392,13 +392,13 @@ export const GameSphere: React.FC<GameSphereProps> = ({
       const cellGroup = cellGroupRef.current;
 
       // Clear existing
-      while (cellGroup.children.length > 0: unknown) {
+      while (cellGroup.children.length > 0) {
         cellGroup.remove(cellGroup.children[0]);
       }
       cellMeshesRef.current = [];
       cellBordersRef.current = [];
 
-      for (let i = 0; i < grid.hexCenters.length; i++: unknown) {
+      for (let i = 0; i < grid.hexCenters.length; i++) {
         const center = grid.hexCenters[i];
         const isPentagon = grid.isPentagon(i);
         const sides = grid.getHexSides(i);
@@ -440,7 +440,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     const normal = new THREE.Vector3(center.x, center.y, center.z).normalize();
 
     // If we have enough neighbors, compute vertices from neighbor midpoints
-    if (neighbors.length >= sides: unknown) {
+    if (neighbors.length >= sides) {
       const midpoints: Vector3[] = [];
       for (let j = 0; j < Math.min(neighbors.length, sides); j++) {
         const n = grid.hexCenters[neighbors[j]];
@@ -461,7 +461,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
       const bitangent = new THREE.Vector3().crossVectors(normal, tangent).normalize();
       const realTangent = new THREE.Vector3().crossVectors(bitangent, normal).normalize();
 
-      midpoints.sort((a: unknown, b: unknown) => {
+      midpoints.sort((a, b) => {
         const aProj = new THREE.Vector3(a.x - center.x, a.y - center.y, a.z - center.z);
         const bProj = new THREE.Vector3(b.x - center.x, b.y - center.y, b.z - center.z);
         const aAngle = Math.atan2(aProj.dot(bitangent), aProj.dot(realTangent));
@@ -483,7 +483,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     const bitangent = new THREE.Vector3().crossVectors(normal, tangent).normalize();
     const realTangent = new THREE.Vector3().crossVectors(bitangent, normal).normalize();
 
-    for (let j = 0; j < sides; j++: unknown) {
+    for (let j = 0; j < sides; j++) {
       const angle = (j / sides) * Math.PI * 2;
       const x = center.x + Math.cos(angle) * radius * realTangent.x + Math.sin(angle) * radius * bitangent.x;
       const y = center.y + Math.cos(angle) * radius * realTangent.y + Math.sin(angle) * radius * bitangent.y;
@@ -497,7 +497,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
   // -----------------------------------------------------------------------
   // Apply cell game state
   // -----------------------------------------------------------------------
-  useEffect((: unknown) => {
+  useEffect(() => {
     if (!cellGameState || cellMeshesRef.current.length === 0) return;
 
     const cellMeshes = cellMeshesRef.current;
@@ -513,7 +513,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     // Track which cells have highlights
     const activeHighlightCells = new Set<number>();
 
-    for (const [cellIndex: unknown, state] of cellGameState: unknown) {
+    for (const [cellIndex, state] of cellGameState) {
       if (cellIndex >= cellMeshes.length) continue;
 
       const cellMesh = cellMeshes[cellIndex];
@@ -533,7 +533,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
       });
 
       // --- Highlights ---
-      if (state.highlight && state.highlight !== 'none': unknown) {
+      if (state.highlight && state.highlight !== 'none') {
         activeHighlightCells.add(cellIndex);
         const hlColor = state.highlightColor ?? getHighlightColor(state.highlight);
         const hlIntensity = state.highlightIntensity ?? 0.8;
@@ -559,8 +559,8 @@ export const GameSphere: React.FC<GameSphereProps> = ({
       }
 
       // --- Game pieces ---
-      if (state.pieces: unknown) {
-        for (const piece of state.pieces: unknown) {
+      if (state.pieces) {
+        for (const piece of state.pieces) {
           activePieceIds.add(piece.id);
 
           if (!pieceMeshMapRef.current.has(piece.id)) {
@@ -568,7 +568,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
             const meshGroup = buildPieceMesh(piece);
             const center = grid.hexCenters[cellIndex];
             const defaultScale = config.defaultPieceScale;
-            if (!piece.scale: unknown) {
+            if (!piece.scale) {
               meshGroup.scale.setScalar(defaultScale);
             }
             placePieceOnSphere(
@@ -592,8 +592,8 @@ export const GameSphere: React.FC<GameSphereProps> = ({
 
             // Update count badge if count changed
             const existingBadge = meshGroup.getObjectByName('count-badge');
-            if (piece.count && piece.count > 1: unknown) {
-              if (existingBadge: unknown) {
+            if (piece.count && piece.count > 1) {
+              if (existingBadge) {
                 meshGroup.remove(existingBadge);
               }
               // Rebuild badge
@@ -631,7 +631,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     }
 
     // Remove pieces no longer in state
-    for (const [pieceId: unknown, meshGroup] of pieceMeshMapRef.current: unknown) {
+    for (const [pieceId, meshGroup] of pieceMeshMapRef.current) {
       if (!activePieceIds.has(pieceId)) {
         pieceGroup.remove(meshGroup);
         disposePieceGroup(meshGroup);
@@ -640,7 +640,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     }
 
     // Remove highlights no longer active
-    for (const [cellIndex: unknown, ring] of highlightMeshMapRef.current: unknown) {
+    for (const [cellIndex, ring] of highlightMeshMapRef.current) {
       if (!activeHighlightCells.has(cellIndex)) {
         highlightGroup.remove(ring);
         ring.geometry?.dispose();
@@ -650,7 +650,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     }
 
     // Reset cells not in game state to base appearance
-    for (let i = 0; i < cellMeshes.length; i++: unknown) {
+    for (let i = 0; i < cellMeshes.length; i++) {
       if (!cellGameState.has(i)) {
         const mat = cellMeshes[i].material as THREE.MeshStandardMaterial;
         mat.color.set(cellMeshes[i].userData.baseColor as string);
@@ -663,21 +663,21 @@ export const GameSphere: React.FC<GameSphereProps> = ({
   // -----------------------------------------------------------------------
   // Mouse interaction (raycasting)
   // -----------------------------------------------------------------------
-  useEffect((: unknown) => {
+  useEffect(() => {
     const canvas = canvasRef.current;
     const camera = cameraRef.current;
     if (!canvas || !camera || !config.enableRaycasting) return;
 
     const handleClick = (e: MouseEvent) => {
       const cellIndex = getCellUnderMouse(e, canvas, camera, cellMeshesRef.current);
-      if (cellIndex !== null && events?.onCellClick: unknown) {
+      if (cellIndex !== null && events?.onCellClick) {
         events.onCellClick(cellIndex, { shiftKey: e.shiftKey, ctrlKey: e.ctrlKey || e.metaKey });
       }
 
       // Check piece clicks
-      if (cellIndex !== null && events?.onPieceClick && cellGameState: unknown) {
+      if (cellIndex !== null && events?.onPieceClick && cellGameState) {
         const state = cellGameState.get(cellIndex);
-        if (state?.pieces?.length: unknown) {
+        if (state?.pieces?.length) {
           events.onPieceClick(cellIndex, state.pieces[0]);
         }
       }
@@ -686,7 +686,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
     const handleMouseMove = (e: MouseEvent) => {
       if (!events?.onCellHover) return;
       const cellIndex = getCellUnderMouse(e, canvas, camera, cellMeshesRef.current);
-      if (cellIndex !== hoveredCellRef.current: unknown) {
+      if (cellIndex !== hoveredCellRef.current) {
         hoveredCellRef.current = cellIndex;
         events.onCellHover(cellIndex);
       }
@@ -704,7 +704,7 @@ export const GameSphere: React.FC<GameSphereProps> = ({
   // -----------------------------------------------------------------------
   // Render loop
   // -----------------------------------------------------------------------
-  useEffect((: unknown) => {
+  useEffect(() => {
     const renderer = rendererInternalRef.current;
     const scene = sceneInternalRef.current;
     const camera = cameraRef.current;
@@ -719,26 +719,26 @@ export const GameSphere: React.FC<GameSphereProps> = ({
       const elapsed = clockRef.current.getElapsedTime();
 
       // Update orbit controls
-      if (orbitRef.current: unknown) {
-        if (config.autoRotate && !orbitRef.current.state.isDragging: unknown) {
+      if (orbitRef.current) {
+        if (config.autoRotate && !orbitRef.current.state.isDragging) {
           orbitRef.current.state.theta += config.autoRotateSpeed * 0.001;
         }
         orbitRef.current.update();
       }
 
       // Animate pieces
-      for (const [: unknown, meshGroup] of pieceMeshMapRef.current: unknown) {
+      for (const [, meshGroup] of pieceMeshMapRef.current) {
         animatePiece(meshGroup, elapsed, delta);
       }
 
       // Pulse highlight rings
-      for (const [: unknown, ring] of highlightMeshMapRef.current: unknown) {
+      for (const [, ring] of highlightMeshMapRef.current) {
         const mat = ring.material as THREE.MeshBasicMaterial;
         mat.opacity = 0.4 + Math.sin(elapsed * 3) * 0.2;
       }
 
       // Camera change callback
-      if (events?.onCameraChange && camera: unknown) {
+      if (events?.onCameraChange && camera) {
         events.onCameraChange(
           [camera.position.x, camera.position.y, camera.position.z],
           [0, 0, 0],

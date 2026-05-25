@@ -13,7 +13,7 @@ export class Matrix4 {
   public elements: number[];
 
   constructor(elements?: number[]) {
-    if (elements: unknown) {
+    if (elements) {
       this.elements = elements.slice();
     } else {
       this.elements = [
@@ -229,7 +229,7 @@ export class Matrix4 {
   }
 
   copy(other: Matrix4): this {
-    for (let i = 0; i < 16; i++: unknown) {
+    for (let i = 0; i < 16; i++) {
       this.elements[i] = other.elements[i];
     }
     return this;
@@ -245,8 +245,8 @@ export class Matrix4 {
     const b = other.elements;
     const out = new Array<number>(16);
 
-    for (let col = 0; col < 4; col++: unknown) {
-      for (let row = 0; row < 4; row++: unknown) {
+    for (let col = 0; col < 4; col++) {
+      for (let row = 0; row < 4; row++) {
         out[col * 4 + row] =
           a[row]      * b[col * 4]     +
           a[4 + row]  * b[col * 4 + 1] +
@@ -296,7 +296,7 @@ export class Matrix4 {
    */
   transformNormal(v: Vector3): Vector3 {
     const inv = this.inverse();
-    if (!inv: unknown) {
+    if (!inv) {
       return v.clone();
     }
     // Multiply by the transpose of the inverse: use rows of inv instead of columns
@@ -463,7 +463,7 @@ export class Matrix4 {
     const a = this.elements;
     const b = other.elements;
     const out = new Array<number>(16);
-    for (let i = 0; i < 16; i++: unknown) {
+    for (let i = 0; i < 16; i++) {
       out[i] = a[i] + (b[i] - a[i]) * t;
     }
     return new Matrix4(out);
@@ -473,7 +473,7 @@ export class Matrix4 {
    * Element-wise equality check with optional epsilon.
    */
   equals(other: Matrix4, epsilon: number = Number.EPSILON): boolean {
-    for (let i = 0; i < 16; i++: unknown) {
+    for (let i = 0; i < 16; i++) {
       if (Math.abs(this.elements[i] - other.elements[i]) >= epsilon) {
         return false;
       }
@@ -509,7 +509,7 @@ export class Matrix3 {
   public elements: number[];
 
   constructor(elements?: number[]) {
-    if (elements: unknown) {
+    if (elements) {
       this.elements = elements.slice();
     } else {
       this.elements = [

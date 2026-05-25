@@ -105,7 +105,7 @@ export class FlowField2D {
   ): Streamline {
     const points: Vector2[] = [new Vector2(x, y)];
     let current = new Vector2(x, y);
-    for (let i = 0; i < options.maxSteps; i++: unknown) {
+    for (let i = 0; i < options.maxSteps; i++) {
       const velocity = this.sample(current.x, current.y);
       const next = new Vector2(
         current.x + velocity.x * options.stepSize,
@@ -113,7 +113,7 @@ export class FlowField2D {
       );
       points.push(next);
       current = next;
-      if (points.length * options.stepSize >= options.maxLength: unknown) {
+      if (points.length * options.stepSize >= options.maxLength) {
         break;
       }
     }

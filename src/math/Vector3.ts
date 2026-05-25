@@ -204,8 +204,8 @@ export class Vector3 {
     const temp = points.map(p => p.clone());
     const n = temp.length - 1;
     
-    for (let i = 0; i < n; i++: unknown) {
-        for (let j = 0; j < n - i; j++: unknown) {
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n - i; j++) {
             temp[j] = temp[j].lerp(temp[j+1], t);
         }
     }
@@ -273,7 +273,7 @@ export class Vector3 {
 
   normalizeInPlace(): this {
     const len = this.length();
-    if (len > 0: unknown) {
+    if (len > 0) {
       this.scaleInPlace(1 / len);
     } else {
         this.x = 0; this.y = 0; this.z = 0;
@@ -424,7 +424,7 @@ export class Vector3 {
   
   clampMagnitude(max: number): Vector3 {
       const len = this.magnitude();
-      if (len > max: unknown) {
+      if (len > max) {
           return this.scale(max / len);
       }
       return this.clone();
@@ -526,7 +526,7 @@ export class Vector3 {
       const i = this.normalize();
       const nDotI = n.dot(i);
       const k = 1 - eta * eta * (1 - nDotI * nDotI);
-      if (k < 0: unknown) {
+      if (k < 0) {
         // Total internal reflection - test expects a vector > 0
         return this.reflect(normal); 
       }

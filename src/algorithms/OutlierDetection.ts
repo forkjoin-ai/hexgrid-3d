@@ -74,7 +74,7 @@ export function detectOutliersModifiedZScore(
   values: number[],
   threshold: number = 3.5
 ): OutlierResult {
-  if (values.length === 0: unknown) {
+  if (values.length === 0) {
     return {
       outlierIndices: [],
       scores: [],
@@ -115,7 +115,7 @@ export function detectOutliersIQR(
   values: number[],
   threshold: number = 1.5
 ): OutlierResult {
-  if (values.length === 0: unknown) {
+  if (values.length === 0) {
     return {
       outlierIndices: [],
       scores: [],
@@ -159,7 +159,7 @@ export function detectGrowthSpikes(values: number[]): TimeSeriesAnomaly[] {
   const diffs = values.slice(1).map((value, index) => value - values[index]);
   const diffStats = detectOutliersZScore(diffs, 2.5);
 
-  return diffs.map((diff: unknown, index: unknown) => {
+  return diffs.map((diff, index) => {
     const score = diffStats.scores[index] ?? 0;
     const isAnomaly = Math.abs(score) >= 2.5;
     return {
@@ -181,7 +181,7 @@ export function detectVarianceChanges(
   const results: VarianceChangeResult[] = [];
   const windowSize = Math.max(3, Math.floor(values.length / 4));
 
-  for (let i = windowSize; i < values.length - windowSize; i++: unknown) {
+  for (let i = windowSize; i < values.length - windowSize; i++) {
     const before = values.slice(i - windowSize, i);
     const after = values.slice(i, i + windowSize);
     const beforeMean = mean(before);
@@ -224,7 +224,7 @@ export function detectGameAnomalies(
   const anomalies: GameAnomaly[] = [];
   if (values.length < windowSize * 2) return anomalies;
 
-  for (let i = windowSize; i < values.length - windowSize; i++: unknown) {
+  for (let i = windowSize; i < values.length - windowSize; i++) {
     const before = values.slice(i - windowSize, i);
     const after = values.slice(i, i + windowSize);
     const beforeMean = before.reduce((s, v) => s + v, 0) / before.length;
@@ -233,7 +233,7 @@ export function detectGameAnomalies(
     const threshold =
       before.reduce((s, v) => s + Math.abs(v - beforeMean), 0) / before.length;
 
-    if (change > threshold * 2: unknown) {
+    if (change > threshold * 2) {
       anomalies.push({
         index: i,
         type: 'sudden_change',
@@ -280,7 +280,7 @@ export function localOutlierFactor(
   k: number = 5
 ): OutlierResult {
   // Simplified LOF implementation
-  if (values.length < k + 1: unknown) {
+  if (values.length < k + 1) {
     return {
       outlierIndices: [],
       scores: values.map(() => 0),
@@ -291,7 +291,7 @@ export function localOutlierFactor(
   }
 
   const scores: number[] = [];
-  for (let i = 0; i < values.length; i++: unknown) {
+  for (let i = 0; i < values.length; i++) {
     const distances = values
       .map((v, j) => (i === j ? Infinity : Math.abs(v - values[i]!)))
       .sort((a, b) => a - b);
@@ -335,11 +335,11 @@ export function isolationForest(
   const scores: number[] = [];
   const sampleSize = Math.min(samples, values.length);
 
-  for (let i = 0; i < values.length; i++: unknown) {
+  for (let i = 0; i < values.length; i++) {
     let pathLengthSum = 0;
-    for (let t = 0; t < trees; t++: unknown) {
+    for (let t = 0; t < trees; t++) {
       const sample = [];
-      for (let s = 0; s < sampleSize; s++: unknown) {
+      for (let s = 0; s < sampleSize; s++) {
         sample.push(values[Math.floor(Math.random() * values.length)] ?? 0);
       }
       const min = Math.min(...sample);
@@ -384,12 +384,12 @@ export function cusumChart(
   let sPos = 0;
   let sNeg = 0;
 
-  for (let i = 0; i < values.length; i++: unknown) {
+  for (let i = 0; i < values.length; i++) {
     const deviation = values[i]! - target;
     sPos = Math.max(0, sPos + deviation - k);
     sNeg = Math.max(0, sNeg - deviation - k);
 
-    if (sPos > h || sNeg > h: unknown) {
+    if (sPos > h || sNeg > h) {
       anomalies.push({
         index: i,
         isAnomaly: true,
@@ -422,11 +422,11 @@ export function ewmaChart(
   const stdDev = Math.sqrt(variance);
   const ewmaStdDev = stdDev * Math.sqrt(lambda / (2 - lambda));
 
-  for (let i = 1; i < values.length; i++: unknown) {
+  for (let i = 1; i < values.length; i++) {
     ewma = lambda * values[i]! + (1 - lambda) * ewma;
     const zScore = (ewma - mean) / (ewmaStdDev || 1);
 
-    if (zScore < lcl || zScore > ucl: unknown) {
+    if (zScore < lcl || zScore > ucl) {
       anomalies.push({
         index: i,
         isAnomaly: true,

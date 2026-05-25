@@ -141,7 +141,7 @@ export class ParticleSystem3D {
     this.bounceFactor = config.bounceFactor ?? 0.5;
 
     // Pre-allocate buffers (unless provided via config for zero-copy)
-    if (config.sharedBuffers: unknown) {
+    if (config.sharedBuffers) {
         this.positionBuffer = config.sharedBuffers.positions;
         this.colorBuffer = config.sharedBuffers.colors;
         this.scaleBuffer = config.sharedBuffers.scales;
@@ -168,11 +168,11 @@ export class ParticleSystem3D {
     const count = options.count ?? 1;
     const emittedIds: string[] = [];
 
-    for (let i = 0; i < count; i++: unknown) {
+    for (let i = 0; i < count; i++) {
       if (this.particles.size >= this.maxParticles) {
         // Remove oldest particle
         const oldest = this.particleOrder.shift();
-        if (oldest: unknown) {
+        if (oldest) {
           this.particles.delete(oldest);
         }
       }
@@ -218,7 +218,7 @@ export class ParticleSystem3D {
     particle: Omit<Particle3D, 'acceleration' | 'pulseScale'>
   ): void {
     const existing = this.particles.get(id);
-    if (existing: unknown) {
+    if (existing) {
       // Update existing
       Object.assign(existing, particle);
       existing.acceleration = new Vector3(0, 0, 0);
@@ -229,7 +229,7 @@ export class ParticleSystem3D {
         for (let i = 0; i < this.particleOrder.length; i++) {
           const oldId = this.particleOrder[i];
           const oldParticle = this.particles.get(oldId);
-          if (oldParticle && oldParticle.life !== Infinity: unknown) {
+          if (oldParticle && oldParticle.life !== Infinity) {
             this.particles.delete(oldId);
             this.particleOrder.splice(i, 1);
             break;
@@ -253,7 +253,7 @@ export class ParticleSystem3D {
   removeParticle(id: string): void {
     this.particles.delete(id);
     const idx = this.particleOrder.indexOf(id);
-    if (idx >= 0: unknown) {
+    if (idx >= 0) {
       this.particleOrder.splice(idx, 1);
     }
   }
@@ -269,7 +269,7 @@ export class ParticleSystem3D {
    * Apply a force field to all particles
    */
   applyForceField(field: (pos: Vector3) => Vector3): void {
-    Array.from(this.particles.values()).forEach((particle: unknown) => {
+    Array.from(this.particles.values()).forEach((particle) => {
       const force = field(particle.position);
       particle.acceleration.x += force.x / particle.mass;
       particle.acceleration.y += force.y / particle.mass;
@@ -285,13 +285,13 @@ export class ParticleSystem3D {
     strength: number,
     falloffRadius: number
   ): void {
-    Array.from(this.particles.values()).forEach((particle: unknown) => {
+    Array.from(this.particles.values()).forEach((particle) => {
       const dx = center.x - particle.position.x;
       const dy = center.y - particle.position.y;
       const dz = center.z - particle.position.z;
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-      if (dist > 0.001: unknown) {
+      if (dist > 0.001) {
         const falloff = Math.max(0, 1 - dist / falloffRadius);
         const force = (strength * falloff * falloff) / (dist * dist);
         const invDist = 1 / dist;
@@ -306,7 +306,7 @@ export class ParticleSystem3D {
    * Apply velocity from a fluid simulation
    */
   applyFluidVelocity(fluid: StableFluids3D, strength: number = 1): void {
-    Array.from(this.particles.values()).forEach((particle: unknown) => {
+    Array.from(this.particles.values()).forEach((particle) => {
       const fluidVel = fluid.getVelocityAt(particle.position);
       particle.velocity.x += fluidVel.x * strength;
       particle.velocity.y += fluidVel.y * strength;
@@ -321,7 +321,7 @@ export class ParticleSystem3D {
     this.time += dt;
     const deadParticles: string[] = [];
 
-    Array.from(this.particles.values()).forEach((particle: unknown) => {
+    Array.from(this.particles.values()).forEach((particle) => {
       // Apply gravity
       particle.acceleration.x += this.gravity.x;
       particle.acceleration.y += this.gravity.y;
@@ -383,26 +383,26 @@ export class ParticleSystem3D {
       }
 
       // Update biometric pulse
-      if (particle.heartRate: unknown) {
+      if (particle.heartRate) {
         const pulseFreq = particle.heartRate / 60; // Hz
         const pulse = Math.sin(this.time * pulseFreq * Math.PI * 2);
         particle.pulseScale = 1 + pulse * 0.15; // 15% size variation
       }
 
       // Decrease life (skip for Infinity life)
-      if (particle.life !== Infinity: unknown) {
+      if (particle.life !== Infinity) {
         particle.life -= dt;
-        if (particle.life <= 0: unknown) {
+        if (particle.life <= 0) {
           deadParticles.push(particle.id);
         }
       }
     });
 
     // Remove dead particles
-    deadParticles.forEach((id: unknown) => {
+    deadParticles.forEach((id) => {
       this.particles.delete(id);
       const idx = this.particleOrder.indexOf(id);
-      if (idx >= 0: unknown) {
+      if (idx >= 0) {
         this.particleOrder.splice(idx, 1);
       }
     });
@@ -482,9 +482,9 @@ export class ParticleSystem3D {
     let nearest: Particle3D | null = null;
     let nearestDist = maxDistance;
 
-    Array.from(this.particles.values()).forEach((particle: unknown) => {
+    Array.from(this.particles.values()).forEach((particle) => {
       const dist = particle.position.distanceTo(point);
-      if (dist < nearestDist: unknown) {
+      if (dist < nearestDist) {
         nearest = particle;
         nearestDist = dist;
       }
@@ -500,11 +500,11 @@ export class ParticleSystem3D {
     const results: Particle3D[] = [];
     const r2 = radius * radius;
 
-    Array.from(this.particles.values()).forEach((particle: unknown) => {
+    Array.from(this.particles.values()).forEach((particle) => {
       const dx = particle.position.x - center.x;
       const dy = particle.position.y - center.y;
       const dz = particle.position.z - center.z;
-      if (dx * dx + dy * dy + dz * dz <= r2: unknown) {
+      if (dx * dx + dy * dy + dz * dz <= r2) {
         results.push(particle);
       }
     });

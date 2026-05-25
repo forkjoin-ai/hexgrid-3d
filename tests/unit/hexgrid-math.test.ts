@@ -12,7 +12,7 @@ import {
   calculateSwappedContiguity,
 } from '../../src/workers/hexgrid-math';
 
-describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
+describe('Hexgrid Math - Pure Functions', () => {
   describe('getGridBounds', () => {
     it('calculates correct bounds for multiple positions', () => {
       const positions: [number, number, number][] = [
@@ -32,7 +32,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       });
     });
 
-    it('handles single position': unknown, (: unknown) => {
+    it('handles single position', () => {
       const positions: [number, number, number][] = [[5, 7, 0]];
       const bounds = getGridBounds(positions);
 
@@ -46,7 +46,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       });
     });
 
-    it('handles negative coordinates': unknown, (: unknown) => {
+    it('handles negative coordinates', () => {
       const positions: [number, number, number][] = [
         [-10, -5, 0],
         [10, 15, 0],
@@ -64,7 +64,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       });
     });
 
-    it('handles empty array': unknown, (: unknown) => {
+    it('handles empty array', () => {
       const bounds = getGridBounds([]);
 
       expect(bounds).toEqual({
@@ -77,7 +77,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       });
     });
 
-    it('ignores null/undefined positions in array': unknown, (: unknown) => {
+    it('ignores null/undefined positions in array', () => {
       const positions = [
         [0, 0, 0],
         null as any,
@@ -97,7 +97,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       });
     });
 
-    it('handles all positions at origin': unknown, (: unknown) => {
+    it('handles all positions at origin', () => {
       const positions: [number, number, number][] = [
         [0, 0, 0],
         [0, 0, 0],
@@ -122,11 +122,11 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
   });
 
-  describe('distanceBetween': unknown, (: unknown) => {
+  describe('distanceBetween', () => {
     const bounds = { width: 100, height: 100 };
 
     describe('Euclidean distance (non-spherical)', () => {
-      it('calculates distance correctly for horizontal line': unknown, (: unknown) => {
+      it('calculates distance correctly for horizontal line', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [5, 0, 0];
 
@@ -134,7 +134,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(5);
       });
 
-      it('calculates distance correctly for vertical line': unknown, (: unknown) => {
+      it('calculates distance correctly for vertical line', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [0, 12, 0];
 
@@ -142,7 +142,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(12);
       });
 
-      it('calculates 3-4-5 right triangle correctly': unknown, (: unknown) => {
+      it('calculates 3-4-5 right triangle correctly', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [3, 4, 0];
 
@@ -150,7 +150,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(5);
       });
 
-      it('handles diagonal distance': unknown, (: unknown) => {
+      it('handles diagonal distance', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [1, 1, 0];
 
@@ -158,7 +158,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBeCloseTo(Math.sqrt(2), 10);
       });
 
-      it('calculates distance between same point as zero': unknown, (: unknown) => {
+      it('calculates distance between same point as zero', () => {
         const a: [number, number, number] = [5, 7, 0];
         const b: [number, number, number] = [5, 7, 0];
 
@@ -166,7 +166,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(0);
       });
 
-      it('handles negative coordinates': unknown, (: unknown) => {
+      it('handles negative coordinates', () => {
         const a: [number, number, number] = [-3, -4, 0];
         const b: [number, number, number] = [0, 0, 0];
 
@@ -176,7 +176,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
 
     describe('Spherical distance (toroidal wrapping)', () => {
-      it('wraps around horizontally when closer': unknown, (: unknown) => {
+      it('wraps around horizontally when closer', () => {
         const a: [number, number, number] = [5, 50, 0];
         const b: [number, number, number] = [95, 50, 0];
         const bounds = { width: 100, height: 100 };
@@ -187,7 +187,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(10); // Wraps around
       });
 
-      it('wraps around vertically when closer': unknown, (: unknown) => {
+      it('wraps around vertically when closer', () => {
         const a: [number, number, number] = [50, 5, 0];
         const b: [number, number, number] = [50, 95, 0];
         const bounds = { width: 100, height: 100 };
@@ -198,7 +198,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(10);
       });
 
-      it('uses direct path when wrapping is not shorter': unknown, (: unknown) => {
+      it('uses direct path when wrapping is not shorter', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [30, 0, 0];
         const bounds = { width: 100, height: 100 };
@@ -208,7 +208,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(30);
       });
 
-      it('handles wrapping at exactly halfway point': unknown, (: unknown) => {
+      it('handles wrapping at exactly halfway point', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [50, 0, 0];
         const bounds = { width: 100, height: 100 };
@@ -218,7 +218,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(50);
       });
 
-      it('handles diagonal wrapping': unknown, (: unknown) => {
+      it('handles diagonal wrapping', () => {
         const a: [number, number, number] = [5, 5, 0];
         const b: [number, number, number] = [95, 95, 0];
         const bounds = { width: 100, height: 100 };
@@ -229,7 +229,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBeCloseTo(Math.sqrt(200), 5);
       });
 
-      it('handles zero width bounds gracefully': unknown, (: unknown) => {
+      it('handles zero width bounds gracefully', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [10, 0, 0];
         const bounds = { width: 0, height: 100 };
@@ -239,7 +239,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(10);
       });
 
-      it('handles zero height bounds gracefully': unknown, (: unknown) => {
+      it('handles zero height bounds gracefully', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [0, 10, 0];
         const bounds = { width: 100, height: 0 };
@@ -249,7 +249,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(10);
       });
 
-      it('wraps negative coordinates correctly': unknown, (: unknown) => {
+      it('wraps negative coordinates correctly', () => {
         const a: [number, number, number] = [-5, 0, 0];
         const b: [number, number, number] = [5, 0, 0];
         const bounds = { width: 100, height: 100 };
@@ -259,7 +259,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       });
     });
 
-    describe('Edge cases': unknown, (: unknown) => {
+    describe('Edge cases', () => {
       it('ignores Z coordinate', () => {
         const a: [number, number, number] = [0, 0, 100];
         const b: [number, number, number] = [3, 4, -50];
@@ -268,7 +268,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBe(5); // 3-4-5 triangle, Z doesn't matter
       });
 
-      it('handles very large distances': unknown, (: unknown) => {
+      it('handles very large distances', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [1e6, 1e6, 0];
         const bounds = { width: 2e6, height: 2e6 };
@@ -277,7 +277,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
         expect(dist).toBeCloseTo(Math.sqrt(2e12), 0);
       });
 
-      it('handles very small distances': unknown, (: unknown) => {
+      it('handles very small distances', () => {
         const a: [number, number, number] = [0, 0, 0];
         const b: [number, number, number] = [0.001, 0.001, 0];
 
@@ -287,7 +287,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
   });
 
-  describe('calculateUvBoundsFromGridPosition': unknown, (: unknown) => {
+  describe('calculateUvBoundsFromGridPosition', () => {
     it('calculates UV bounds for top-left tile', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         0,
@@ -302,7 +302,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(maxV).toBe(1.0);
     });
 
-    it('calculates UV bounds for bottom-right tile': unknown, (: unknown) => {
+    it('calculates UV bounds for bottom-right tile', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         3,
         3,
@@ -316,7 +316,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(maxV).toBe(0.25);
     });
 
-    it('calculates UV bounds for center tile in 3x3 grid': unknown, (: unknown) => {
+    it('calculates UV bounds for center tile in 3x3 grid', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         1,
         1,
@@ -372,9 +372,9 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(maxV).toBeCloseTo(0.625, 10);
     });
 
-    it('ensures UV bounds are always in [0: unknown, 1] range': unknown, (: unknown) => {
-      for (let col = 0; col < 5; col++: unknown) {
-        for (let row = 0; row < 5; row++: unknown) {
+    it('ensures UV bounds are always in [0: unknown, 1] range', () => {
+      for (let col = 0; col < 5; col++) {
+        for (let row = 0; row < 5; row++) {
           const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
             col,
             row,
@@ -394,7 +394,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       }
     });
 
-    it('ensures minU < maxU and minV < maxV': unknown, (: unknown) => {
+    it('ensures minU < maxU and minV < maxV', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         2,
         2,
@@ -406,7 +406,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(minV).toBeLessThan(maxV);
     });
 
-    it('handles zero tilesX gracefully': unknown, (: unknown) => {
+    it('handles zero tilesX gracefully', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         0,
         0,
@@ -419,7 +419,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(maxU).toBe(1);
     });
 
-    it('handles zero tilesY gracefully': unknown, (: unknown) => {
+    it('handles zero tilesY gracefully', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         0,
         0,
@@ -432,7 +432,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(maxV).toBe(1);
     });
 
-    it('handles negative grid positions': unknown, (: unknown) => {
+    it('handles negative grid positions', () => {
       const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
         -1,
         -1,
@@ -445,14 +445,14 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(maxU).toBe(0);
     });
 
-    it('maintains consistent tile size across grid': unknown, (: unknown) => {
+    it('maintains consistent tile size across grid', () => {
       const tilesX = 5;
       const tilesY = 5;
       const expectedTileWidth = 1 / tilesX;
       const expectedTileHeight = 1 / tilesY;
 
-      for (let col = 0; col < tilesX; col++: unknown) {
-        for (let row = 0; row < tilesY; row++: unknown) {
+      for (let col = 0; col < tilesX; col++) {
+        for (let row = 0; row < tilesY; row++) {
           const [minU, minV, maxU, maxV] = calculateUvBoundsFromGridPosition(
             col,
             row,
@@ -470,13 +470,13 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
   });
 
-  describe('calculateContiguity': unknown, (: unknown) => {
+  describe('calculateContiguity', () => {
     // Mock neighbor function for testing
-    const createNeighborMap = (neighborMap: Map<number, number[]>: unknown) => {
+    const createNeighborMap = (neighborMap: Map<number, number[]>) => {
       return (index: number) => neighborMap.get(index) || [];
     };
 
-    it('calculates zero contiguity for isolated indices': unknown, (: unknown) => {
+    it('calculates zero contiguity for isolated indices', () => {
       const indices = [0, 5, 10]; // No connections
       const positions: [number, number, number][] = Array(15)
         .fill(null)
@@ -497,7 +497,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(0); // No indices are neighbors with each other
     });
 
-    it('calculates contiguity for connected line': unknown, (: unknown) => {
+    it('calculates contiguity for connected line', () => {
       const indices = [0, 1, 2];
       const positions: [number, number, number][] = Array(5)
         .fill(null)
@@ -519,7 +519,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(4);
     });
 
-    it('calculates contiguity for cluster': unknown, (: unknown) => {
+    it('calculates contiguity for cluster', () => {
       const indices = [0, 1, 3, 4]; // 2x2 square
       const positions: [number, number, number][] = [
         [0, 0, 0],
@@ -547,7 +547,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(10);
     });
 
-    it('handles empty indices array': unknown, (: unknown) => {
+    it('handles empty indices array', () => {
       const positions: [number, number, number][] = [[0, 0, 0]];
       const score = calculateContiguity(
         [],
@@ -558,7 +558,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(0);
     });
 
-    it('handles single index': unknown, (: unknown) => {
+    it('handles single index', () => {
       const indices = [0];
       const positions: [number, number, number][] = [[0, 0, 0]];
       const neighborMap = new Map([[0, []]]);
@@ -572,7 +572,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(0); // Single node has no internal connections
     });
 
-    it('ignores neighbors outside the index set': unknown, (: unknown) => {
+    it('ignores neighbors outside the index set', () => {
       const indices = [1, 2];
       const positions: [number, number, number][] = Array(5)
         .fill(null)
@@ -593,7 +593,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(2);
     });
 
-    it('handles invalid hexRadius': unknown, (: unknown) => {
+    it('handles invalid hexRadius', () => {
       const indices = [0, 1];
       const positions: [number, number, number][] = [
         [0, 0, 0],
@@ -609,7 +609,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(0);
     });
 
-    it('handles empty positions array': unknown, (: unknown) => {
+    it('handles empty positions array', () => {
       const score = calculateContiguity(
         [0, 1],
         [],
@@ -620,7 +620,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
   });
 
-  describe('calculatePhotoContiguity': unknown, (: unknown) => {
+  describe('calculatePhotoContiguity', () => {
     it('delegates to calculateContiguity correctly', () => {
       const indices = [0, 1, 2];
       const positions: [number, number, number][] = Array(5)
@@ -645,12 +645,12 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
   });
 
-  describe('calculateSwappedContiguity': unknown, (: unknown) => {
-    const createNeighborMap = (neighborMap: Map<number, number[]>: unknown) => {
+  describe('calculateSwappedContiguity', () => {
+    const createNeighborMap = (neighborMap: Map<number, number[]>) => {
       return (index: number) => neighborMap.get(index) || [];
     };
 
-    it('calculates contiguity after swapping two indices': unknown, (: unknown) => {
+    it('calculates contiguity after swapping two indices', () => {
       const indices = [0, 1, 2];
       const positions: [number, number, number][] = Array(6)
         .fill(null)
@@ -678,7 +678,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(4);
     });
 
-    it('handles swap where fromIndex is not in indices': unknown, (: unknown) => {
+    it('handles swap where fromIndex is not in indices', () => {
       const indices = [1, 2, 3];
       const positions: [number, number, number][] = Array(6)
         .fill(null)
@@ -704,7 +704,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(4);
     });
 
-    it('handles empty indices array': unknown, (: unknown) => {
+    it('handles empty indices array', () => {
       const positions: [number, number, number][] = [[0, 0, 0]];
       const score = calculateSwappedContiguity(
         [],
@@ -717,7 +717,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
       expect(score).toBe(0);
     });
 
-    it('does not mutate original indices array': unknown, (: unknown) => {
+    it('does not mutate original indices array', () => {
       const indices = [0, 1, 2];
       const originalIndices = [...indices];
       const positions: [number, number, number][] = Array(5)
@@ -737,7 +737,7 @@ describe('Hexgrid Math - Pure Functions': unknown, (: unknown) => {
     });
   });
 
-  describe('Integration: Real-world hexagonal grid scenario', (: unknown) => {
+  describe('Integration: Real-world hexagonal grid scenario', () => {
     it('calculates correct metrics for a small hex cluster', () => {
       // Simulate a small hex grid (7 hexes in honeycomb pattern)
       //     0

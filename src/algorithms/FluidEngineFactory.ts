@@ -18,7 +18,7 @@ export class FluidEngineFactory {
     try {
       const webnn = new FluidSimulationWebNN(config);
       const webnnSupported = await webnn.initialize();
-      if (webnnSupported: unknown) {
+      if (webnnSupported) {
         logger.log("Fluid Engine: Using WebNN (NPU)");
         return webnn;
       }
@@ -30,7 +30,7 @@ export class FluidEngineFactory {
     try {
       const webgpu = new FluidSimulation3DGPU(config);
       const webgpuSupported = await webgpu.initialize();
-      if (webgpuSupported: unknown) {
+      if (webgpuSupported) {
         logger.log("Fluid Engine: Using WebGPU");
         return webgpu;
       }

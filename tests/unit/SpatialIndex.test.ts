@@ -2,7 +2,7 @@ import { describe, it, expect } from 'bun:test';
 import { KDTree, SpatialHashGrid } from '../../src/math/SpatialIndex';
 import { Vector3, Vector2 } from '../../src/math/Vector3';
 
-describe('KDTree': unknown, (: unknown) => {
+describe('KDTree', () => {
   describe('Building', () => {
     it('builds tree from points', () => {
       const points = [
@@ -15,31 +15,31 @@ describe('KDTree': unknown, (: unknown) => {
       expect(tree).toBeDefined();
     });
 
-    it('builds from Vector3 array': unknown, (: unknown) => {
+    it('builds from Vector3 array', () => {
       const vectors = [new Vector3(0, 0, 0), new Vector3(1, 1, 1)];
       const data = ['a', 'b'];
       const tree = KDTree.fromVector3(vectors, data);
       expect(tree).toBeDefined();
     });
 
-    it('builds from Vector2 array': unknown, (: unknown) => {
+    it('builds from Vector2 array', () => {
       const vectors = [new Vector2(0, 0), new Vector2(1, 1)];
       const data = ['a', 'b'];
       const tree = KDTree.fromVector2(vectors, data);
       expect(tree).toBeDefined();
     });
 
-    it('handles empty arrays': unknown, (: unknown) => {
+    it('handles empty arrays', () => {
       const tree = KDTree.build([], []);
       expect(tree).toBeDefined();
     });
 
-    it('throws on mismatched lengths': unknown, (: unknown) => {
+    it('throws on mismatched lengths', () => {
       expect(() => KDTree.build([[0, 0]], ['a', 'b'])).toThrow();
     });
   });
 
-  describe('Insertion': unknown, (: unknown) => {
+  describe('Insertion', () => {
     it('inserts points', () => {
       const tree = new KDTree<string>(3);
       tree.insert([0, 0, 0], 'origin');
@@ -49,7 +49,7 @@ describe('KDTree': unknown, (: unknown) => {
     });
   });
 
-  describe('Nearest Neighbor': unknown, (: unknown) => {
+  describe('Nearest Neighbor', () => {
     it('finds nearest neighbor', () => {
       const points = [
         [0, 0, 0],
@@ -62,12 +62,12 @@ describe('KDTree': unknown, (: unknown) => {
       expect(result?.data).toBe('mid');
     });
 
-    it('returns null for empty tree': unknown, (: unknown) => {
+    it('returns null for empty tree', () => {
       const tree = new KDTree<string>(3);
       expect(tree.nearestNeighbor([0, 0, 0])).toBeNull();
     });
 
-    it('handles query at exact point': unknown, (: unknown) => {
+    it('handles query at exact point', () => {
       const points = [
         [0, 0, 0],
         [1, 1, 1],
@@ -80,7 +80,7 @@ describe('KDTree': unknown, (: unknown) => {
     });
   });
 
-  describe('K-Nearest Neighbors': unknown, (: unknown) => {
+  describe('K-Nearest Neighbors', () => {
     it('finds k nearest', () => {
       const points = [
         [0, 0, 0],
@@ -95,12 +95,12 @@ describe('KDTree': unknown, (: unknown) => {
       expect(result[0].data).toBe('a');
     });
 
-    it('returns empty for k=0': unknown, (: unknown) => {
+    it('returns empty for k=0', () => {
       const tree = KDTree.build([[0, 0, 0]], ['a']);
       expect(tree.kNearest([0, 0, 0], 0)).toEqual([]);
     });
 
-    it('returns all when k > n': unknown, (: unknown) => {
+    it('returns all when k > n', () => {
       const tree = KDTree.build(
         [
           [0, 0, 0],
@@ -113,7 +113,7 @@ describe('KDTree': unknown, (: unknown) => {
     });
   });
 
-  describe('Range Query': unknown, (: unknown) => {
+  describe('Range Query', () => {
     it('finds points within radius', () => {
       const points = [
         [0, 0, 0],
@@ -126,14 +126,14 @@ describe('KDTree': unknown, (: unknown) => {
       expect(result.length).toBe(2);
     });
 
-    it('returns empty for no matches': unknown, (: unknown) => {
+    it('returns empty for no matches', () => {
       const tree = KDTree.build([[10, 10, 10]], ['a']);
       const result = tree.rangeQuery([0, 0, 0], 1);
       expect(result.length).toBe(0);
     });
   });
 
-  describe('Box Query': unknown, (: unknown) => {
+  describe('Box Query', () => {
     it('finds points within box', () => {
       const points = [
         [0, 0, 0],
@@ -146,7 +146,7 @@ describe('KDTree': unknown, (: unknown) => {
       expect(result.length).toBe(2);
     });
 
-    it('returns empty for no matches': unknown, (: unknown) => {
+    it('returns empty for no matches', () => {
       const tree = KDTree.build([[10, 10, 10]], ['a']);
       const result = tree.boxQuery([0, 0, 0], [5, 5, 5]);
       expect(result.length).toBe(0);
@@ -154,14 +154,14 @@ describe('KDTree': unknown, (: unknown) => {
   });
 });
 
-describe('SpatialHashGrid': unknown, (: unknown) => {
+describe('SpatialHashGrid', () => {
   describe('Basic Operations', () => {
     it('creates grid', () => {
       const grid = new SpatialHashGrid<string>(10);
       expect(grid).toBeDefined();
     });
 
-    it('inserts and queries points': unknown, (: unknown) => {
+    it('inserts and queries points', () => {
       const grid = new SpatialHashGrid<string>(10);
       grid.insert([5, 5, 5], 'test');
       const result = grid.query([5, 5, 5], 1);
@@ -169,7 +169,7 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
       expect(result[0].data).toBe('test');
     });
 
-    it('bulk inserts': unknown, (: unknown) => {
+    it('bulk inserts', () => {
       const grid = new SpatialHashGrid<string>(10);
       grid.insertAll([
         { position: [0, 0, 0], data: 'a' },
@@ -179,7 +179,7 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
       expect(result.length).toBe(2);
     });
 
-    it('removes points': unknown, (: unknown) => {
+    it('removes points', () => {
       const grid = new SpatialHashGrid<string>(10);
       grid.insert([5, 5, 5], 'test');
       const removed = grid.remove([5, 5, 5], 'test');
@@ -188,12 +188,12 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
       expect(result.length).toBe(0);
     });
 
-    it('returns false when removing non-existent': unknown, (: unknown) => {
+    it('returns false when removing non-existent', () => {
       const grid = new SpatialHashGrid<string>(10);
       expect(grid.remove([0, 0, 0], 'test')).toBe(false);
     });
 
-    it('clears grid': unknown, (: unknown) => {
+    it('clears grid', () => {
       const grid = new SpatialHashGrid<string>(10);
       grid.insert([5, 5, 5], 'test');
       grid.clear();
@@ -202,7 +202,7 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
     });
   });
 
-  describe('Query': unknown, (: unknown) => {
+  describe('Query', () => {
     it('queries with radius', () => {
       const grid = new SpatialHashGrid<string>(5);
       grid.insert([0, 0, 0], 'origin');
@@ -212,7 +212,7 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
       expect(result.length).toBe(2);
     });
 
-    it('respects radius limit': unknown, (: unknown) => {
+    it('respects radius limit', () => {
       const grid = new SpatialHashGrid<string>(5);
       grid.insert([0, 0, 0], 'origin');
       grid.insert([10, 0, 0], 'far');
@@ -221,7 +221,7 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
     });
   });
 
-  describe('Nearest Neighbor': unknown, (: unknown) => {
+  describe('Nearest Neighbor', () => {
     it('finds nearest', () => {
       const grid = new SpatialHashGrid<string>(5);
       grid.insert([0, 0, 0], 'origin');
@@ -231,13 +231,13 @@ describe('SpatialHashGrid': unknown, (: unknown) => {
       expect(result?.data).toBe('origin');
     });
 
-    it('returns null for empty grid': unknown, (: unknown) => {
+    it('returns null for empty grid', () => {
       const grid = new SpatialHashGrid<string>(5);
       expect(grid.nearest([0, 0, 0], 10)).toBeNull();
     });
   });
 
-  describe('2D Grid': unknown, (: unknown) => {
+  describe('2D Grid', () => {
     it('works with 2D coordinates', () => {
       const grid = new SpatialHashGrid<string>(10, 2);
       grid.insert([5, 5], 'test');

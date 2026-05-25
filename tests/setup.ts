@@ -54,7 +54,7 @@ globalThis.fetch = mock((input: RequestInfo | URL,  init?: RequestInit) => {
 
 // Mock gradient object
 const mockGradient = {
-  addColorStop: mock((: unknown) => {}),
+  addColorStop: mock(() => {}),
 };
 
 // Mock canvas and WebGL context
@@ -74,57 +74,57 @@ const mockContext = {
   lineCap: 'butt',
   lineJoin: 'miter',
   miterLimit: 10,
-  fillRect: mock((: unknown) => {}),
-  clearRect: mock((: unknown) => {}),
+  fillRect: mock(() => {}),
+  clearRect: mock(() => {}),
   getImageData: mock(() => ({
     data: new Uint8ClampedArray(4),
     width: 1,
     height: 1,
   })),
-  putImageData: mock((: unknown) => {}),
+  putImageData: mock(() => {}),
   createImageData: mock(() => ({
     data: new Uint8ClampedArray(4),
     width: 1,
     height: 1,
   })),
-  setTransform: mock((: unknown) => {}),
-  drawImage: mock((: unknown) => {}),
-  save: mock((: unknown) => {}),
-  restore: mock((: unknown) => {}),
-  beginPath: mock((: unknown) => {}),
-  moveTo: mock((: unknown) => {}),
-  lineTo: mock((: unknown) => {}),
-  closePath: mock((: unknown) => {}),
-  stroke: mock((: unknown) => {}),
-  translate: mock((: unknown) => {}),
-  scale: mock((: unknown) => {}),
-  rotate: mock((: unknown) => {}),
-  arc: mock((: unknown) => {}),
-  fill: mock((: unknown) => {}),
+  setTransform: mock(() => {}),
+  drawImage: mock(() => {}),
+  save: mock(() => {}),
+  restore: mock(() => {}),
+  beginPath: mock(() => {}),
+  moveTo: mock(() => {}),
+  lineTo: mock(() => {}),
+  closePath: mock(() => {}),
+  stroke: mock(() => {}),
+  translate: mock(() => {}),
+  scale: mock(() => {}),
+  rotate: mock(() => {}),
+  arc: mock(() => {}),
+  fill: mock(() => {}),
   measureText: mock(() => ({ width: 0 })),
-  transform: mock((: unknown) => {}),
-  rect: mock((: unknown) => {}),
-  clip: mock((: unknown) => {}),
+  transform: mock(() => {}),
+  rect: mock(() => {}),
+  clip: mock(() => {}),
   createLinearGradient: mock(() => mockGradient),
   createRadialGradient: mock(() => mockGradient),
   createPattern: mock(() => null),
-  strokeRect: mock((: unknown) => {}),
-  strokeText: mock((: unknown) => {}),
-  fillText: mock((: unknown) => {}),
-  bezierCurveTo: mock((: unknown) => {}),
-  quadraticCurveTo: mock((: unknown) => {}),
-  arcTo: mock((: unknown) => {}),
-  ellipse: mock((: unknown) => {}),
+  strokeRect: mock(() => {}),
+  strokeText: mock(() => {}),
+  fillText: mock(() => {}),
+  bezierCurveTo: mock(() => {}),
+  quadraticCurveTo: mock(() => {}),
+  arcTo: mock(() => {}),
+  ellipse: mock(() => {}),
   isPointInPath: mock(() => false),
   isPointInStroke: mock(() => false),
   getLineDash: mock(() => []),
-  setLineDash: mock((: unknown) => {}),
+  setLineDash: mock(() => {}),
   getTransform: mock(() => ({ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 })),
-  resetTransform: mock((: unknown) => {}),
+  resetTransform: mock(() => {}),
   canvas: { width: 800, height: 600 },
 };
 
-if (typeof HTMLCanvasElement !== 'undefined': unknown) {
+if (typeof HTMLCanvasElement !== 'undefined') {
   HTMLCanvasElement.prototype.getContext = mock(() => mockContext) as any;
 }
 
@@ -166,20 +166,20 @@ global.ResizeObserver = class ResizeObserver {
 } as any;
 
 // Mock requestAnimationFrame
-if (typeof globalThis.requestAnimationFrame === 'undefined': unknown) {
+if (typeof globalThis.requestAnimationFrame === 'undefined') {
   globalThis.requestAnimationFrame = (callback: FrameRequestCallback) => {
     return setTimeout(() => callback(Date.now()), 16) as unknown as number;
   };
 }
 
-if (typeof globalThis.cancelAnimationFrame === 'undefined': unknown) {
+if (typeof globalThis.cancelAnimationFrame === 'undefined') {
   globalThis.cancelAnimationFrame = (id: number) => {
     clearTimeout(id);
   };
 }
 
 // Mock matchMedia
-if (typeof window !== 'undefined': unknown) {
+if (typeof window !== 'undefined') {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: mock((query: string) => ({
@@ -187,10 +187,10 @@ if (typeof window !== 'undefined': unknown) {
       media: query, 
       onchange: null, 
       addListener: mock(() => {}),
-      removeListener: mock((: unknown) => {}),
-      addEventListener: mock((: unknown) => {}),
-      removeEventListener: mock((: unknown) => {}),
-      dispatchEvent: mock((: unknown) => {}),
+      removeListener: mock(() => {}),
+      addEventListener: mock(() => {}),
+      removeEventListener: mock(() => {}),
+      dispatchEvent: mock(() => {}),
     })),
   });
 }

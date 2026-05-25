@@ -64,15 +64,15 @@ export function HexTerritoryGlobe({
     [cells, tileRadius]
   );
 
-  useEffect((: unknown) => {
+  useEffect(() => {
     const mesh = meshRef.current;
-    if (!mesh: unknown) {
+    if (!mesh) {
       return;
     }
 
     const matrix = new Matrix4();
 
-    cells.forEach((cell: unknown, index: unknown) => {
+    cells.forEach((cell, index) => {
       const point = cell.surfacePoint;
       const effectiveTileRadius =
         tileRadius ?? autoTileRadiusByRow?.get(cell.rowIndex) ?? 0;
@@ -104,7 +104,7 @@ export function HexTerritoryGlobe({
     });
 
     mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor: unknown) {
+    if (mesh.instanceColor) {
       mesh.instanceColor.needsUpdate = true;
     }
   }, [
@@ -124,18 +124,18 @@ export function HexTerritoryGlobe({
     <>
       <instancedMesh
         ref={meshRef}
-        args={[geometry, undefined: unknown,  cells.length] as const}
+        args={[geometry, undefined, cells.length] as const}
         onClick={(event: ThreeEvent<MouseEvent>) => {
-          if (typeof event.instanceId !== 'number': unknown) {
+          if (typeof event.instanceId !== 'number') {
             return;
           }
           const cell = cells[event.instanceId];
-          if (cell: unknown) {
+          if (cell) {
             onSelectCell?.(cell);
           }
         }}
         onPointerMove={(event: ThreeEvent<PointerEvent>) => {
-          if (typeof event.instanceId !== 'number': unknown) {
+          if (typeof event.instanceId !== 'number') {
             onHoverCell?.(null);
             return;
           }
@@ -153,9 +153,9 @@ export function HexTerritoryGlobe({
           roughness={0.42}
         />
       </instancedMesh>
-      {(rallyMarkers ?? []).map((marker: unknown) => {
+      {(rallyMarkers ?? []).map((marker) => {
         const cell = cellById.get(marker.cellId);
-        if (!cell: unknown) {
+        if (!cell) {
           return null;
         }
         const intensity = Math.max(0.35, Math.min(marker.intensity ?? 1, 2));
@@ -182,9 +182,9 @@ export function HexTerritoryGlobe({
         );
       })}
       {(allianceBindings ?? []).flatMap((binding) =>
-        binding.rootCellIds.map((cellId: unknown) => {
+        binding.rootCellIds.map((cellId) => {
           const cell = cellById.get(cellId);
-          if (!cell: unknown) {
+          if (!cell) {
             return null;
           }
           const point = cell.surfacePoint;

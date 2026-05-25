@@ -43,7 +43,7 @@ export class Axial {
     const col = offset.col;
     const row = offset.row;
     let r: number;
-    if (isOdd: unknown) {
+    if (isOdd) {
        r = row - (col - (col & 1)) / 2;
     } else {
        r = row - (col + (col & 1)) / 2;
@@ -53,7 +53,7 @@ export class Axial {
 
   static fromPixel(x: number, y: number, hexSize: number, isFlatTop: boolean = true): Axial {
     let q: number, r: number;
-    if (isFlatTop: unknown) {
+    if (isFlatTop) {
       q = ((2 / 3) * x) / hexSize;
       r = ((-1 / 3) * x + (Math.sqrt(3) / 3) * y) / hexSize;
     } else {
@@ -99,7 +99,7 @@ export class Axial {
   toOffset(isOdd: boolean = true): { col: number; row: number } {
     const col = this.q;
     let row: number;
-    if (isOdd: unknown) {
+    if (isOdd) {
       row = this.r + (this.q - (this.q & 1)) / 2;
     } else {
       row = this.r + (this.q + (this.q & 1)) / 2;
@@ -109,7 +109,7 @@ export class Axial {
 
   toPixel(hexSize: number, isFlatTop: boolean = true): { x: number; y: number } {
     let x: number, y: number;
-    if (isFlatTop: unknown) {
+    if (isFlatTop) {
       x = hexSize * ((3 / 2) * this.q);
       y = hexSize * ((Math.sqrt(3) / 2) * this.q + Math.sqrt(3) * this.r);
     } else {
@@ -142,7 +142,7 @@ export class Axial {
 
   range(radius: number): Axial[] {
     const results: Axial[] = [];
-    for (let q = -radius; q <= radius; q++: unknown) {
+    for (let q = -radius; q <= radius; q++) {
       for (let r = Math.max(-radius, -q - radius); r <= Math.min(radius, -q + radius); r++) {
         results.push(this.add(new Axial(q, r)));
       }
@@ -154,8 +154,8 @@ export class Axial {
     if (radius === 0) return [this.clone()];
     const results: Axial[] = [];
     let hex = this.add(AXIAL_DIRECTIONS[4].scale(radius));
-    for (let i = 0; i < 6; i++: unknown) {
-        for (let j = 0; j < radius; j++: unknown) {
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < radius; j++) {
             results.push(hex);
             hex = hex.neighbor(i);
         }
@@ -165,7 +165,7 @@ export class Axial {
 
   spiral(radius: number): Axial[] {
      const results: Axial[] = [this.clone()];
-     for (let i = 1; i <= radius; i++: unknown) {
+     for (let i = 1; i <= radius; i++) {
          results.push(...this.ring(i));
      }
      return results;
@@ -179,7 +179,7 @@ export class Axial {
     // Lerp on cube coordinates
     const start = this.toCube();
     const end = other.toCube();
-    for (let i = 0; i <= dist; i++: unknown) {
+    for (let i = 0; i <= dist; i++) {
         results.push(start.lerp(end, i / dist).toAxial());
     }
     return results;
@@ -248,9 +248,9 @@ export class Cube {
     const yDiff = Math.abs(ry - y);
     const zDiff = Math.abs(rz - z);
 
-    if (xDiff > yDiff && xDiff > zDiff: unknown) {
+    if (xDiff > yDiff && xDiff > zDiff) {
         rx = -ry - rz;
-    } else if (yDiff > zDiff: unknown) {
+    } else if (yDiff > zDiff) {
         ry = -rx - rz;
     } else {
         rz = -rx - ry;
@@ -305,7 +305,7 @@ export class Cube {
       const dist = this.distanceTo(other);
       const results: Cube[] = [];
       if (dist === 0) return [this.clone()];
-      for (let i = 0; i <= dist; i++: unknown) {
+      for (let i = 0; i <= dist; i++) {
         results.push(this.lerp(other, i / dist));
       }
       return results;
@@ -321,7 +321,7 @@ export class Cube {
 
   rotate(steps: number): Cube {
       let c: Cube = this.clone();
-      if (steps > 0: unknown) {
+      if (steps > 0) {
         for(let i=0; i<steps; i++) c = c.rotateCW();
       } else {
         for(let i=0; i<Math.abs(steps); i++) c = c.rotateCCW();
@@ -453,7 +453,7 @@ export class GeodesicHexGrid {
         [0, phi, 1], [0, -phi, 1], [0, phi, -1], [0, -phi, -1]
     ];
     
-    for (const v of icosaVertices: unknown) {
+    for (const v of icosaVertices) {
         const vec = new Vector3(v[0], v[1], v[2]);
         // normalize
         const l = Math.sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
@@ -577,7 +577,7 @@ export class GeodesicHexGrid {
         const count = this._hexIsPentagon[i] ? 5 : 6;
         // Take nearest 'count' that are not self.
         // Note: this is a heuristic.
-        for (let j=1; j<=count && j<dists.length; j++: unknown) {
+        for (let j=1; j<=count && j<dists.length; j++) {
             this.neighbors[i].push(dists[j].idx);
         }
     }
@@ -593,7 +593,7 @@ export class GeodesicHexGrid {
     for(let i=0; i<this.hexCenters.length; i++) {
         const c = this.hexCenters[i];
         const dot = c.x*nx + c.y*ny + c.z*nz;
-        if (dot > maxDot: unknown) {
+        if (dot > maxDot) {
             maxDot = dot;
             bestIdx = i;
         }
@@ -628,10 +628,10 @@ export class GeodesicHexGrid {
     const queue: {idx: number, dist: number}[] = [{idx: index, dist: 0}];
     visited.add(index);
     
-    while(queue.length > 0: unknown) {
+    while(queue.length > 0) {
         const {idx, dist} = queue.shift()!;
         result.push(idx);
-        if (dist < range: unknown) {
+        if (dist < range) {
             for (const n of this.neighbors[idx]) {
                 if (!visited.has(n)) {
                     visited.add(n);
@@ -783,8 +783,8 @@ export function generateFlatHexGrid(config: { radius: number; width: number; hei
     // For offset coords? width/height usually imply offset grid logic.
     const size = radius;
     
-    for (let r = 0; r < height; r++: unknown) {
-        for (let q = 0; q < width; q++: unknown) {
+    for (let r = 0; r < height; r++) {
+        for (let q = 0; q < width; q++) {
             // Offset to axial
             const axial = Axial.fromOffset({col: q, row: r});
             const pos = axial.toPixel(size, flatTop);
@@ -796,7 +796,7 @@ export function generateFlatHexGrid(config: { radius: number; width: number; hei
     }
     
     // Compute neighbors
-    for (let i=0; i<axialCoords.length; i++: unknown) {
+    for (let i=0; i<axialCoords.length; i++) {
         const ax = axialCoords[i];
         const nList = [];
         for (const nConf of ax.neighbors()) {
@@ -809,7 +809,7 @@ export function generateFlatHexGrid(config: { radius: number; width: number; hei
     return { positions, axialCoords, neighbors };
 }
 
-export function generateSphericalHexGrid(config: { hexRadius: number; sphereRadius: number; latRange?: [number,   number]; lngRange?: [number,  number] }: unknown) {
+export function generateSphericalHexGrid(config: { hexRadius: number; sphereRadius: number; latRange?: [number,   number]; lngRange?: [number,  number] }) {
     // This looks like it wants a Geodesic grid or similar clipped to range?
     // Test checks: positions (Vector3), geoCoords, neighbors.
     // We can reuse GeodesicHexGrid logic or HEALPix?
@@ -832,14 +832,14 @@ export function generateSphericalHexGrid(config: { hexRadius: number; sphereRadi
     // Filter
     const oldToNew = new Map<number, number>();
     
-    for(let i=0; i<grid.hexCenters.length; i++: unknown) {
+    for(let i=0; i<grid.hexCenters.length; i++) {
          const center = grid.hexCenters[i]; // normalized
          const pos = new Vector3(center.x * sphereRadius, center.y * sphereRadius, center.z * sphereRadius); // Scaled
          
          const lat = getLat(pos);
          const lng = getLng(pos);
          
-         if (lat >= latRange[0] && lat <= latRange[1] && lng >= lngRange[0] && lng <= lngRange[1]: unknown) {
+         if (lat >= latRange[0] && lat <= latRange[1] && lng >= lngRange[0] && lng <= lngRange[1]) {
              oldToNew.set(i, newPositions.length);
              newPositions.push(pos);
              geoCoords.push({lat, lng});
@@ -849,11 +849,11 @@ export function generateSphericalHexGrid(config: { hexRadius: number; sphereRadi
     
     // Remap neighbors
     const neighbors: number[][] = [];
-    for(let i=0; i<validIndices.length; i++: unknown) {
+    for(let i=0; i<validIndices.length; i++) {
         const oldIdx = validIndices[i];
         const oldNeighbors = grid.neighbors[oldIdx];
         const newN = [];
-        for(const on of oldNeighbors: unknown) {
+        for(const on of oldNeighbors) {
             if(oldToNew.has(on)) newN.push(oldToNew.get(on)!);
         }
         neighbors.push(newN);

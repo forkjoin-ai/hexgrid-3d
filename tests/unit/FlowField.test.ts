@@ -2,7 +2,7 @@ import { describe, it, expect } from 'bun:test';
 import { FlowField2D } from '../../src/algorithms/FlowField';
 import { Vector2 } from '../../src/math/Vector3';
 
-describe('FlowField2D': unknown, (: unknown) => {
+describe('FlowField2D', () => {
   describe('Construction', () => {
     it('creates flow field with dimensions', () => {
       const field = new FlowField2D({
@@ -17,7 +17,7 @@ describe('FlowField2D': unknown, (: unknown) => {
       expect(field.rows).toBe(10);
     });
 
-    it('uses default decay and diffusion rates': unknown, (: unknown) => {
+    it('uses default decay and diffusion rates', () => {
       const field = new FlowField2D({
         width: 100,
         height: 100,
@@ -26,7 +26,7 @@ describe('FlowField2D': unknown, (: unknown) => {
       expect(field).toBeDefined();
     });
 
-    it('accepts custom decay and diffusion rates': unknown, (: unknown) => {
+    it('accepts custom decay and diffusion rates', () => {
       const field = new FlowField2D({
         width: 100,
         height: 100,
@@ -38,7 +38,7 @@ describe('FlowField2D': unknown, (: unknown) => {
     });
   });
 
-  describe('Velocity Operations': unknown, (: unknown) => {
+  describe('Velocity Operations', () => {
     it('clears all velocities', () => {
       const field = new FlowField2D({
         width: 100,
@@ -50,7 +50,7 @@ describe('FlowField2D': unknown, (: unknown) => {
       expect(field).toBeDefined();
     });
 
-    it('adds velocity at position': unknown, (: unknown) => {
+    it('adds velocity at position', () => {
       const field = new FlowField2D({
         width: 100,
         height: 100,
@@ -60,7 +60,7 @@ describe('FlowField2D': unknown, (: unknown) => {
       expect(field).toBeDefined();
     });
 
-    it('handles out of bounds positions': unknown, (: unknown) => {
+    it('handles out of bounds positions', () => {
       const field = new FlowField2D({
         width: 100,
         height: 100,
@@ -72,7 +72,7 @@ describe('FlowField2D': unknown, (: unknown) => {
       expect(field).toBeDefined();
     });
 
-    it('adds source velocity with radius': unknown, (: unknown) => {
+    it('adds source velocity with radius', () => {
       const field = new FlowField2D({
         width: 100,
         height: 100,
@@ -82,7 +82,7 @@ describe('FlowField2D': unknown, (: unknown) => {
       expect(field).toBeDefined();
     });
 
-    it('adds vortex': unknown, (: unknown) => {
+    it('adds vortex', () => {
       const field = new FlowField2D({
         width: 100,
         height: 100,

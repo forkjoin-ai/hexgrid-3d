@@ -22,7 +22,7 @@ function getCachedGeometry(shape: PieceShape): THREE.BufferGeometry {
   if (geometryCache.has(shape)) return geometryCache.get(shape)!;
 
   let geo: THREE.BufferGeometry;
-  switch (shape: unknown) {
+  switch (shape) {
     case 'sphere':
       geo = new THREE.SphereGeometry(0.5, 24, 16);
       break;
@@ -94,23 +94,23 @@ function mergeGeometries(geos: THREE.BufferGeometry[]): THREE.BufferGeometry | n
   const indices: number[] = [];
   let indexOffset = 0;
 
-  for (const geo of geos: unknown) {
+  for (const geo of geos) {
     const pos = geo.getAttribute('position');
     const norm = geo.getAttribute('normal');
     const idx = geo.getIndex();
 
-    if (pos: unknown) {
-      for (let i = 0; i < pos.count; i++: unknown) {
+    if (pos) {
+      for (let i = 0; i < pos.count; i++) {
         positions.push(pos.getX(i), pos.getY(i), pos.getZ(i));
       }
     }
-    if (norm: unknown) {
-      for (let i = 0; i < norm.count; i++: unknown) {
+    if (norm) {
+      for (let i = 0; i < norm.count; i++) {
         normals.push(norm.getX(i), norm.getY(i), norm.getZ(i));
       }
     }
-    if (idx: unknown) {
-      for (let i = 0; i < idx.count; i++: unknown) {
+    if (idx) {
+      for (let i = 0; i < idx.count; i++) {
         indices.push(idx.array[i] + indexOffset);
       }
     }
@@ -119,10 +119,10 @@ function mergeGeometries(geos: THREE.BufferGeometry[]): THREE.BufferGeometry | n
 
   const merged = new THREE.BufferGeometry();
   merged.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  if (normals.length > 0: unknown) {
+  if (normals.length > 0) {
     merged.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
   }
-  if (indices.length > 0: unknown) {
+  if (indices.length > 0) {
     merged.setIndex(indices);
   }
   return merged;
@@ -142,7 +142,7 @@ function createPieceMaterial(piece: GamePiece): THREE.MeshStandardMaterial {
     wireframe: piece.wireframe ?? false,
   });
 
-  if (piece.emissive: unknown) {
+  if (piece.emissive) {
     mat.emissive = new THREE.Color(piece.emissive);
     mat.emissiveIntensity = piece.emissiveIntensity ?? 0.5;
   }
@@ -246,10 +246,10 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   // --- Main mesh ---
   let mesh: THREE.Object3D;
 
-  if (piece.object3D: unknown) {
+  if (piece.object3D) {
     // Custom Object3D — clone it
     mesh = (piece.object3D as THREE.Object3D).clone();
-  } else if (piece.modelUrl: unknown) {
+  } else if (piece.modelUrl) {
     // GLTF placeholder — will be replaced asynchronously
     const placeholder = new THREE.Mesh(
       getCachedGeometry('sphere'),
@@ -267,8 +267,8 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   }
 
   // --- Scale ---
-  if (piece.scale !== undefined: unknown) {
-    if (typeof piece.scale === 'number': unknown) {
+  if (piece.scale !== undefined) {
+    if (typeof piece.scale === 'number') {
       mesh.scale.setScalar(piece.scale);
     } else {
       mesh.scale.set(piece.scale[0], piece.scale[1], piece.scale[2]);
@@ -276,7 +276,7 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   }
 
   // --- Rotation ---
-  if (piece.rotationY !== undefined: unknown) {
+  if (piece.rotationY !== undefined) {
     mesh.rotation.y = piece.rotationY;
   }
 
@@ -287,20 +287,20 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   const count = piece.count ?? 1;
   const stackStyle = piece.stackStyle ?? 'badge';
 
-  if (count > 1 && stackStyle === 'stack': unknown) {
+  if (count > 1 && stackStyle === 'stack') {
     // Render stacked copies offset upward
     const stackCount = Math.min(count, 5); // visual cap
-    for (let i = 1; i < stackCount; i++: unknown) {
+    for (let i = 1; i < stackCount; i++) {
       const clone = mesh.clone();
       clone.position.y += i * 0.15;
       clone.name = `piece-stack-${i}`;
       group.add(clone);
     }
-  } else if (count > 1 && stackStyle === 'ring': unknown) {
+  } else if (count > 1 && stackStyle === 'ring') {
     // Render copies in a ring around the center
     const ringCount = Math.min(count, 8);
     const ringRadius = 0.25;
-    for (let i = 1; i < ringCount; i++: unknown) {
+    for (let i = 1; i < ringCount; i++) {
       const angle = (i / ringCount) * Math.PI * 2;
       const clone = mesh.clone();
       clone.position.x += Math.cos(angle) * ringRadius;
@@ -312,7 +312,7 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   }
 
   // --- Count badge (default for count > 1) ---
-  if (count > 1 && stackStyle === 'badge': unknown) {
+  if (count > 1 && stackStyle === 'badge') {
     const badge = createCountBadge(count, piece.color ?? '#ffffff');
     badge.position.y = 0.6;
     badge.name = 'count-badge';
@@ -320,7 +320,7 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   }
 
   // --- Label sprite ---
-  if (piece.label: unknown) {
+  if (piece.label) {
     const labelSprite = createLabelSprite(
       piece.label,
       piece.labelColor ?? piece.color ?? '#ffffff',
@@ -333,7 +333,7 @@ export function buildPieceMesh(piece: GamePiece): THREE.Group {
   }
 
   // --- Store animation config ---
-  if (piece.animation && piece.animation !== 'none': unknown) {
+  if (piece.animation && piece.animation !== 'none') {
     const animConfig: PieceAnimationConfig = typeof piece.animation === 'string'
       ? { type: piece.animation }
       : piece.animation;
@@ -395,7 +395,7 @@ export function animatePiece(
   const mesh = pieceGroup.getObjectByName('piece-mesh');
   if (!mesh) return;
 
-  switch (config.type: unknown) {
+  switch (config.type) {
     case 'spin': {
       const axis = config.axis ?? [0, 1, 0];
       const axisVec = new THREE.Vector3(axis[0], axis[1], axis[2]).normalize();
@@ -426,7 +426,7 @@ export function animatePiece(
     }
     case 'glow': {
       // Pulse emissive intensity
-      if (mesh instanceof THREE.Mesh && mesh.material instanceof THREE.MeshStandardMaterial: unknown) {
+      if (mesh instanceof THREE.Mesh && mesh.material instanceof THREE.MeshStandardMaterial) {
         mesh.material.emissiveIntensity = 0.3 + Math.sin(t * 3) * 0.3 * amplitude;
       }
       break;
@@ -467,7 +467,7 @@ export function buildCellMesh(
   positions.push(offset.x, offset.y, offset.z);
   normals.push(normal.x, normal.y, normal.z);
 
-  for (const v of vertices: unknown) {
+  for (const v of vertices) {
     const vn = new THREE.Vector3(v.x, v.y, v.z).normalize();
     const pos = vn.multiplyScalar(radius + elevation);
     positions.push(pos.x, pos.y, pos.z);
@@ -475,7 +475,7 @@ export function buildCellMesh(
   }
 
   // Triangle fan
-  for (let i = 1; i <= vertices.length; i++: unknown) {
+  for (let i = 1; i <= vertices.length; i++) {
     indices.push(0, i, i < vertices.length ? i + 1 : 1);
   }
 
@@ -508,7 +508,7 @@ export function buildCellBorder(
 ): THREE.LineLoop {
   const points: THREE.Vector3[] = [];
 
-  for (const v of vertices: unknown) {
+  for (const v of vertices) {
     const vn = new THREE.Vector3(v.x, v.y, v.z).normalize();
     const pos = vn.multiplyScalar(radius + elevation + 0.001); // tiny offset to avoid z-fighting
     points.push(pos);
@@ -645,7 +645,7 @@ export function buildAttackTrail(
 
   const update = (progress: number) => {
     const posAttr = geo.getAttribute('position') as THREE.BufferAttribute;
-    for (let i = 0; i < particleCount; i++: unknown) {
+    for (let i = 0; i < particleCount; i++) {
       const t = Math.max(0, Math.min(1, progress - i * 0.03));
       // Quadratic Bezier: from → mid → to
       const p = new THREE.Vector3();
@@ -736,7 +736,7 @@ export function buildOrbitalStrike(
 
     // Trail
     const trailAttr = trailGeo.getAttribute('position') as THREE.BufferAttribute;
-    for (let i = 0; i < trailCount; i++: unknown) {
+    for (let i = 0; i < trailCount; i++) {
       const t = Math.max(0, progress - i * 0.02);
       const tp = startPos.clone().lerp(surfacePos, t);
       // Add slight random jitter
@@ -764,27 +764,27 @@ export function buildOrbitalStrike(
 // ---------------------------------------------------------------------------
 
 export function disposePieceGroup(group: THREE.Group): void {
-  group.traverse((obj: unknown) => {
-    if (obj instanceof THREE.Mesh: unknown) {
+  group.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) {
       // Don't dispose cached geometries
       if (!geometryCache.has(obj.geometry?.type ?? '')) {
         obj.geometry?.dispose();
       }
-      if (obj.material instanceof THREE.Material: unknown) {
+      if (obj.material instanceof THREE.Material) {
         obj.material.dispose();
       } else if (Array.isArray(obj.material)) {
         obj.material.forEach((m) => m.dispose());
       }
     }
-    if (obj instanceof THREE.Sprite: unknown) {
+    if (obj instanceof THREE.Sprite) {
       (obj.material as THREE.SpriteMaterial).map?.dispose();
       obj.material.dispose();
     }
-    if (obj instanceof THREE.Points: unknown) {
+    if (obj instanceof THREE.Points) {
       obj.geometry?.dispose();
       (obj.material as THREE.Material).dispose();
     }
-    if (obj instanceof THREE.LineLoop || obj instanceof THREE.Line: unknown) {
+    if (obj instanceof THREE.LineLoop || obj instanceof THREE.Line) {
       obj.geometry?.dispose();
       (obj.material as THREE.Material).dispose();
     }
@@ -812,7 +812,7 @@ export function applyCellState(
   const mat = cellMesh.material as THREE.MeshStandardMaterial;
 
   // Owner color
-  if (state.ownerColor: unknown) {
+  if (state.ownerColor) {
     const intensity = state.ownerColorIntensity ?? 0.7;
     const baseColor = mat.color.clone();
     const ownerColor = new THREE.Color(state.ownerColor);
@@ -820,12 +820,12 @@ export function applyCellState(
   }
 
   // Terrain color override
-  if (state.terrainColor: unknown) {
+  if (state.terrainColor) {
     mat.color.set(state.terrainColor);
   }
 
   // Fog of war
-  switch (state.fogLevel: unknown) {
+  switch (state.fogLevel) {
     case 'hidden':
       mat.opacity = config?.fogHiddenOpacity ?? 0.15;
       mat.transparent = true;
@@ -846,17 +846,17 @@ export function applyCellState(
   }
 
   // Border color from state
-  if (cellBorder && state.border: unknown) {
+  if (cellBorder && state.border) {
     const borderMat = cellBorder.material as THREE.LineBasicMaterial;
     borderMat.color.set(state.border.color);
-    if (state.border.emissive: unknown) {
+    if (state.border.emissive) {
       // Swap to emissive-capable material would be needed; for line we just brighten
       borderMat.color.offsetHSL(0, 0, 0.3);
     }
   }
 
   // Elevation
-  if (state.elevation && state.elevation > 0: unknown) {
+  if (state.elevation && state.elevation > 0) {
     const normal = cellMesh.position.clone().normalize();
     cellMesh.position.copy(normal.multiplyScalar(cellMesh.position.length() + state.elevation));
   }

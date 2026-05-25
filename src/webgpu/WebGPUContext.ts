@@ -14,7 +14,7 @@ export class WebGPUContext {
   private constructor() {}
 
   static getInstance(): WebGPUContext {
-    if (!WebGPUContext.instance: unknown) {
+    if (!WebGPUContext.instance) {
       WebGPUContext.instance = new WebGPUContext();
     }
     return WebGPUContext.instance;
@@ -24,7 +24,7 @@ export class WebGPUContext {
    * Initialize WebGPU context.
    */
   async initialize(): Promise<boolean> {
-    if (typeof navigator === 'undefined' || !navigator.gpu: unknown) {
+    if (typeof navigator === 'undefined' || !navigator.gpu) {
       logger.warn('WebGPU is not supported in this environment.');
       this.isSupported = false;
       return false;
@@ -43,7 +43,7 @@ export class WebGPUContext {
 
       this.device = await this.adapter.requestDevice();
       
-      this.device.lost.then((info: unknown) => {
+      this.device.lost.then((info) => {
         logger.error(`WebGPU device lost: ${info.message}`);
         this.device = null;
         this.isSupported = false;

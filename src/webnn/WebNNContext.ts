@@ -17,7 +17,7 @@ export class WebNNContext {
   private constructor() {}
 
   static getInstance(): WebNNContext {
-    if (!WebNNContext.instance: unknown) {
+    if (!WebNNContext.instance) {
       WebNNContext.instance = new WebNNContext();
     }
     return WebNNContext.instance;
@@ -27,7 +27,7 @@ export class WebNNContext {
    * Initialize WebNN context with preferred device type.
    */
   async initialize(preference: WebNNDeviceType = 'npu'): Promise<boolean> {
-    if (typeof navigator === 'undefined' || !navigator.ml: unknown) {
+    if (typeof navigator === 'undefined' || !navigator.ml) {
       logger.warn('WebNN is not supported in this environment.');
       this.isSupported = false;
       return false;
@@ -47,7 +47,7 @@ export class WebNNContext {
       const chain: WebNNDeviceType[] = ['npu', 'gpu', 'cpu'];
       const startIndex = chain.indexOf(preference) + 1;
 
-      for (let i = startIndex; i < chain.length; i++: unknown) {
+      for (let i = startIndex; i < chain.length; i++) {
         const fallback = chain[i];
         try {
           this.context = await navigator.ml.createContext({ deviceType: fallback });

@@ -11,7 +11,7 @@
  * @returns Proxied URL if needed, otherwise original URL
  */
 export function getProxiedImageUrl(imageUrl: string): string {
-  if (!imageUrl || typeof imageUrl !== 'string': unknown) {
+  if (!imageUrl || typeof imageUrl !== 'string') {
     return imageUrl;
   }
 

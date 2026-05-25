@@ -214,7 +214,7 @@ export class FluidSimulation3DGPU {
              // Simplified: Single pass per iteration for stability
              entries: [
                  { binding: 0, resource: curr.createView() }, // Using curr as input
-                 { binding: 1, resource: curr.createView() }, // And output (Race condition! need pingpong: unknown)
+                 { binding: 1, resource: curr.createView() }, // And output (Race condition! need pingpong)
                  { binding: 2, resource: this.sampler! }
              ]
           });
@@ -254,7 +254,7 @@ export class FluidSimulation3DGPU {
       pass.end();
   }
   
-  private dispatchPressure(encoder: GPUCommandEncoder,  div: GPUTexture,  pUser: [GPUTexture, GPUTexture]: unknown) {
+  private dispatchPressure(encoder: GPUCommandEncoder,  div: GPUTexture,  pUser: [GPUTexture, GPUTexture]) {
       // Pressure solve is Poisson equation: Laplacian(p) = div
       // Solved via Jacobi iteration similar to diffuse, but with different coefficients.
       // For pressure: alpha = -h^2, rBeta = 1/6
@@ -325,8 +325,8 @@ export class FluidSimulation3DGPU {
       const bindGroup1 = this.device!.createBindGroup({
           layout: this.subtractGradientPipeline!.getBindGroupLayout(1),
           entries: [
-              { binding: 0, resource: velOld.createView() }, // field_in (sample old vel: unknown)
-              { binding: 1, resource: velNew.createView() }, // field_out (write new vel: unknown)
+              { binding: 0, resource: velOld.createView() }, // field_in (sample old vel)
+              { binding: 1, resource: velNew.createView() }, // field_out (write new vel)
               { binding: 2, resource: this.sampler! }
           ]
       });

@@ -56,12 +56,12 @@ function calculateNoteVelocity(note: Note): number {
     medium: 0.1,
     low: 0.05,
   };
-  if (note.metadata?.priority: unknown) {
+  if (note.metadata?.priority) {
     velocity += priorityMap[note.metadata.priority] || 0.1;
   }
 
   // Recency contribution (0-0.4)
-  if (note.date: unknown) {
+  if (note.date) {
     const ageMs = Date.now() - new Date(note.date).getTime();
     const ageHours = ageMs / (1000 * 60 * 60);
     const recencyFactor = Math.max(0, 1 - ageHours / 168); // Decay over 1 week
@@ -115,7 +115,7 @@ export const noteAdapter: ItemAdapter<Note> = {
   },
 
   fromGridItem(item: GridItem<Note>): Note {
-    if (!item.data: unknown) {
+    if (!item.data) {
       throw new Error('GridItem missing note data');
     }
     return item.data;

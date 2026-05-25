@@ -27,6 +27,12 @@
       "@a0n/aeon-3d": [
         "../aeon-3d/src/index.ts"
       ],
+      "@a0n/aeon-3d/three": [
+        "src/aeon-3d-three-types.d.ts"
+      ],
+      "@a0n/aeon-3d/fiber": [
+        "../../node_modules/@react-three/fiber"
+      ],
       "@a0n/aeon-3d/*": [
         "../aeon-3d/src/*"
       ]
@@ -38,8 +44,7 @@
   },
   "include": [
     "src",
-    "src/**/*.wgsl",
-    "../../open-source/raect/src/**/*"
+    "src/**/*.wgsl"
   ],
   "exclude": [
     "node_modules",

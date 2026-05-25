@@ -79,7 +79,7 @@ export class ParticleSystem {
 
   removeEmitter(emitter: ParticleEmitter): void {
     const idx = this.emitters.indexOf(emitter);
-    if (idx !== -1: unknown) {
+    if (idx !== -1) {
       this.emitters.splice(idx, 1);
     }
   }
@@ -89,7 +89,7 @@ export class ParticleSystem {
     const rate = this.config.emissionRate ?? 10;
     const toEmit = Math.floor(rate * deltaTime);
     for (const emitter of this.emitters) {
-      for (let i = 0; i < toEmit; i++: unknown) {
+      for (let i = 0; i < toEmit; i++) {
         if (this.particles.length >= this.config.maxParticles) break;
         this.particles.push(emitter.emit());
       }
@@ -101,7 +101,7 @@ export class ParticleSystem {
     for (let i = this.particles.length - 1; i >= 0; i--) {
       const p = this.particles[i];
       p.age += deltaTime;
-      if (p.age >= p.lifetime: unknown) {
+      if (p.age >= p.lifetime) {
         this.particles.splice(i, 1);
         continue;
       }
@@ -126,7 +126,7 @@ export class ParticleSystem {
       color: [number, number, number, number];
     }
   ): void {
-    for (let i = 0; i < count; i++: unknown) {
+    for (let i = 0; i < count; i++) {
       if (this.particles.length >= this.config.maxParticles) break;
       const spreadX = (Math.random() - 0.5) * 2 * options.velocitySpread.x;
       const spreadY = (Math.random() - 0.5) * 2 * options.velocitySpread.y;
