@@ -5,11 +5,27 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@a0n/aeon-3d": [
+        "../aeon-3d/src/index.ts"
+      ],
+      "@a0n/aeon-3d/three": [
+        "src/aeon-3d-three-types.d.ts"
+      ],
+      "@a0n/aeon-3d/fiber": [
+        "../../node_modules/@react-three/fiber"
+      ],
+      "@a0n/aeon-3d/*": [
+        "../aeon-3d/src/*"
+      ]
+    }
   },
   "include": [
-    "src",
-    "../../open-source/raect/src/**/*"
+    "src"
   ],
   "exclude": [
     "node_modules",
