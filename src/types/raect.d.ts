@@ -1,4 +1,4 @@
-declare module '@a0n/raect' {
+declare module 'react' {
   import React from 'react';
 
   export type RefObject<T> = React.RefObject<T>;

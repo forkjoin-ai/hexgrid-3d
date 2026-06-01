@@ -1,4 +1,4 @@
-import React from '@a0n/raect';
+import React from 'react';
 
 export function PoolStatsOverlay() {
   return (

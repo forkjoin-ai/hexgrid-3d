@@ -1,4 +1,4 @@
-import React from '@a0n/raect';
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HexGrid } from '../../src/components/HexGrid';

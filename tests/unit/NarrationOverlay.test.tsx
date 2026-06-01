@@ -1,4 +1,4 @@
-import React from '@a0n/raect';
+import React from 'react';
 import { describe, it, expect, mock } from 'bun:test';
 import { render } from '@testing-library/react';
 import { NarrationOverlay } from '../../src/components/NarrationOverlay';

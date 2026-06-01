@@ -9,7 +9,7 @@ GlobalRegistrator.register();
 
 import '@a0n/test-dom/setup';
 import { mock } from 'bun:test';
-import React from '@a0n/raect';
+import React from 'react';
 
 // Mock external components that are imported from parent project
 mock.module('@/components/debug/PoolStatsOverlay', () => ({

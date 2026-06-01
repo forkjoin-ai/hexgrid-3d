@@ -1,4 +1,4 @@
-import React, { useState } from '@a0n/raect';
+import React, { useState } from 'react';
 import { HexGrid } from '@buley/hexgrid-3d';
 import type { Photo } from '@buley/hexgrid-3d';
 
