@@ -241,9 +241,9 @@ function getCellUnderMouse(
 // GameSphere Component
 // ---------------------------------------------------------------------------
 
-export const GameSphere: React.FC<GameSphereProps> = ({
+export const GameSphere = ({
   cellGameState, 
-  config: configProp, events, width = '100%', height = '100%', className, style, rendererRef, sceneRef, paused = false, children, }) => {
+  config: configProp, events, width = '100%', height = '100%', className, style, rendererRef, sceneRef, paused = false, children, }: GameSphereProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererInternalRef = useRef<THREE.WebGLRenderer | null>(null);

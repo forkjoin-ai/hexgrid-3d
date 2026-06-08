@@ -16,8 +16,8 @@ export interface NarrationOverlayProps {
   onClose: () => void;
 }
 
-export const NarrationOverlay: React.FC<NarrationOverlayProps> = ({
-  messages, statsTracker, isVisible, onClose, }) => {
+export const NarrationOverlay = ({
+  messages, statsTracker, isVisible, onClose, }: NarrationOverlayProps) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
