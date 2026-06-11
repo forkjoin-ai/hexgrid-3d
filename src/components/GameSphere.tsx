@@ -279,11 +279,11 @@ export const GameSphere = ({
     if (!canvas || !container) return;
 
     // Renderer
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = THREE.createRendererSync({
       canvas,
       antialias: config.enableAntialias,
       alpha: true,
-    });
+    }) as unknown as THREE.WebGLRenderer;
     renderer.setPixelRatio(config.pixelRatio);
     renderer.setClearColor(0x000000, 0);
     if (config.enableShadows) {
