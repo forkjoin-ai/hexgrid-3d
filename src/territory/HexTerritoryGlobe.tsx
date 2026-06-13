@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from '@a0n/raect';
 import type { ThreeEvent } from '@a0n/aeon-3d/fiber';
 import {
   Color,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from '@a0n/raect';
 import { describe, it, expect, mock, beforeEach } from 'bun:test';
 import { render } from '@testing-library/react';
 import { HexGrid } from '../../src/components/HexGrid';

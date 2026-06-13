@@ -6,7 +6,7 @@
  * handles fog of war, highlights, raycasting for click/hover, orbit camera,
  * and piece animations. This is THE platform for any board game on a sphere.
  */
-import React, { useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useRef, useEffect, useCallback, useMemo } from '@a0n/raect';
 import * as THREE from '@a0n/aeon-3d/three';
 import type {
   GameSphereProps,

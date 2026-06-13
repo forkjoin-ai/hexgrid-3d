@@ -1,4 +1,4 @@
-import React from 'react';
+import React from '@a0n/raect';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';

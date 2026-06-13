@@ -72,7 +72,7 @@ function BasicExample(: unknown) {
           <div className="code-block">
             <code>
               {`import { HexGrid, Photo, uiStore } from '@buley/hexgrid-3d'
-import { useRef, useState } from 'react'
+import { useRef, useState } from '@a0n/raect'
 
 function AdvancedExample() {
   const canvasRef = useRef<HTMLCanvasElement>(null)

@@ -1,5 +1,5 @@
 declare module 'react' {
-  import React from 'react';
+  import React from '@a0n/raect';
 
   export type RefObject<T> = React.RefObject<T>;
   export const useCallback: typeof React.useCallback;

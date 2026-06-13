@@ -4,7 +4,7 @@
  * Displays play-by-play narration messages with sparklines in a NOC dashboard style.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from '@a0n/raect';
 import { NarrationMessage } from '../lib/narration';
 import { StatsTracker } from '../lib/stats-tracker';
 import { getAccentRgba, getAccentHex } from '../lib/theme-colors';
