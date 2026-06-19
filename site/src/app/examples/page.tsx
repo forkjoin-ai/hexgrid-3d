@@ -36,7 +36,7 @@ export default function ExamplesPage() {
             <code>
               {`import { HexGrid, Photo } from '@buley/hexgrid-3d'
 
-function BasicExample(: unknown) {
+function BasicExample() {
   const photos: Photo[] = [
     {
       id: '1',

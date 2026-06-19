@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children: unknown,  
+  children,
 }: {
   children: React.ReactNode;
 }) {

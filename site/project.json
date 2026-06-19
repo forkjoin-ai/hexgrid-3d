@@ -22,8 +22,8 @@
         "^typecheck"
       ],
       "options": {
-        "cwd": "Users/buley/Documents/Code",
-        "command": "bun run lint"
+        "cwd": "open-source/hexgrid-3d/site",
+        "command": "bun run typecheck"
       }
     }
   }

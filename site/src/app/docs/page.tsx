@@ -45,7 +45,7 @@ export default function DocsPage() {
             <code>
               {`import { HexGrid, Photo } from '@buley/hexgrid-3d'
 
-function MyComponent(: unknown) {
+function MyComponent() {
   const photos: Photo[] = [
     {
       id: '1',

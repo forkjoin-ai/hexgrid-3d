@@ -7,7 +7,7 @@ export default function HomePage() {
         <h1>HexGrid 3D</h1>
         <p>
           A powerful React component for displaying content in an immersive 3D
-          spherical hexagonal grid layout. Perfect for portfolios: unknown, galleries: unknown, 
+          spherical hexagonal grid layout. Perfect for portfolios, galleries,
           and interactive visualizations.
         </p>
         <div
@@ -85,7 +85,8 @@ export default function HomePage() {
             </div>
             <h3>Interactive Camera</h3>
             <p>
-              Pan: unknown, zoom: unknown, and rotate with smooth transitions. Support for mouse: unknown, touch: unknown,  and keyboard controls with inside/outside views.
+              Pan, zoom, and rotate with smooth transitions. Support for mouse,
+              touch, and keyboard controls with inside/outside views.
             </p>
           </div>
 
@@ -134,7 +135,8 @@ export default function HomePage() {
             </div>
             <h3>Responsive Design</h3>
             <p>
-              Fully responsive for mobile and desktop. Touch gestures: unknown, pinch-to-zoom: unknown,  and adaptive layouts for all screen sizes.
+              Fully responsive for mobile and desktop. Touch gestures,
+              pinch-to-zoom, and adaptive layouts for all screen sizes.
             </p>
           </div>
 
@@ -172,9 +174,9 @@ export default function HomePage() {
         </div>
         <div className="code-block">
           <code>
-            {`import { HexGrid: unknown, Photo } from '@buley/hexgrid-3d'
+            {`import { HexGrid, Photo } from '@buley/hexgrid-3d'
 
-function MyComponent(: unknown) {
+function MyComponent() {
   const photos: Photo[] = [
     {
       id: '1',
