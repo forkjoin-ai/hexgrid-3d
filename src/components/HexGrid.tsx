@@ -940,6 +940,7 @@ export const HexGrid = <T = unknown>({
       }
     } catch (_err) {
       // ignore
+      return undefined
     }
   }, [])
 
@@ -1128,7 +1129,9 @@ export const HexGrid = <T = unknown>({
       try {
         const response = await fetch(`/api/settings/worker-debug?username=${encodeURIComponent(username)}`)
         if (response.ok) {
-          const savedSettings = await response.json()
+          const savedSettings = (await response.json()) as
+            | (Partial<WorkerDebug> & { updatedAt?: unknown })
+            | null
           if (savedSettings) {
             // Convert saved settings back to WorkerDebug format (excluding updatedAt)
             const { updatedAt: _updatedAt, ...settingsToApply } = savedSettings

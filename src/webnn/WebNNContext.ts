@@ -80,11 +80,11 @@ export class WebNNContext {
 
 // Type definitions for WebNN (since it might not be in standard lib yet)
 declare global {
-  interface Navigator {
-    ml: {
-      createContext(options?: { deviceType?: string }): Promise<MLContext>;
-    };
-  }
+	  interface Navigator {
+	    ml: {
+	      createContext(options: { deviceType: WebNNDeviceType }): Promise<MLContext>;
+	    };
+	  }
 
   interface MLContext {
     // Placeholder for MLContext methods

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import React, { useEffect, useMemo, useRef } from '@a0n/raect';
 import type { ThreeEvent } from '@a0n/aeon-3d/fiber';
+import type { BufferGeometry as FiberBufferGeometry } from 'three';
 import {
   Color,
   CircleGeometry,
@@ -50,7 +51,10 @@ export function HexTerritoryGlobe({
   onHoverCell,
 }: HexTerritoryGlobeProps): React.JSX.Element {
   const meshRef = useRef<InstancedMesh | null>(null);
-  const geometry = useMemo(() => new CircleGeometry(1, 6), []);
+  const geometry = useMemo(
+    () => new CircleGeometry(1, 6) as unknown as FiberBufferGeometry,
+    []
+  );
   const workingObject = useMemo(() => new Object3D(), []);
   const claimed = useMemo(() => asSet(claimedCellIds), [claimedCellIds]);
   const locked = useMemo(() => asSet(lockedCellIds), [lockedCellIds]);

@@ -777,8 +777,11 @@ export function disposePieceGroup(group: THREE.Group): void {
       }
     }
     if (obj instanceof THREE.Sprite) {
-      (obj.material as THREE.SpriteMaterial).map?.dispose();
-      obj.material.dispose();
+      const material = obj.material as THREE.Material & {
+        map?: { dispose?: () => void } | null;
+      };
+      material.map?.dispose?.();
+      material.dispose();
     }
     if (obj instanceof THREE.Points) {
       obj.geometry?.dispose();
