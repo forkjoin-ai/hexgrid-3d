@@ -3374,7 +3374,7 @@ export const HexGrid = <T = unknown>({
   }, [photos, hexPositions, effectiveHexRadius, dlog])
   
   // Handle mouse interaction with DEPTH-SORTED hit testing to fix click targeting
-  const handleCanvasClick = useCallback((event: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleCanvasClick = useCallback((event: MouseEvent & { currentTarget: HTMLCanvasElement }) => {
     // Prevent click from firing after a double tap
     if (doubleTapRef.current.justDoubleTapped) {
       return
@@ -3472,10 +3472,10 @@ export const HexGrid = <T = unknown>({
         width={screenWidth}
         height={screenHeight}
         onClick={handleCanvasClick}
-        onMouseMove={(e: React.MouseEvent<HTMLCanvasElement>) => {
-          const rect = (e.target as HTMLCanvasElement).getBoundingClientRect()
+        onMouseMove={(e: MouseEvent & { currentTarget: HTMLCanvasElement }) => {
+          const rect = e.currentTarget.getBoundingClientRect()
           // Map client coords into canvas pixel coordinates for hit-testing/hover
-          const canvasEl = e.target as HTMLCanvasElement
+          const canvasEl = e.currentTarget
           const scaleX = canvasEl.width / rect.width
           const scaleY = canvasEl.height / rect.height
           const x = (e.clientX - rect.left) * scaleX
@@ -3605,7 +3605,7 @@ export const HexGrid = <T = unknown>({
           // mark interaction to suppress idle rotation
           try { lastInteractionRef.current = performance.now() } catch (_err) {}
         }}
-        onMouseDown={(e: React.MouseEvent<HTMLCanvasElement>) => {
+        onMouseDown={(e: MouseEvent & { currentTarget: HTMLCanvasElement }) => {
           // start drag on left button
           if (e.button !== 0) return
           dragRef.current.active = true
@@ -3624,7 +3624,7 @@ export const HexGrid = <T = unknown>({
           // mark interaction to suppress idle rotation
           try { lastInteractionRef.current = performance.now() } catch (_err) {}
         }}
-        onMouseUp={(e: React.MouseEvent<HTMLCanvasElement>) => {
+        onMouseUp={(e: MouseEvent & { currentTarget: HTMLCanvasElement }) => {
           if (e.button !== 0) return
           // apply inertia based on last vx/vy
           const vx = dragRef.current.vx || 0
