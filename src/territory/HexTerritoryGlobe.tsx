@@ -130,20 +130,22 @@ export function HexTerritoryGlobe({
         ref={meshRef}
         args={[geometry, undefined, cells.length] as const}
         onClick={(event: ThreeEvent<MouseEvent>) => {
-          if (typeof event.instanceId !== 'number') {
+          const instanceId = (event as { instanceId?: number }).instanceId;
+          if (typeof instanceId !== 'number') {
             return;
           }
-          const cell = cells[event.instanceId];
+          const cell = cells[instanceId];
           if (cell) {
             onSelectCell?.(cell);
           }
         }}
         onPointerMove={(event: ThreeEvent<PointerEvent>) => {
-          if (typeof event.instanceId !== 'number') {
+          const instanceId = (event as { instanceId?: number }).instanceId;
+          if (typeof instanceId !== 'number') {
             onHoverCell?.(null);
             return;
           }
-          const cell = cells[event.instanceId];
+          const cell = cells[instanceId];
           onHoverCell?.(cell ?? null);
         }}
         onPointerOut={() => {
