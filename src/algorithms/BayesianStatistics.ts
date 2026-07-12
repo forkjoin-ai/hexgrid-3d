@@ -103,12 +103,18 @@ export class KalmanFilter {
   }
 }
 
+/**
+ * Handles the hexgrid 3d bayesian Win Probability workflow.
+ */
 export function bayesianWinProbability(wins: number, losses: number): number {
   const total = wins + losses;
   if (total === 0) return 0.5;
   return wins / total;
 }
 
+/**
+ * Handles the hexgrid 3d bayesian Conquest Rate workflow.
+ */
 export function bayesianConquestRate(
   successes: number,
   trials: number
@@ -117,6 +123,9 @@ export function bayesianConquestRate(
   return successes / trials;
 }
 
+/**
+ * Handles the hexgrid 3d bayesian Changepoint workflow.
+ */
 export function bayesianChangepoint(values: number[]): number {
   if (values.length < 2) return 0;
   const mid = Math.floor(values.length / 2);
@@ -127,6 +136,9 @@ export interface ProbabilitySnapshot {
   probabilities: Array<{ label: string; probability: number }>;
 }
 
+/**
+ * Handles the hexgrid 3d generate Probability Snapshot workflow.
+ */
 export function generateProbabilitySnapshot(
   labels: string[]
 ): ProbabilitySnapshot {
@@ -234,6 +246,9 @@ export class HiddenMarkovModel {
 }
 
 // Bayesian A/B Test
+/**
+ * Handles the hexgrid 3d bayesian ABTest workflow.
+ */
 export function bayesianABTest(
   successA: number,
   trialsA: number,
@@ -246,6 +261,9 @@ export function bayesianABTest(
 }
 
 // Bayes Factor
+/**
+ * Handles the hexgrid 3d bayes Factor workflow.
+ */
 export function bayesFactor(
   priorOdds: number,
   likelihoodRatio: number
@@ -254,6 +272,9 @@ export function bayesFactor(
 }
 
 // MAP Estimate (Maximum A Posteriori)
+/**
+ * Handles the hexgrid 3d map Estimate workflow.
+ */
 export function mapEstimate(
   data: number[],
   prior: { alpha: number; beta: number }
@@ -266,6 +287,9 @@ export function mapEstimate(
 }
 
 // Learn Markov Chain from sequence
+/**
+ * Handles the hexgrid 3d learn Markov Chain workflow.
+ */
 export function learnMarkovChain(sequence: string[]): MarkovChain {
   const chain = new MarkovChain();
   for (let i = 0; i < sequence.length - 1; i++) {
@@ -275,6 +299,9 @@ export function learnMarkovChain(sequence: string[]): MarkovChain {
 }
 
 // Bootstrap Confidence Interval
+/**
+ * Handles the hexgrid 3d bootstrap Confidence Interval workflow.
+ */
 export function bootstrapConfidenceInterval(
   data: number[],
   iterations: number = 1000,
@@ -298,6 +325,9 @@ export function bootstrapConfidenceInterval(
 }
 
 // Monte Carlo Integration
+/**
+ * Handles the hexgrid 3d monte Carlo Integrate workflow.
+ */
 export function monteCarloIntegrate(
   fn: (x: number) => number,
   a: number,
@@ -313,6 +343,9 @@ export function monteCarloIntegrate(
 }
 
 // Mutual Information
+/**
+ * Handles the hexgrid 3d mutual Information workflow.
+ */
 export function mutualInformation(x: number[], y: number[]): number {
   // Simplified implementation
   if (x.length !== y.length || x.length === 0) return 0;
@@ -332,6 +365,9 @@ function shannonEntropy(values: number[]): number {
 }
 
 // Conditional Entropy
+/**
+ * Handles the hexgrid 3d conditional Entropy workflow.
+ */
 export function conditionalEntropy(x: number[], y: number[]): number {
   if (x.length !== y.length || x.length === 0) return 0;
   // Simplified: return marginal entropy
@@ -339,6 +375,9 @@ export function conditionalEntropy(x: number[], y: number[]): number {
 }
 
 // Normalized Mutual Information
+/**
+ * Handles the hexgrid 3d normalized Mutual Information workflow.
+ */
 export function normalizedMutualInformation(x: number[], y: number[]): number {
   const mi = mutualInformation(x, y);
   const hx = shannonEntropy(x);
@@ -354,6 +393,9 @@ const LANCZOS_COEFFICIENTS = [
   -1.231739572450155, 1.20865097386618e-3, -5.395239384953e-6,
 ];
 
+/**
+ * Handles the hexgrid 3d log Gamma workflow.
+ */
 export function logGamma(x: number): number {
   if (x <= 0) return Infinity;
   if (x < 0.5) {
@@ -368,18 +410,30 @@ export function logGamma(x: number): number {
   return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
 }
 
+/**
+ * Handles the hexgrid 3d gamma workflow.
+ */
 export function gamma(x: number): number {
   return Math.exp(logGamma(x));
 }
 
+/**
+ * Handles the hexgrid 3d log Beta workflow.
+ */
 export function logBeta(a: number, b: number): number {
   return logGamma(a) + logGamma(b) - logGamma(a + b);
 }
 
+/**
+ * Handles the hexgrid 3d beta Function workflow.
+ */
 export function betaFunction(a: number, b: number): number {
   return Math.exp(logBeta(a, b));
 }
 
+/**
+ * Handles the hexgrid 3d factorial workflow.
+ */
 export function factorial(n: number): number {
   if (n < 0) return NaN;
   if (n === 0 || n === 1) return 1;
@@ -391,6 +445,9 @@ export function factorial(n: number): number {
   return result;
 }
 
+/**
+ * Handles the hexgrid 3d binomial workflow.
+ */
 export function binomial(n: number, k: number): number {
   if (k < 0 || k > n) return 0;
   if (k === 0 || k === n) return 1;

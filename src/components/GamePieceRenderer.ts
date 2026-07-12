@@ -763,6 +763,9 @@ export function buildOrbitalStrike(
 // Utility: Dispose all geometries and materials in a group
 // ---------------------------------------------------------------------------
 
+/**
+ * Handles the hexgrid 3d dispose Piece Group workflow.
+ */
 export function disposePieceGroup(group: THREE.Group): void {
   group.traverse((obj) => {
     if (obj instanceof THREE.Mesh) {

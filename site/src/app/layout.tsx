@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Renders the Root Layout view.
+ */
 export default function RootLayout({
   children,
 }: {

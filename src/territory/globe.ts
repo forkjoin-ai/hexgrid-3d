@@ -198,6 +198,9 @@ function buildNeighbors(
   return Array.from(neighborIds);
 }
 
+/**
+ * Handles the hexgrid 3d generate Canonical Hex Globe workflow.
+ */
 export function generateCanonicalHexGlobe(
   config: CanonicalHexGlobeConfig
 ): HexTerritoryBoard {
@@ -254,6 +257,9 @@ export function generateCanonicalHexGlobe(
   return board;
 }
 
+/**
+ * Handles the hexgrid 3d calculate Auto Tile Radius By Row workflow.
+ */
 export function calculateAutoTileRadiusByRow(
   cells: readonly HexTerritoryCell[]
 ): Map<number, number> {

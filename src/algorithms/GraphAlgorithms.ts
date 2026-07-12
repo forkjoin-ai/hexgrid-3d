@@ -18,6 +18,9 @@ export interface VoronoiDiagram {
   edges: Array<[[number, number], [number, number]]>;
 }
 
+/**
+ * Handles the hexgrid 3d k Means Clustering workflow.
+ */
 export function kMeansClustering(
   points: number[][],
   k: number,
@@ -134,6 +137,9 @@ export function kMeansClustering(
   return clusters;
 }
 
+/**
+ * Handles the hexgrid 3d dbscan workflow.
+ */
 export function dbscan(
   points: number[][],
   _eps: number,
@@ -143,6 +149,9 @@ export function dbscan(
   return kMeansClustering(points, Math.min(1, points.length));
 }
 
+/**
+ * Computes the Voronoi.
+ */
 export function computeVoronoi(
   sites: Array<[number, number]>,
   bounds: { minX: number; maxX: number; minY: number; maxY: number }
@@ -171,6 +180,9 @@ export function computeVoronoi(
   return { cells, vertices, edges };
 }
 
+/**
+ * Handles the hexgrid 3d analyze Territor Boundaries workflow.
+ */
 export function analyzeTerritorBoundaries(
   infections: Map<number, { photoId: string }>,
   neighbors: number[][]
@@ -196,6 +208,9 @@ export function analyzeTerritorBoundaries(
   return { frontLength, hotspots };
 }
 
+/**
+ * Handles the hexgrid 3d k Means Clustering2 D workflow.
+ */
 export function kMeansClustering2D(
   points: Array<[number, number]>,
   k: number
@@ -204,6 +219,9 @@ export function kMeansClustering2D(
   return kMeansClustering(asPoints, k);
 }
 
+/**
+ * Handles the hexgrid 3d find Connected Components workflow.
+ */
 export function findConnectedComponents(graph: {
   nodes: number[];
   edges: Map<number, number[]>;
@@ -235,6 +253,9 @@ export function findConnectedComponents(graph: {
   return components;
 }
 
+/**
+ * Handles the hexgrid 3d louvain Communities workflow.
+ */
 export function louvainCommunities(graph: {
   nodes: number[];
   edges: Map<number, number[]>;
@@ -247,6 +268,9 @@ export function louvainCommunities(graph: {
   }));
 }
 
+/**
+ * Computes the Voronoi Graph.
+ */
 export function computeVoronoiGraph(sites: Array<[number,  number]>) {
   return computeVoronoi(sites, {
     minX: Math.min(...sites.map((s) => s[0])),
@@ -256,10 +280,16 @@ export function computeVoronoiGraph(sites: Array<[number,  number]>) {
   });
 }
 
+/**
+ * Handles the hexgrid 3d k Means Cluster workflow.
+ */
 export function kMeansCluster(points: number[][], k: number): Cluster[] {
   return kMeansClustering(points, k);
 }
 
+/**
+ * Handles the hexgrid 3d k Means Clustering With Labels workflow.
+ */
 export function kMeansClusteringWithLabels(
   points: number[][],
   k: number

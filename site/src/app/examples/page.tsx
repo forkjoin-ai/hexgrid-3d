@@ -5,6 +5,9 @@ export const metadata = {
   description: 'Example implementations of HexGrid 3D',
 };
 
+/**
+ * Renders the Examples Page view.
+ */
 export default function ExamplesPage() {
   return (
     <div

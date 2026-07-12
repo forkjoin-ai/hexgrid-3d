@@ -36,6 +36,9 @@ function asSet(values: Iterable<string> | undefined): Set<string> {
   return values ? new Set(values) : new Set<string>();
 }
 
+/**
+ * Renders the Hex Territory Globe view.
+ */
 export function HexTerritoryGlobe({
   cells,
   selectedCellId = null,

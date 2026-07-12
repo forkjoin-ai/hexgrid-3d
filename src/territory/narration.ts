@@ -92,6 +92,9 @@ function formatSingleEvent(event: HexwarNarrationEvent): string {
   }
 }
 
+/**
+ * Creates the Hexwar Narration Adapter.
+ */
 export function createHexwarNarrationAdapter(
   events: HexwarNarrationEvent[]
 ): NarrationMessage[] {

@@ -4,6 +4,9 @@ export interface PoolStatsOverlayProps {
   isOpen: boolean
 }
 
+/**
+ * Renders the Pool Stats Overlay view.
+ */
 export function PoolStatsOverlay({ isOpen }: PoolStatsOverlayProps): React.JSX.Element | null {
   if (!isOpen) return null
 

@@ -43,6 +43,9 @@ function stdDev(values: number[], avg: number): number {
   return Math.sqrt(variance);
 }
 
+/**
+ * Handles the hexgrid 3d detect Outliers ZScore workflow.
+ */
 export function detectOutliersZScore(
   values: number[],
   threshold: number = 3
@@ -70,6 +73,9 @@ export function detectOutliersZScore(
   };
 }
 
+/**
+ * Handles the hexgrid 3d detect Outliers Modified ZScore workflow.
+ */
 export function detectOutliersModifiedZScore(
   values: number[],
   threshold: number = 3.5
@@ -111,6 +117,9 @@ export function detectOutliersModifiedZScore(
   };
 }
 
+/**
+ * Handles the hexgrid 3d detect Outliers IQR workflow.
+ */
 export function detectOutliersIQR(
   values: number[],
   threshold: number = 1.5
@@ -153,6 +162,9 @@ export function detectOutliersIQR(
   };
 }
 
+/**
+ * Handles the hexgrid 3d detect Growth Spikes workflow.
+ */
 export function detectGrowthSpikes(values: number[]): TimeSeriesAnomaly[] {
   if (values.length < 2) return [];
 
@@ -174,6 +186,9 @@ export function detectGrowthSpikes(values: number[]): TimeSeriesAnomaly[] {
   });
 }
 
+/**
+ * Handles the hexgrid 3d detect Variance Changes workflow.
+ */
 export function detectVarianceChanges(
   values: number[]
 ): VarianceChangeResult[] {
@@ -202,6 +217,9 @@ export function detectVarianceChanges(
   return results;
 }
 
+/**
+ * Handles the hexgrid 3d mahalanobis Outliers workflow.
+ */
 export function mahalanobisOutliers(
   values: number[],
   threshold: number = 3
@@ -217,6 +235,9 @@ export interface GameAnomaly {
   description: string;
 }
 
+/**
+ * Handles the hexgrid 3d detect Game Anomalies workflow.
+ */
 export function detectGameAnomalies(
   values: number[],
   windowSize: number = 5
@@ -253,6 +274,9 @@ export interface MultivariateOutlierResult {
   method: string;
 }
 
+/**
+ * Handles the hexgrid 3d comprehensive Outlier Analysis workflow.
+ */
 export function comprehensiveOutlierAnalysis(
   values: number[]
 ): MultivariateOutlierResult {
@@ -275,6 +299,9 @@ export function comprehensiveOutlierAnalysis(
 }
 
 // Local Outlier Factor (simplified)
+/**
+ * Handles the hexgrid 3d local Outlier Factor workflow.
+ */
 export function localOutlierFactor(
   values: number[],
   k: number = 5
@@ -326,6 +353,9 @@ export function localOutlierFactor(
 }
 
 // Isolation Forest (simplified)
+/**
+ * Returns whether isolation Forest is true.
+ */
 export function isolationForest(
   values: number[],
   trees: number = 100,
@@ -374,6 +404,9 @@ export function isolationForest(
 }
 
 // CUSUM Chart
+/**
+ * Handles the hexgrid 3d cusum Chart workflow.
+ */
 export function cusumChart(
   values: number[],
   target: number,
@@ -406,6 +439,9 @@ export function cusumChart(
 }
 
 // EWMA Chart (Exponentially Weighted Moving Average)
+/**
+ * Handles the hexgrid 3d ewma Chart workflow.
+ */
 export function ewmaChart(
   values: number[],
   lambda: number = 0.2,

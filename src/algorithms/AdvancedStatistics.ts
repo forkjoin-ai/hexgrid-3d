@@ -4,6 +4,9 @@ export interface TrendResult {
   rSquared?: number;
 }
 
+/**
+ * Handles the hexgrid 3d gini Coefficient workflow.
+ */
 export function giniCoefficient(values: number[]): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);
@@ -17,6 +20,9 @@ export function giniCoefficient(values: number[]): number {
   return (2 * cumulative) / (n * total) - (n + 1) / n;
 }
 
+/**
+ * Handles the hexgrid 3d theil Index workflow.
+ */
 export function theilIndex(values: number[]): number {
   if (values.length === 0) return 0;
   const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -28,6 +34,9 @@ export function theilIndex(values: number[]): number {
   );
 }
 
+/**
+ * Handles the hexgrid 3d atkinson Index workflow.
+ */
 export function atkinsonIndex(values: number[], epsilon: number = 1): number {
   if (values.length === 0) return 0;
   const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -46,6 +55,9 @@ export function atkinsonIndex(values: number[], epsilon: number = 1): number {
   return 1 - eq / avg;
 }
 
+/**
+ * Handles the hexgrid 3d pareto Ratio workflow.
+ */
 export function paretoRatio(
   values: number[],
   topFraction: number = 0.2
@@ -62,6 +74,9 @@ export function paretoRatio(
   return { ratioHeld: topSum / total, paretoIndex: topFraction };
 }
 
+/**
+ * Handles the hexgrid 3d zipf Coefficient workflow.
+ */
 export function zipfCoefficient(values: number[]): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => b - a);
@@ -70,6 +85,9 @@ export function zipfCoefficient(values: number[]): number {
   return sorted.reduce((sum, val, idx) => sum + val / (idx + 1), 0) / total;
 }
 
+/**
+ * Handles the hexgrid 3d herfindahl Index workflow.
+ */
 export function herfindahlIndex(values: number[]): number {
   if (values.length === 0) return 0;
   const total = values.reduce((sum, val) => sum + val, 0);
@@ -80,6 +98,9 @@ export function herfindahlIndex(values: number[]): number {
   }, 0);
 }
 
+/**
+ * Handles the hexgrid 3d shannon Entropy workflow.
+ */
 export function shannonEntropy(values: number[]): number {
   if (values.length === 0) return 0;
   const total = values.reduce((sum, val) => sum + val, 0);
@@ -90,6 +111,9 @@ export function shannonEntropy(values: number[]): number {
   }, 0);
 }
 
+/**
+ * Handles the hexgrid 3d normalized Entropy workflow.
+ */
 export function normalizedEntropy(values: number[]): number {
   if (values.length === 0) return 0;
   const entropy = shannonEntropy(values);
@@ -97,6 +121,9 @@ export function normalizedEntropy(values: number[]): number {
   return maxEntropy === 0 ? 0 : entropy / maxEntropy;
 }
 
+/**
+ * Handles the hexgrid 3d renyi Entropy workflow.
+ */
 export function renyiEntropy(values: number[], alpha: number): number {
   if (values.length === 0) return 0;
   const total = values.reduce((sum, val) => sum + val, 0);
@@ -108,6 +135,9 @@ export function renyiEntropy(values: number[], alpha: number): number {
   return (1 / (1 - alpha)) * Math.log2(sum || 1);
 }
 
+/**
+ * Handles the hexgrid 3d tsallis Entropy workflow.
+ */
 export function tsallisEntropy(values: number[], q: number): number {
   if (values.length === 0) return 0;
   const total = values.reduce((sum, val) => sum + val, 0);
@@ -119,6 +149,9 @@ export function tsallisEntropy(values: number[], q: number): number {
   return (1 - sum) / (q - 1);
 }
 
+/**
+ * Handles the hexgrid 3d detect Trend workflow.
+ */
 export function detectTrend(values: number[]): TrendResult {
   if (values.length < 2) {
     return { slope: 0, direction: 'stable', rSquared: 0 };
@@ -152,6 +185,9 @@ export function detectTrend(values: number[]): TrendResult {
   return { slope, direction, rSquared };
 }
 
+/**
+ * Handles the hexgrid 3d detect Change Points workflow.
+ */
 export function detectChangePoints(values: number[]): number[] {
   if (values.length < 3) return [];
   const changes: number[] = [];
@@ -167,6 +203,9 @@ export function detectChangePoints(values: number[]): number[] {
   return changes;
 }
 
+/**
+ * Handles the hexgrid 3d moving Average workflow.
+ */
 export function movingAverage(values: number[], windowSize: number): number[] {
   if (values.length === 0) return [];
   const result: number[] = [];
@@ -179,6 +218,9 @@ export function movingAverage(values: number[], windowSize: number): number[] {
   return result;
 }
 
+/**
+ * Handles the hexgrid 3d exponential Moving Average workflow.
+ */
 export function exponentialMovingAverage(
   values: number[],
   alpha: number
@@ -194,12 +236,18 @@ export function exponentialMovingAverage(
   return result;
 }
 
+/**
+ * Handles the hexgrid 3d predict Winner workflow.
+ */
 export function predictWinner(values: number[]): number {
   if (values.length === 0) return 0;
   const max = Math.max(...values);
   return values.indexOf(max);
 }
 
+/**
+ * Handles the hexgrid 3d sparkline workflow.
+ */
 export function sparkline(values: number[]): string {
   if (values.length === 0) return '';
   const min = Math.min(...values);
@@ -214,6 +262,9 @@ export function sparkline(values: number[]): string {
     .join('');
 }
 
+/**
+ * Handles the hexgrid 3d sparkline Svg workflow.
+ */
 export function sparklineSvg(
   values: number[],
   width: number = 100,
@@ -234,6 +285,9 @@ export function sparklineSvg(
 }
 
 // KL Divergence (Kullback-Leibler)
+/**
+ * Handles the hexgrid 3d kl Divergence workflow.
+ */
 export function klDivergence(p: number[], q: number[]): number {
   if (p.length !== q.length || p.length === 0) return 0;
   return p.reduce((sum, pi, i) => {
@@ -244,6 +298,9 @@ export function klDivergence(p: number[], q: number[]): number {
 }
 
 // JS Divergence (Jensen-Shannon)
+/**
+ * Handles the hexgrid 3d js Divergence workflow.
+ */
 export function jsDivergence(p: number[], q: number[]): number {
   if (p.length !== q.length || p.length === 0) return 0;
   const m = p.map((pi, i) => (pi + (q[i] ?? 0)) / 2);
@@ -251,6 +308,9 @@ export function jsDivergence(p: number[], q: number[]): number {
 }
 
 // Bhattacharyya Coefficient
+/**
+ * Handles the hexgrid 3d bhattacharyya Coefficient workflow.
+ */
 export function bhattacharyyaCoefficient(p: number[], q: number[]): number {
   if (p.length !== q.length || p.length === 0) return 0;
   return p.reduce((sum, pi, i) => {
@@ -260,6 +320,9 @@ export function bhattacharyyaCoefficient(p: number[], q: number[]): number {
 }
 
 // Hellinger Distance
+/**
+ * Handles the hexgrid 3d hellinger Distance workflow.
+ */
 export function hellingerDistance(p: number[], q: number[]): number {
   if (p.length !== q.length || p.length === 0) return 0;
   const bc = bhattacharyyaCoefficient(p, q);
@@ -267,6 +330,9 @@ export function hellingerDistance(p: number[], q: number[]): number {
 }
 
 // Double Exponential Smoothing (Holt's method)
+/**
+ * Handles the hexgrid 3d double Exponential Smoothing workflow.
+ */
 export function doubleExponentialSmoothing(
   values: number[],
   alpha: number = 0.3,
@@ -290,6 +356,9 @@ export function doubleExponentialSmoothing(
 }
 
 // Euler Characteristic (simplified for 2D)
+/**
+ * Handles the hexgrid 3d euler Characteristic workflow.
+ */
 export function eulerCharacteristic(
   vertices: number,
   edges: number,
@@ -299,6 +368,9 @@ export function eulerCharacteristic(
 }
 
 // Estimate Betti Numbers (simplified - returns basic topological invariants)
+/**
+ * Handles the hexgrid 3d estimate Betti Numbers workflow.
+ */
 export function estimateBettiNumbers(complex: {
   vertices: number;
   edges: number;
@@ -317,6 +389,9 @@ export function estimateBettiNumbers(complex: {
 }
 
 // Compactness measure
+/**
+ * Handles the hexgrid 3d compactness workflow.
+ */
 export function compactness(area: number, perimeter: number): number {
   if (perimeter === 0) return 0;
   // 4π * area / perimeter^2 (circularity measure)
@@ -332,6 +407,9 @@ export interface TerritoryStats {
   compactness: number;
 }
 
+/**
+ * Computes the Territory Stats.
+ */
 export function computeTerritoryStats(
   territories: Array<{ area: number; perimeter: number }>
 ): TerritoryStats {

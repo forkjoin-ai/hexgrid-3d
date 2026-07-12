@@ -772,6 +772,9 @@ export class HEALPixGrid {
   }
 }
 
+/**
+ * Handles the hexgrid 3d generate Flat Hex Grid workflow.
+ */
 export function generateFlatHexGrid(config: { radius: number; width: number; height: number; flatTop?: boolean }) {
     const { radius, width, height, flatTop = true } = config;
     const positions: {x:number,y:number}[] = [];
@@ -809,6 +812,9 @@ export function generateFlatHexGrid(config: { radius: number; width: number; hei
     return { positions, axialCoords, neighbors };
 }
 
+/**
+ * Handles the hexgrid 3d generate Spherical Hex Grid workflow.
+ */
 export function generateSphericalHexGrid(config: { hexRadius: number; sphereRadius: number; latRange?: [number,   number]; lngRange?: [number,  number] }) {
     // This looks like it wants a Geodesic grid or similar clipped to range?
     // Test checks: positions (Vector3), geoCoords, neighbors.

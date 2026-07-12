@@ -5,6 +5,9 @@ export const metadata = {
   description: 'Complete documentation for HexGrid 3D component',
 };
 
+/**
+ * Renders the Docs Page view.
+ */
 export default function DocsPage() {
   return (
     <div

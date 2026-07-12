@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+/**
+ * Renders the Home Page view.
+ */
 export default function HomePage() {
   return (<main>
       {/* Hero Section */}
