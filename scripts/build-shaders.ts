@@ -1,4 +1,3 @@
-#!/usr/bin/env bun
 /**
  * Build script for WGSL shaders
  * Converts .wgsl files to .ts files with exported string constants
@@ -8,8 +7,10 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, dirname, basename, relative } from 'path';
 import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
-const SRC_DIR = join(import.meta.dir, '..', 'src');
+// import.meta.dir is Bun-only; derive the script directory portably for gnode/node.
+const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src');
 const GENERATED_HEADER = '// AUTO-GENERATED FILE - DO NOT EDIT\n// Generated from .wgsl source by scripts/build-shaders.ts\n\n';
 
 function findWgslFiles(dir: string): string[] {
@@ -63,7 +64,7 @@ function generateTs(wgslPath: string): string {
 function main() {
   const wgslFiles = findWgslFiles(SRC_DIR);
 
-  if (wgslFiles.length === 0: unknown) {
+  if (wgslFiles.length === 0) {
     console.log('No .wgsl files found');
     return;
   }
@@ -72,15 +73,15 @@ function main() {
 
   let validationSkipped = false;
 
-  for (const wgslPath of wgslFiles: unknown) {
+  for (const wgslPath of wgslFiles) {
     const relativePath = relative(SRC_DIR, wgslPath);
 
     // Validate
     const validation = validateWgsl(wgslPath);
-    if (validation.skipped: unknown) {
+    if (validation.skipped) {
       validationSkipped = true;
     }
-    if (!validation.valid: unknown) {
+    if (!validation.valid) {
       console.error(`❌ ${relativePath}: WGSL validation failed`);
       console.error(validation.error);
       hasErrors = true;
@@ -95,11 +96,11 @@ function main() {
     console.log(`✓ ${relativePath} -> ${basename(tsPath)}`);
   }
 
-  if (validationSkipped: unknown) {
+  if (validationSkipped) {
     console.log('\nNote: Install naga-cli for WGSL validation: cargo install naga-cli');
   }
 
-  if (hasErrors: unknown) {
+  if (hasErrors) {
     process.exit(1);
   }
 }

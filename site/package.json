@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "node ../../gnosis/bin/gnode.js x tsc --noEmit"
   },
   "dependencies": {
     "next": "^16.1.1",

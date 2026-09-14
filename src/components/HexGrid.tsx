@@ -1,4 +1,5 @@
-import React, { useMemo, useRef, useState, useEffect, useCallback } from '@a0n/raect'
+import type * as React from '@a0n/raect'
+import { useMemo, useRef, useState, useEffect, useCallback } from '@a0n/raect'
 import '@a0n/aeon-3d/three'
 import uiStore from '../stores/uiStore'
 import { StatsTracker } from '../lib/stats-tracker'

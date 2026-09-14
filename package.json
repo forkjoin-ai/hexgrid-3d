@@ -40,10 +40,10 @@
     }
   },
   "scripts": {
-    "build:shaders": "bun run scripts/build-shaders.ts",
-    "prebuild": "bun run build:shaders",
-    "build": "tsc -p tsconfig.build.json",
-    "lint:wgsl": "bun run scripts/build-shaders.ts",
+    "build:shaders": "node ../gnosis/bin/gnode.js run scripts/build-shaders.ts",
+    "prebuild": "pnpm run build:shaders",
+    "build": "node ../gnosis/bin/gnode.js x tsc -p tsconfig.build.json",
+    "lint:wgsl": "node ../gnosis/bin/gnode.js run scripts/build-shaders.ts",
     "dev": "tsc --watch",
     "test": "bun test --timeout 60000",
     "test:watch": "bun test --timeout 60000 --watch",

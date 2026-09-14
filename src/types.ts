@@ -1,4 +1,4 @@
-import React from '@a0n/raect';
+import type * as React from '@a0n/raect';
 /**
  * Type definitions for HexGrid Visualization
  */

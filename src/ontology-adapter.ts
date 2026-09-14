@@ -5,7 +5,7 @@
  * to be embedded directly in GridItems with full metadata preservation.
  */
 
-import type { OntologyEntity } from '@emotions-app/shared-utils/ontology/types';
+import type { OntologyEntity } from '@a0n/shared-utils/ontology/types';
 import type { GridItem } from './types';
 import type { ItemAdapter, AdapterOptions } from './adapters';
 

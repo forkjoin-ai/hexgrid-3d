@@ -1,4 +1,4 @@
-import React from '@a0n/raect'
+import type * as React from '@a0n/raect'
 
 export interface PoolStatsOverlayProps {
   isOpen: boolean

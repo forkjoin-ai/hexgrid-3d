@@ -13,7 +13,7 @@
       ],
       "options": {
         "cwd": "open-source/hexgrid-3d/site",
-        "command": "bun run build"
+        "command": "pnpm run build"
       }
     },
     "typecheck": {
@@ -23,7 +23,7 @@
       ],
       "options": {
         "cwd": "open-source/hexgrid-3d/site",
-        "command": "bun run typecheck"
+        "command": "pnpm run typecheck"
       }
     }
   }

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useEffect, useMemo, useRef } from '@a0n/raect';
+import type * as React from '@a0n/raect';
+import { useEffect, useMemo, useRef } from '@a0n/raect';
 import type { ThreeEvent } from '@a0n/aeon-3d/fiber';
 import type { BufferGeometry as FiberBufferGeometry } from 'three';
 import {

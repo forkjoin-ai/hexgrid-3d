@@ -1,4 +1,4 @@
-declare module '@emotions-app/shared-utils/ontology/types' {
+declare module '@a0n/shared-utils/ontology/types' {
     export interface OntologyType {
         [key: string]: any;
     }
