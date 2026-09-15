@@ -2,7 +2,6 @@
 import type * as React from '@a0n/raect';
 import { useEffect, useMemo, useRef } from '@a0n/raect';
 import type { ThreeEvent } from '@a0n/aeon-3d/fiber';
-import type { BufferGeometry as FiberBufferGeometry } from 'three';
 import {
   Color,
   CircleGeometry,
@@ -55,10 +54,7 @@ export function HexTerritoryGlobe({
   onHoverCell,
 }: HexTerritoryGlobeProps): React.JSX.Element {
   const meshRef = useRef<InstancedMesh | null>(null);
-  const geometry = useMemo(
-    () => new CircleGeometry(1, 6) as unknown as FiberBufferGeometry,
-    []
-  );
+  const geometry = useMemo(() => new CircleGeometry(1, 6), []);
   const workingObject = useMemo(() => new Object3D(), []);
   const claimed = useMemo(() => asSet(claimedCellIds), [claimedCellIds]);
   const locked = useMemo(() => asSet(lockedCellIds), [lockedCellIds]);
@@ -134,7 +130,7 @@ export function HexTerritoryGlobe({
         ref={meshRef}
         args={[geometry, undefined, cells.length] as const}
         onClick={(event: ThreeEvent<MouseEvent>) => {
-          const instanceId = (event as { instanceId?: number }).instanceId;
+          const instanceId = event.instanceId;
           if (typeof instanceId !== 'number') {
             return;
           }
@@ -144,7 +140,7 @@ export function HexTerritoryGlobe({
           }
         }}
         onPointerMove={(event: ThreeEvent<PointerEvent>) => {
-          const instanceId = (event as { instanceId?: number }).instanceId;
+          const instanceId = event.instanceId;
           if (typeof instanceId !== 'number') {
             onHoverCell?.(null);
             return;

@@ -12,6 +12,7 @@ import { decodeHTMLEntities } from '../lib/html-utils'
 import { getProxiedImageUrl } from '../utils/image-utils'
 import type { GridItem, Photo } from '../types'
 import { gridItemToPhoto } from '../compat'
+import { mergeFeatureFlags, type HexGridFeatureFlags } from '../features'
 
 // Re-export Photo type for external consumers
 export type { Photo }
@@ -42,6 +43,11 @@ export interface HexGridProps<T = unknown> {
   modalOpen?: boolean // Pause evolution when a single item is in view
   userId?: string // User ID for saving/loading settings from Firestore
   username?: string // Username for loading channel settings
+  /**
+   * Runtime feature toggles (see ../features). Omitted flags default to
+   * enabled, so existing callers are unchanged. Changes apply without remount.
+   */
+  featureFlags?: HexGridFeatureFlags
 }
 
 export interface Infection {
@@ -239,8 +245,15 @@ export const HexGrid = <T = unknown>({
   photos: photosProp, onItemClick, onHexClick,  
   spacing: _spacing = 1.0, 
   canvasRef: externalCanvasRef, onLeaderboardUpdate, autoplayQueueLimit, onAutoplayQueueLimitChange, modalOpen = false, userId,  
-  username 
+  username,
+  featureFlags,
 }: HexGridProps<T>) => {
+  // Resolved feature flags. The ref lets long-lived listeners / RAF loops read
+  // the current value without re-subscribing.
+  const flags = useMemo(() => mergeFeatureFlags(featureFlags), [featureFlags])
+  const flagsRef = useRef(flags)
+  flagsRef.current = flags
+
   // Normalize inputs: convert items to photos for internal use, or use photos directly
   const photos = useMemo(() => {
     if (items && items.length > 0) {
@@ -1881,6 +1894,7 @@ export const HexGrid = <T = unknown>({
   // Keyboard handler: 'd' toggles the debug panel; Enter/Escape close it when open
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
+      if (!flagsRef.current.enableKeyboardShortcuts) return
       const key = e.key
       if (key === 'd' || key === 'D') {
         setDebugOpen((v: boolean) => !v)
@@ -1894,8 +1908,8 @@ export const HexGrid = <T = unknown>({
 
     window.addEventListener('keydown', onKey)
     // Listen for programmatic toggles from the global nav buttons
-    const onToggleDebug = () => setDebugOpen((v: boolean) => !v)
-    const onToggleStats = () => setShowStats((v: boolean) => !v)
+    const onToggleDebug = () => { if (flagsRef.current.enableDebugPanel) setDebugOpen((v: boolean) => !v) }
+    const onToggleStats = () => { if (flagsRef.current.enableStats) setShowStats((v: boolean) => !v) }
     window.addEventListener('toggle-debug-panel', onToggleDebug as EventListener)
     window.addEventListener('toggle-stats-panel', onToggleStats as EventListener)
     return () => {
@@ -2027,7 +2041,16 @@ export const HexGrid = <T = unknown>({
   // Separate buffer for draw() timing only
   const drawTimesRef = useRef<number[]>([])
   // update telemetry at ~4Hz
+  const telemetryEnabled = flags.enableTelemetry
   useEffect(() => {
+    if (!telemetryEnabled) {
+      // Zeroed telemetry keeps the low-FPS fallback (requires fps > 0) idle.
+      frameTimesRef.current = []
+      const zero = { fps: 0, avgMs: 0, lastMs: 0 }
+      telemetryRef.current = zero
+      setTelemetry(zero)
+      return
+    }
     let raf = 0
     let lastSample = performance.now()
     const sampleInterval = 250 // ms
@@ -2058,7 +2081,7 @@ export const HexGrid = <T = unknown>({
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [])
+  }, [telemetryEnabled])
 
   // Keep refs in sync with current values for low-FPS fallback effect
   useEffect(() => {
@@ -2268,7 +2291,13 @@ export const HexGrid = <T = unknown>({
   const [hoverInfo, setHoverInfo] = useState<{index: number, x: number, y: number} | null>(null)
   
   // Load textures with browser memory cache to prevent duplicate loads
+  const texturesEnabled = flags.enableTextures
   useEffect(() => {
+    if (!texturesEnabled) {
+      // drawHexagon falls back to dominantColor / muted glass tiles.
+      setTextures(new Map())
+      return
+    }
     const textureMap = new Map<string, HTMLImageElement>()
     const uniqueImageUrls = new Set<string>()
     const photoIdToImageUrl = new Map<string, string>()
@@ -2370,7 +2399,7 @@ export const HexGrid = <T = unknown>({
         }
       })
     })
-  }, [photos])
+  }, [photos, texturesEnabled])
 
   // Track previous photos to detect actual changes (not just reference changes)
   const prevPhotosRef = useRef<string>('')
@@ -2633,7 +2662,7 @@ export const HexGrid = <T = unknown>({
               deaths
             )
 
-            if (messages.length > 0) {
+            if (messages.length > 0 && flagsRef.current.enableNarration) {
               setNarrationMessages((prev: NarrationMessage[]) => [...prev, ...messages].slice(-50))
             }
 
@@ -2645,15 +2674,8 @@ export const HexGrid = <T = unknown>({
               logger.warn('Failed to save stats to localStorage:', e)
             }
 
-            // Notify parent component of leaderboard update (for autoplay queue filtering)
-            if (onLeaderboardUpdate && statsTrackerRef.current) {
-              try {
-                const leaderboard = statsTrackerRef.current.getLeaderboard(1000) // Get up to 1000 for autoplay filtering
-                onLeaderboardUpdate(leaderboard)
-              } catch (e) {
-                logger.warn('Failed to get leaderboard:', e)
-              }
-            }
+            // Leaderboard emission lives in the infection-state effect below:
+            // StatsTracker.getLeaderboard is a stub that always returns [].
           } catch (e) {
             logger.error('Error processing narration:', e)
           }
@@ -2835,6 +2857,58 @@ export const HexGrid = <T = unknown>({
       }
     }
   }, [])
+
+  // Feature-flag side effects that must apply without remount.
+  useEffect(() => {
+    // Sheen/scratch and textures are read inside draw(); force a repaint.
+    cameraDirtyRef.current = true
+  }, [flags.enableVisualEffects, flags.enableTextures])
+
+  useEffect(() => {
+    if (flags.enableInteractions) return
+    // Pointer events stop reaching the canvas, so a drag/pinch in progress would
+    // never see its mouseup/touchend and would pin auto-rotate off forever.
+    dragRef.current.active = false
+    touchDragRef.current.active = false
+    pinchRef.current.active = false
+    setHoverInfo(null)
+  }, [flags.enableInteractions])
+
+  // Leaderboard: territory (hex count) per photo, derived from the live
+  // infection map. Throttled with a trailing emit so streamed per-frame state
+  // updates collapse to at most one callback per interval.
+  const onLeaderboardUpdateRef = useRef(onLeaderboardUpdate)
+  onLeaderboardUpdateRef.current = onLeaderboardUpdate
+  const leaderboardTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastLeaderboardKeyRef = useRef('')
+  const leaderboardEnabled = flags.enableLeaderboard
+  useEffect(() => {
+    if (!leaderboardEnabled) {
+      lastLeaderboardKeyRef.current = ''
+      return
+    }
+    if (leaderboardTimerRef.current !== null) return
+    leaderboardTimerRef.current = setTimeout(() => {
+      leaderboardTimerRef.current = null
+      const emit = onLeaderboardUpdateRef.current
+      if (!emit || !flagsRef.current.enableLeaderboard) return
+      const territories = new Map<string, number>()
+      infectionStateRef.current.infections.forEach((inf: Infection) => {
+        territories.set(inf.photo.id, (territories.get(inf.photo.id) ?? 0) + 1)
+      })
+      const leaderboard = Array.from(territories, ([photoId, territory]) => ({ photoId, territory }))
+        .sort((a, b) => b.territory - a.territory || a.photoId.localeCompare(b.photoId))
+        .map((entry, i) => ({ ...entry, position: i + 1 }))
+      const key = leaderboard.map((e) => `${e.photoId}:${e.territory}`).join('|')
+      if (key === lastLeaderboardKeyRef.current) return
+      lastLeaderboardKeyRef.current = key
+      emit(leaderboard)
+    }, 500)
+  }, [infectionState.infections, leaderboardEnabled])
+
+  useEffect(() => () => {
+    if (leaderboardTimerRef.current !== null) clearTimeout(leaderboardTimerRef.current)
+  }, [])
   
   // Draw function
   const draw = useCallback(() => {
@@ -2855,9 +2929,10 @@ export const HexGrid = <T = unknown>({
     const pulseMap = tilePulseRef.current
     const prevAlphaMap = tileAlphaRef.current
     const smooth = Math.max(0, Math.min(1, dbg?.translucencySmoothing ?? 0.08))
-    const scratchEnabled = !!dbg?.scratchEnabled
+    const visualEffectsEnabled = flagsRef.current.enableVisualEffects
+    const scratchEnabled = visualEffectsEnabled && !!dbg?.scratchEnabled
     const sheenIntensity = dbg?.sheenIntensity ?? 0.12
-    const sheenEnabled = !!dbg?.sheenEnabled
+    const sheenEnabled = visualEffectsEnabled && !!dbg?.sheenEnabled
     const seamInset = dbg?.clusterUvInset ?? 0.0
     const isSpherical = gridMetadataRef.current?.isSpherical ?? false
 
@@ -3174,7 +3249,8 @@ export const HexGrid = <T = unknown>({
 
     const animate = (currentTime: number) => {
       // update sheen only when enabled to avoid unnecessary work
-      if (workerDebugRef.current?.sheenEnabled) {
+      const sheenActive = flagsRef.current.enableVisualEffects && !!workerDebugRef.current?.sheenEnabled
+      if (sheenActive) {
         sheenRef.current = (currentTime / 1000) % 10 // 10s loop
       } else {
         sheenRef.current = 0
@@ -3185,7 +3261,7 @@ export const HexGrid = <T = unknown>({
       // If camera changed recently or infections changed (generation advanced), draw immediately
       const gen = infectionState.generation
       const genChanged = gen !== lastDrawGenRef.current
-      const hasVisualAnimation = !!workerDebugRef.current?.sheenEnabled || tilePulseRef.current.size > 0 || streamActiveRef.current
+      const hasVisualAnimation = sheenActive || tilePulseRef.current.size > 0 || streamActiveRef.current
       const targetFrameMs = hasVisualAnimation ? activeFrameMs : idleFrameMs
       if (cameraDirtyRef.current || genChanged || timeSinceLast >= targetFrameMs) {
         draw()
@@ -3197,7 +3273,7 @@ export const HexGrid = <T = unknown>({
   // Clamp a conservative minimum to avoid posting evolves too frequently (console spam + worker churn).
   // Previously the hard minimum was 100ms which allowed spamming during animation loops; raise to 1000ms.
   const evolveInterval = Math.max(1000, workerDebugRef.current?.evolveIntervalMs ?? 800)
-          if (currentTime - lastTime >= evolveInterval && workerRef.current && workerDebugRef.current?.evolutionEnabled !== false && !modalOpen) {
+          if (currentTime - lastTime >= evolveInterval && workerRef.current && workerDebugRef.current?.evolutionEnabled !== false && flagsRef.current.enableEvolution && !modalOpen) {
         // If we're currently streaming a previous evolved state to the UI,
         // avoid posting another evolve to the worker to prevent overlapping runs.
         if (streamActiveRef.current) {
@@ -3849,7 +3925,7 @@ export const HexGrid = <T = unknown>({
           touchDragRef.current.active = false
           pinchRef.current.active = false
         }}
-        style={{ border: '1px solid rgba(255,255,255,0.04)', cursor: 'pointer', borderRadius: 8, boxShadow: '0 6px 20px rgba(2,6,23,0.6)' }}
+        style={{ border: '1px solid rgba(255,255,255,0.04)', cursor: flags.enableInteractions ? 'pointer' : 'default', pointerEvents: flags.enableInteractions ? 'auto' : 'none', borderRadius: 8, boxShadow: '0 6px 20px rgba(2,6,23,0.6)' }}
       />
       {/* Debug toggle moved to top nav - in-component toggle removed */}
 
@@ -3857,12 +3933,12 @@ export const HexGrid = <T = unknown>({
       <NarrationOverlay
         messages={narrationMessages}
         statsTracker={statsTrackerRef.current}
-        isVisible={showNarration}
+        isVisible={showNarration && flags.enableNarration}
         onClose={() => uiStore.set({ showNarration: false })}
       />
 
       {/* Telemetry overlay (toggleable via nav 'Stats' button) */}
-      {showStats && (
+      {showStats && flags.enableStats && (
         // Place telemetry above the camera controls in the bottom-left and avoid nav overlap
         <div style={{ position: 'fixed', left: 12, bottom: 170, background: 'rgba(0,0,0,0.75)', color: '#fff', padding: '8px 10px', borderRadius: 8, fontSize: 12, zIndex: 9999, maxWidth: 320 }} aria-hidden>
   <div style={{ fontWeight: 'bold', marginBottom: 6 }}>HexGrid Telemetry</div>
@@ -3881,7 +3957,7 @@ export const HexGrid = <T = unknown>({
       )}
 
       {/* Small FPS / frame-time telemetry badge (always rendered but hidden behind showStats) */}
-      {showStats && (
+      {showStats && flags.enableStats && flags.enableTelemetry && (
         <div style={{ position: 'fixed', right: 12, bottom: 12, background: 'rgba(0,0,0,0.7)', color: '#e8f4ff', padding: '8px 10px', borderRadius: 8, fontSize: 12, zIndex: 10000, minWidth: 120, textAlign: 'right' }} aria-hidden>
           <div style={{ fontWeight: '600', marginBottom: 4 }}>Telemetry</div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}><div>FPS</div><div style={{ fontVariantNumeric: 'tabular-nums' }}>{telemetry.fps}</div></div>
@@ -3897,7 +3973,7 @@ export const HexGrid = <T = unknown>({
       )}
 
       {/* Camera controls (bottom-left) */}
-      {cameraOpen && (
+      {cameraOpen && flags.enableCameraControls && (
         <div style={{ position: 'fixed', left: 12, bottom: 12, background: 'rgba(0,0,0,0.7)', color: '#fff', padding: 10, borderRadius: 8, fontSize: 13, zIndex: 9999, width: 300 }}>
           <div style={{ fontWeight: 'bold', marginBottom: 6 }}>Camera</div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -4036,7 +4112,7 @@ export const HexGrid = <T = unknown>({
       )}
 
       {/* Debug control panel (closable) */}
-      {debugOpen && (
+      {debugOpen && flags.enableDebugPanel && (
         <div id="hexgrid-debug-panel" role="dialog" aria-label="Hexgrid debug panel" style={{ position: 'fixed', top: 112, right: 12, background: 'rgba(0,0,0,0.8)', color: '#fff', padding: 12, borderRadius: 8, fontSize: 12, width: 420, boxShadow: '0 6px 18px rgba(0,0,0,0.6)', maxHeight: '80vh', overflowY: 'auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <div style={{ fontWeight: 'bold' }}>Worker Debug</div>
