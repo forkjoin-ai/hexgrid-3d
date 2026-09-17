@@ -49,7 +49,7 @@
     "test:watch": "bun test --timeout 60000 --watch",
     "test:coverage": "bun test --timeout 60000 --coverage",
     "test:e2e": "playwright test",
-    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint": "bunx --bun --no-install eslint src/**/*.{ts,tsx}",
     "type-check": "tsc --noEmit"
   },
   "keywords": [
